@@ -26,59 +26,59 @@ const ShippingScreen = () => {
     return (
         <FormContainer>
             <CheckoutSteps step1 step2 />
-            <h1 className="text-3xl font-bold mb-6">Shipping</h1>
+            <h1 className="text-3xl font-display font-bold mb-6 text-white text-center">Shipping Details</h1>
             <form onSubmit={submitHandler} className="space-y-4">
                 <div>
-                    <label className="block mb-1 font-semibold">Address</label>
+                    <label className="block mb-1 font-semibold text-gray-300">Address</label>
                     <input
                         type='text'
-                        placeholder='Enter address'
+                        placeholder='Enter full address'
                         value={address}
                         required
                         onChange={(e) => setAddress(e.target.value)}
-                        className="w-full border p-2 rounded"
+                        className="input-field"
                     ></input>
                 </div>
 
                 <div>
-                    <label className="block mb-1 font-semibold">City</label>
+                    <label className="block mb-1 font-semibold text-gray-300">City</label>
                     <input
                         type='text'
                         placeholder='Enter city'
                         value={city}
                         required
                         onChange={(e) => setCity(e.target.value)}
-                        className="w-full border p-2 rounded"
+                        className="input-field"
                     ></input>
                 </div>
 
                 <div>
-                    <label className="block mb-1 font-semibold">Postal Code</label>
+                    <label className="block mb-1 font-semibold text-gray-300">Postal Code</label>
                     <input
                         type='text'
                         placeholder='Enter postal code'
                         value={postalCode}
                         required
                         onChange={(e) => setPostalCode(e.target.value)}
-                        className="w-full border p-2 rounded"
+                        className="input-field"
                     ></input>
                 </div>
 
                 <div>
-                    <label className="block mb-1 font-semibold">Country</label>
+                    <label className="block mb-1 font-semibold text-gray-300">Country</label>
                     <input
                         type='text'
                         placeholder='Enter country'
                         value={country}
                         required
                         onChange={(e) => setCountry(e.target.value)}
-                        className="w-full border p-2 rounded"
+                        className="input-field"
                     ></input>
                 </div>
 
                 <button
                     type='submit'
-                    className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800"
+                    className="btn-primary w-full mt-4"
                 >
                     Continue
                 </button>

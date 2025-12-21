@@ -6,6 +6,7 @@ import Loader from '../../components/Loader';
 import Message from '../../components/Message';
 import { useGetUserDetailsQuery, useUpdateUserMutation } from '../../slices/usersApiSlice';
 import { toast } from 'react-toastify';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const UserEditScreen = () => {
     const { id: userId } = useParams();
@@ -41,62 +42,65 @@ const UserEditScreen = () => {
     };
 
     return (
-        <>
-            <Link to='/admin/userlist' className='btn btn-light my-3 text-blue-500 hover:underline'>
-                Go Back
+        <div className="container mx-auto px-4 py-8 max-w-2xl">
+            <Link to='/admin/userlist' className='flex items-center text-gray-400 hover:text-white mb-6'>
+                <FaArrowLeft className="mr-2" /> Go Back
             </Link>
-            <FormContainer>
-                <h1 className="text-3xl font-bold mb-6">Edit User</h1>
+
+            <div className="card p-8">
+                <h1 className="text-3xl font-display font-bold text-white mb-6">Edit User</h1>
                 {loadingUpdate && <Loader />}
                 {isLoading ? (
                     <Loader />
                 ) : error ? (
                     <Message variant='danger'>{error?.data?.message || error.error}</Message>
                 ) : (
-                    <form onSubmit={submitHandler} className="space-y-4">
+                    <form onSubmit={submitHandler} className="space-y-6">
                         <div>
-                            <label className="block mb-1 font-semibold">Name</label>
+                            <label className="block mb-2 font-semibold text-gray-300">Name</label>
                             <input
                                 type='text'
                                 placeholder='Enter name'
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                className="w-full border p-2 rounded"
+                                className="input-field"
                             />
                         </div>
 
                         <div>
-                            <label className="block mb-1 font-semibold">Email</label>
+                            <label className="block mb-2 font-semibold text-gray-300">Email</label>
                             <input
                                 type='email'
                                 placeholder='Enter email'
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full border p-2 rounded"
+                                className="input-field"
                             />
                         </div>
 
-                        <div className="flex items-center">
+                        <div className="flex items-center p-4 border border-gray-700 rounded bg-gray-800/50">
                             <input
                                 type='checkbox'
                                 id='isAdmin'
                                 checked={isAdmin}
                                 onChange={(e) => setIsAdmin(e.target.checked)}
-                                className="mr-2 h-4 w-4"
+                                className="mr-3 h-5 w-5 text-accent focus:ring-accent bg-gray-700 border-gray-600 rounded"
                             />
-                            <label htmlFor='isAdmin' className="block font-semibold">Is Admin</label>
+                            <label htmlFor='isAdmin' className="block font-semibold text-white cursor-pointer select-none">
+                                Administrator Access
+                            </label>
                         </div>
 
                         <button
                             type='submit'
-                            className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800"
+                            className="btn-primary w-full"
                         >
-                            Update
+                            Update User
                         </button>
                     </form>
                 )}
-            </FormContainer>
-        </>
+            </div>
+        </div>
     );
 };
 

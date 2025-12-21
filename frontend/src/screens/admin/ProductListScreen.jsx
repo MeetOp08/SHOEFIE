@@ -44,10 +44,10 @@ const ProductListScreen = () => {
     };
 
     return (
-        <>
-            <div className='flex justify-between items-center mb-6'>
-                <h1 className='text-3xl font-bold'>Products</h1>
-                <button className='bg-black text-white py-2 px-4 rounded flex items-center hover:bg-gray-800' onClick={createProductHandler}>
+        <div className="container mx-auto px-4 py-8">
+            <div className='flex justify-between items-center mb-8'>
+                <h1 className='text-3xl font-display font-bold text-white'>Products</h1>
+                <button className='btn-primary flex items-center px-4 py-2 text-sm' onClick={createProductHandler}>
                     <FaPlus className="mr-2" /> Create Product
                 </button>
             </div>
@@ -61,34 +61,34 @@ const ProductListScreen = () => {
                 <Message variant='danger'>{error?.data?.message || error.error}</Message>
             ) : (
                 <>
-                    <div className="overflow-x-auto">
-                        <table className='min-w-full bg-white border border-gray-200'>
+                    <div className="overflow-x-auto rounded-lg border border-gray-700">
+                        <table className='min-w-full bg-gray-800 text-gray-300'>
                             <thead>
-                                <tr className="bg-gray-100 text-left">
-                                    <th className="py-2 px-4 border">ID</th>
-                                    <th className="py-2 px-4 border">NAME</th>
-                                    <th className="py-2 px-4 border">PRICE</th>
-                                    <th className="py-2 px-4 border">CATEGORY</th>
-                                    <th className="py-2 px-4 border">BRAND</th>
-                                    <th className="py-2 px-4 border"></th>
+                                <tr className="bg-primary text-left text-accent uppercase text-sm tracking-wider">
+                                    <th className="py-3 px-6">ID</th>
+                                    <th className="py-3 px-6">NAME</th>
+                                    <th className="py-3 px-6">PRICE</th>
+                                    <th className="py-3 px-6">CATEGORY</th>
+                                    <th className="py-3 px-6">BRAND</th>
+                                    <th className="py-3 px-6"></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className="divide-y divide-gray-700">
                                 {data.products.map((product) => (
-                                    <tr key={product._id} className="border-b hover:bg-gray-50">
-                                        <td className="py-2 px-4">{product._id}</td>
-                                        <td className="py-2 px-4">{product.name}</td>
-                                        <td className="py-2 px-4">${product.price}</td>
-                                        <td className="py-2 px-4">{product.category}</td>
-                                        <td className="py-2 px-4">{product.brand}</td>
-                                        <td className="py-2 px-4 flex space-x-2">
+                                    <tr key={product._id} className="hover:bg-gray-700 transition-colors">
+                                        <td className="py-4 px-6">{product._id}</td>
+                                        <td className="py-4 px-6 font-semibold text-white">{product.name}</td>
+                                        <td className="py-4 px-6">${product.price}</td>
+                                        <td className="py-4 px-6">{product.category}</td>
+                                        <td className="py-4 px-6">{product.brand}</td>
+                                        <td className="py-4 px-6 flex space-x-4">
                                             <Link to={`/admin/product/${product._id}/edit`}>
-                                                <button className='text-gray-600 hover:text-black'>
+                                                <button className='text-blue-400 hover:text-blue-300'>
                                                     <FaEdit />
                                                 </button>
                                             </Link>
                                             <button
-                                                className='text-red-500 hover:text-red-700'
+                                                className='text-red-400 hover:text-red-300'
                                                 onClick={() => deleteHandler(product._id)}
                                             >
                                                 <FaTrash />
@@ -102,7 +102,7 @@ const ProductListScreen = () => {
                     <Paginate pages={data.pages} page={data.page} isAdmin={true} />
                 </>
             )}
-        </>
+        </div>
     );
 };
 

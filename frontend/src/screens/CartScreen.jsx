@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaArrowLeft } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
 
@@ -24,64 +24,75 @@ const CartScreen = () => {
     };
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="md:col-span-2">
-                <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
-                {cartItems.length === 0 ? (
-                    <Message>
-                        Your cart is empty <Link to='/' className="underline">Go Back</Link>
-                    </Message>
-                ) : (
-                    <div className="space-y-4">
+        <div className="container mx-auto px-4 py-8">
+            <h1 className="text-3xl font-display font-bold mb-8 text-accent">Shopping Cart</h1>
+
+            {cartItems.length === 0 ? (
+                <Message>
+                    Your cart is empty. <Link to="/" className="underline text-accent">Go Back</Link>
+                </Message>
+            ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 space-y-4">
                         {cartItems.map((item) => (
-                            <div key={item._id} className="flex items-center justify-between border-b pb-4">
-                                <div className="flex items-center space-x-4">
-                                    <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded" />
-                                    <Link to={`/product/${item._id}`} className="font-semibold text-lg hover:underline">{item.name}</Link>
+                            <div key={item._id} className="card flex items-center p-4 gap-4">
+                                <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-lg" />
+
+                                <div className="flex-grow">
+                                    <Link to={`/product/${item._id}`} className="text-lg font-semibold hover:text-accent transition-colors">
+                                        {item.name}
+                                    </Link>
+                                    <p className="text-gray-400 text-sm">${item.price}</p>
                                 </div>
-                                <div className="flex items-center space-x-4">
-                                    <p>${item.price}</p>
-                                    <select
-                                        className="border p-1 rounded"
-                                        value={item.qty}
-                                        onChange={(e) => addToCartHandler(item, Number(e.target.value))}
-                                    >
-                                        {[...Array(item.countInStock).keys()].map((x) => (
-                                            <option key={x + 1} value={x + 1}>
-                                                {x + 1}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <button
-                                        type='button'
-                                        onClick={() => removeFromCartHandler(item._id)}
-                                        className="text-red-500 hover:text-red-700"
-                                    >
-                                        <FaTrash />
-                                    </button>
-                                </div>
+
+                                <select
+                                    className="bg-gray-800 border border-gray-600 rounded p-1 text-white focus:outline-none"
+                                    value={item.qty}
+                                    onChange={(e) => addToCartHandler(item, Number(e.target.value))}
+                                >
+                                    {[...Array(item.countInStock).keys()].map((x) => (
+                                        <option key={x + 1} value={x + 1}>
+                                            {x + 1}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <button
+                                    type='button'
+                                    className='text-red-500 hover:text-red-400 transition-colors p-2'
+                                    onClick={() => removeFromCartHandler(item._id)}
+                                >
+                                    <FaTrash />
+                                </button>
                             </div>
                         ))}
                     </div>
-                )}
-            </div>
 
-            <div className="border p-4 rounded-lg shadow-sm h-fit">
-                <h2 className="text-xl font-bold mb-4">
-                    Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) items
-                </h2>
-                <div className="text-2xl font-bold mb-4">
-                    ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
+                    <div className="col-span-1">
+                        <div className="card p-6 sticky top-24">
+                            <h2 className="text-2xl font-bold mb-4">
+                                Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) items
+                            </h2>
+                            <p className="text-3xl font-bold text-accent mb-6">
+                                ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
+                            </p>
+                            <button
+                                type='button'
+                                className='btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed'
+                                disabled={cartItems.length === 0}
+                                onClick={checkoutHandler}
+                            >
+                                Proceed To Checkout
+                            </button>
+                            <div className="mt-4 text-center">
+                                <Link to='/' className="text-gray-400 hover:text-white text-sm flex items-center justify-center">
+                                    <FaArrowLeft className="mr-2" /> Continue Shopping
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button
-                    type='button'
-                    className={`w-full bg-black text-white py-2 rounded hover:bg-gray-800 ${cartItems.length === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={cartItems.length === 0}
-                    onClick={checkoutHandler}
-                >
-                    Proceed To Checkout
-                </button>
-            </div>
+            )}
         </div>
     );
 };

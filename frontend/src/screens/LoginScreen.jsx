@@ -32,7 +32,7 @@ const LoginScreen = () => {
         e.preventDefault();
         try {
             const res = await login({ email, password }).unwrap();
-            dispatch(setCredentials(res));
+            dispatch(setCredentials({ ...res }));
             navigate(redirect);
         } catch (err) {
             toast.error(err?.data?.message || err.error);
@@ -41,49 +41,52 @@ const LoginScreen = () => {
 
     return (
         <FormContainer>
-            <h1 className="text-3xl font-bold mb-6">Sign In</h1>
+            <div className="text-center mb-6">
+                <h1 className="text-3xl font-display font-bold text-white mb-2">Welcome Back</h1>
+                <p className="text-gray-400">Sign in to access your premium account</p>
+            </div>
 
             <form onSubmit={submitHandler} className="space-y-4">
                 <div>
-                    <label className="block mb-1 font-semibold">Email Address</label>
+                    <label className="block mb-1 text-sm font-semibold text-gray-300">Email Address</label>
                     <input
                         type='email'
-                        placeholder='Enter email'
+                        placeholder='Enter your email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full border p-2 rounded"
-                    ></input>
+                        className="input-field"
+                        required
+                    />
                 </div>
 
                 <div>
-                    <label className="block mb-1 font-semibold">Password</label>
+                    <label className="block mb-1 text-sm font-semibold text-gray-300">Password</label>
                     <input
                         type='password'
-                        placeholder='Enter password'
+                        placeholder='Enter your password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full border p-2 rounded"
-                    ></input>
+                        className="input-field"
+                        required
+                    />
                 </div>
 
                 <button
-                    disabled={isLoading}
                     type='submit'
-                    className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800"
+                    disabled={isLoading}
+                    className="btn-primary w-full mt-4"
                 >
-                    Sign In
+                    {isLoading ? 'Signing In...' : 'Sign In'}
                 </button>
 
                 {isLoading && <Loader />}
             </form>
 
-            <div className="py-3">
-                <p>
-                    New Customer?{' '}
-                    <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className="text-blue-500 hover:underline">
-                        Register
-                    </Link>
-                </p>
+            <div className='py-4 text-center text-sm text-gray-400'>
+                New Customer?{' '}
+                <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className="text-accent hover:underline font-semibold">
+                    Register
+                </Link>
             </div>
         </FormContainer>
     );

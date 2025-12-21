@@ -6,14 +6,14 @@ import Footer from './components/Footer';
 
 const App = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
       <Header />
-      <main className="flex-grow container mx-auto px-4 py-4">
+      <main className='min-h-screen pt-20'>
         <Outlet />
       </main>
       <Footer />
       <ToastContainer />
-    </div>
+    </>
   );
 };
 

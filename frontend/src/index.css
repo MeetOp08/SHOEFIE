@@ -1,8 +1,56 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;700&display=swap');
 
-/* Custom Styles can go here */
-main {
-  min-height: 80vh;
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+
+@layer base {
+  body {
+    @apply bg-primary text-secondary font-sans antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-bold;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-accent text-primary px-6 py-3 rounded-full font-semibold tracking-wide hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-lg;
+  }
+
+  .btn-outline {
+    @apply border-2 border-accent text-accent px-6 py-3 rounded-full font-semibold hover:bg-accent hover:text-primary transition-all duration-300;
+  }
+
+  .card {
+    @apply bg-gray-dark rounded-xl shadow-lg border border-gray-700/50 backdrop-blur-sm p-4 hover:shadow-neon transition-all duration-300;
+  }
+
+  .input-field {
+    @apply w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1A1A1A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
 }

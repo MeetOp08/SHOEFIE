@@ -7,10 +7,8 @@ import Loader from '../components/Loader';
 import {
     useGetOrderDetailsQuery,
     usePayOrderMutation,
-    useGetPayPalClientIdQuery,
     useDeliverOrderMutation,
 } from '../slices/ordersApiSlice';
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
@@ -26,8 +24,6 @@ const OrderScreen = () => {
     const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
     const { userInfo } = useSelector((state) => state.auth);
 
-    // PayPal placeholder logic (simplified for this task)
-    // Real implementation would use PayPal script to load buttons
     const paymentHandler = async () => {
         try {
             await payOrder({ orderId, details: { id: 'SIM_PAY_ID', status: 'COMPLETED', email_address: userInfo.email, update_time: String(Date.now()) } });
@@ -53,15 +49,15 @@ const OrderScreen = () => {
     ) : error ? (
         <Message variant='danger'>{error?.data?.message || error.error}</Message>
     ) : (
-        <>
-            <h1 className="text-2xl font-bold mb-4">Order {order._id}</h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="md:col-span-2 space-y-6">
-                    <div className="border-b pb-4">
-                        <h2 className="text-xl font-bold mb-2">Shipping</h2>
-                        <p><strong>Name: </strong> {order.user.name}</p>
-                        <p><strong>Email: </strong> {order.user.email}</p>
-                        <p>
+        <div className="container mx-auto px-4 py-8">
+            <h1 className="text-2xl md:text-3xl font-display font-bold text-white mb-8">Order <span className="text-accent">#{order._id}</span></h1>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2 space-y-6">
+                    <div className="card p-6">
+                        <h2 className="text-xl font-bold font-display text-accent mb-4">Shipping</h2>
+                        <p className="text-gray-300 mb-2"><strong>Name: </strong> {order.user.name}</p>
+                        <p className="text-gray-300 mb-2"><strong>Email: </strong> <a href={`mailto:${order.user.email}`} className="hover:text-accent">{order.user.email}</a></p>
+                        <p className="text-gray-300 mb-4">
                             <strong>Address: </strong>
                             {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
                             {order.shippingAddress.postalCode}, {order.shippingAddress.country}
@@ -73,9 +69,9 @@ const OrderScreen = () => {
                         )}
                     </div>
 
-                    <div className="border-b pb-4">
-                        <h2 className="text-xl font-bold mb-2">Payment Method</h2>
-                        <p><strong>Method: </strong> {order.paymentMethod}</p>
+                    <div className="card p-6">
+                        <h2 className="text-xl font-bold font-display text-accent mb-4">Payment Method</h2>
+                        <p className="text-gray-300 mb-4"><strong>Method: </strong> {order.paymentMethod}</p>
                         {order.isPaid ? (
                             <Message variant='success'>Paid on {order.paidAt}</Message>
                         ) : (
@@ -83,20 +79,20 @@ const OrderScreen = () => {
                         )}
                     </div>
 
-                    <div>
-                        <h2 className="text-xl font-bold mb-2">Order Items</h2>
+                    <div className="card p-6">
+                        <h2 className="text-xl font-bold font-display text-accent mb-4">Order Items</h2>
                         {order.orderItems.length === 0 ? (
                             <Message>Order is empty</Message>
                         ) : (
                             <div className="space-y-4">
                                 {order.orderItems.map((item, index) => (
-                                    <div key={index} className="flex items-center space-x-4">
-                                        <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded" />
-                                        <Link to={`/product/${item.product}`} className="hover:underline font-semibold">
+                                    <div key={index} className="flex items-center space-x-4 border-b border-gray-700 pb-4 last:border-0 last:pb-0">
+                                        <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-lg" />
+                                        <Link to={`/product/${item.product}`} className="hover:text-accent font-semibold flex-grow text-white">
                                             {item.name}
                                         </Link>
-                                        <div>
-                                            {item.qty} x ${item.price} = ${(item.qty * item.price).toFixed(2)}
+                                        <div className="text-gray-300">
+                                            {item.qty} x ${item.price} = <span className="text-white font-bold">${(item.qty * item.price).toFixed(2)}</span>
                                         </div>
                                     </div>
                                 ))}
@@ -105,51 +101,54 @@ const OrderScreen = () => {
                     </div>
                 </div>
 
-                <div className="border p-4 rounded-lg shadow-sm h-fit">
-                    <h2 className="text-xl font-bold mb-4">Order Summary</h2>
-                    <div className="flex justify-between mb-2">
-                        <span>Items</span>
-                        <span>${order.itemsPrice}</span>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                        <span>Shipping</span>
-                        <span>${order.shippingPrice}</span>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                        <span>Tax</span>
-                        <span>${order.taxPrice}</span>
-                    </div>
-                    <div className="flex justify-between mb-4 border-t pt-2 font-bold text-lg">
-                        <span>Total</span>
-                        <span>${order.totalPrice}</span>
-                    </div>
-
-                    {!order.isPaid && (
-                        <div className="mb-4">
-                            {loadingPay && <Loader />}
-                            {/* Placeholder Payment Button */}
-                            <button
-                                onClick={paymentHandler}
-                                className="w-full bg-blue-600 text-white dev-button py-2 rounded mb-2 hover:bg-blue-700"
-                            >
-                                Pay Order (Simulate)
-                            </button>
+                <div className="col-span-1">
+                    <div className="card p-6 sticky top-24">
+                        <h2 className="text-2xl font-bold font-display text-accent mb-6 border-b border-gray-700 pb-4">Order Summary</h2>
+                        <div className="space-y-3 text-gray-300">
+                            <div className="flex justify-between">
+                                <span>Items</span>
+                                <span>${order.itemsPrice}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>Shipping</span>
+                                <span>${order.shippingPrice}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span>Tax</span>
+                                <span>${order.taxPrice}</span>
+                            </div>
+                            <div className="flex justify-between border-t border-gray-700 pt-3 font-bold text-xl text-white">
+                                <span>Total</span>
+                                <span>${order.totalPrice}</span>
+                            </div>
                         </div>
-                    )}
 
-                    {loadingDeliver && <Loader />}
-                    {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                        <button
-                            type='button'
-                            className='w-full bg-black text-white py-2 rounded hover:bg-gray-800'
-                            onClick={deliverOrderHandler}
-                        >
-                            Mark As Delivered
-                        </button>
-                    )}
+                        {!order.isPaid && (
+                            <div className="mt-6">
+                                {loadingPay && <Loader />}
+                                <button
+                                    onClick={paymentHandler}
+                                    className="bg-blue-600 w-full text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+                                >
+                                    Pay Order (Simulate)
+                                </button>
+                            </div>
+                        )}
+
+                        {loadingDeliver && <Loader />}
+                        {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                            <button
+                                type='button'
+                                className='btn-primary w-full mt-4'
+                                onClick={deliverOrderHandler}
+                            >
+                                Mark As Delivered
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

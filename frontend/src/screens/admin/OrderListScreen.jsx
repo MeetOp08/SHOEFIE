@@ -8,8 +8,8 @@ const OrderListScreen = () => {
     const { data: orders, isLoading, error } = useGetOrdersQuery();
 
     return (
-        <>
-            <h1 className="text-3xl font-bold mb-6">Orders</h1>
+        <div className="container mx-auto px-4 py-8">
+            <h1 className="text-3xl font-display font-bold text-white mb-8">Orders</h1>
             {isLoading ? (
                 <Loader />
             ) : error ? (
@@ -17,42 +17,42 @@ const OrderListScreen = () => {
                     {error?.data?.message || error.error}
                 </Message>
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white border border-gray-200">
+                <div className="overflow-x-auto rounded-lg border border-gray-700">
+                    <table className="min-w-full bg-gray-800 text-gray-300">
                         <thead>
-                            <tr className="bg-gray-100 text-left">
-                                <th className="py-2 px-4 border">ID</th>
-                                <th className="py-2 px-4 border">USER</th>
-                                <th className="py-2 px-4 border">DATE</th>
-                                <th className="py-2 px-4 border">TOTAL</th>
-                                <th className="py-2 px-4 border">PAID</th>
-                                <th className="py-2 px-4 border">DELIVERED</th>
-                                <th className="py-2 px-4 border"></th>
+                            <tr className="bg-primary text-left text-accent uppercase text-sm tracking-wider">
+                                <th className="py-3 px-6">ID</th>
+                                <th className="py-3 px-6">USER</th>
+                                <th className="py-3 px-6">DATE</th>
+                                <th className="py-3 px-6">TOTAL</th>
+                                <th className="py-3 px-6">PAID</th>
+                                <th className="py-3 px-6">DELIVERED</th>
+                                <th className="py-3 px-6"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y divide-gray-700">
                             {orders.map((order) => (
-                                <tr key={order._id} className="border-b hover:bg-gray-50">
-                                    <td className="py-2 px-4">{order._id}</td>
-                                    <td className="py-2 px-4">{order.user && order.user.name}</td>
-                                    <td className="py-2 px-4">{order.createdAt.substring(0, 10)}</td>
-                                    <td className="py-2 px-4">${order.totalPrice}</td>
-                                    <td className="py-2 px-4">
+                                <tr key={order._id} className="hover:bg-gray-700 transition-colors">
+                                    <td className="py-4 px-6">{order._id}</td>
+                                    <td className="py-4 px-6 font-semibold text-white">{order.user && order.user.name}</td>
+                                    <td className="py-4 px-6">{order.createdAt.substring(0, 10)}</td>
+                                    <td className="py-4 px-6 text-white font-bold">${order.totalPrice}</td>
+                                    <td className="py-4 px-6">
                                         {order.isPaid ? (
-                                            <span className="text-green-500">{order.paidAt.substring(0, 10)}</span>
+                                            <span className="text-green-500 font-semibold">{order.paidAt.substring(0, 10)}</span>
                                         ) : (
                                             <FaTimes className="text-red-500" />
                                         )}
                                     </td>
-                                    <td className="py-2 px-4">
+                                    <td className="py-4 px-6">
                                         {order.isDelivered ? (
-                                            <span className="text-green-500">{order.deliveredAt.substring(0, 10)}</span>
+                                            <span className="text-green-500 font-semibold">{order.deliveredAt.substring(0, 10)}</span>
                                         ) : (
                                             <FaTimes className="text-red-500" />
                                         )}
                                     </td>
-                                    <td className="py-2 px-4">
-                                        <Link to={`/order/${order._id}`} className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 text-sm">
+                                    <td className="py-4 px-6">
+                                        <Link to={`/order/${order._id}`} className="text-accent hover:underline text-sm font-semibold">
                                             Details
                                         </Link>
                                     </td>
@@ -62,7 +62,7 @@ const OrderListScreen = () => {
                     </table>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 

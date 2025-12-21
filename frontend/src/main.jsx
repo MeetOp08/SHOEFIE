@@ -1,6 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import "@paypal/react-paypal-js"
+
 import {
+
   createBrowserRouter,
   createRoutesFromElements,
   Route,

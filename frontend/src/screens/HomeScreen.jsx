@@ -1,13 +1,15 @@
-import { Row, Col } from 'react-bootstrap'; // Need to remove Bootstrap refs
 import { useParams, Link } from 'react-router-dom';
 import { useGetProductsQuery } from '../slices/productsApiSlice';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import Paginate from '../components/Paginate';
+import Hero from '../components/Hero';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const HomeScreen = () => {
     const { pageNumber, keyword } = useParams();
+
     const { data, isLoading, error } = useGetProductsQuery({
         keyword,
         pageNumber,
@@ -16,44 +18,44 @@ const HomeScreen = () => {
     return (
         <>
             {!keyword ? (
-                <div className="mb-4">
-                    {/* Hero or Carousel could go here */}
-                    <h1 className="text-3xl font-bold mb-6">Latest Products</h1>
+                <Hero />
+            ) : (
+                <div className="container mx-auto px-4 py-8">
+                    <Link to='/' className='btn-outline px-4 py-2 inline-flex items-center text-sm mb-4'>
+                        <FaArrowLeft className="mr-2" /> Go Back
+                    </Link>
                 </div>
-            ) : (
-                <Link to='/' className='btn btn-light mb-4 text-blue-500 hover:text-blue-700'>
-                    Go Back
-                </Link>
             )}
 
-            {isLoading ? (
-                <Loader />
-            ) : error ? (
-                <Message variant='danger'>
-                    {error?.data?.message || error.error}
-                </Message>
-            ) : (
-                <>
-                    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-                        {data.products.map((product) => (
-                            <Product key={product._id} product={product} />
-                        ))}
+            <div className="container mx-auto px-4 py-12">
+                {!keyword && (
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold text-accent mb-2">Latest Arrivals</h2>
+                        <div className="h-1 w-24 bg-accent mx-auto rounded"></div>
                     </div>
+                )}
 
-                    {/* Pagination (Simplified) */}
-                    <div className='flex justify-center mt-8 space-x-2'>
-                        {[...Array(data.pages).keys()].map(x => (
-                            <Link
-                                key={x + 1}
-                                to={keyword ? `/search/${keyword}/page/${x + 1}` : `/page/${x + 1}`}
-                                className={`px-3 py-1 border rounded ${x + 1 === data.page ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'}`}
-                            >
-                                {x + 1}
-                            </Link>
-                        ))}
-                    </div>
-                </>
-            )}
+                {isLoading ? (
+                    <Loader />
+                ) : error ? (
+                    <Message variant='danger'>
+                        {error?.data?.message || error.error}
+                    </Message>
+                ) : (
+                    <>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                            {data.products.map((product) => (
+                                <Product key={product._id} product={product} />
+                            ))}
+                        </div>
+                        <Paginate
+                            pages={data.pages}
+                            page={data.page}
+                            keyword={keyword ? keyword : ''}
+                        />
+                    </>
+                )}
+            </div>
         </>
     );
 };

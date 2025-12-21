@@ -32,14 +32,13 @@ const RegisterScreen = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
-
         if (password !== confirmPassword) {
             toast.error('Passwords do not match');
             return;
         } else {
             try {
                 const res = await register({ name, email, password }).unwrap();
-                dispatch(setCredentials(res));
+                dispatch(setCredentials({ ...res }));
                 navigate(redirect);
             } catch (err) {
                 toast.error(err?.data?.message || err.error);
@@ -49,71 +48,76 @@ const RegisterScreen = () => {
 
     return (
         <FormContainer>
-            <h1 className="text-3xl font-bold mb-6">Sign Up</h1>
+            <div className="text-center mb-6">
+                <h1 className="text-3xl font-display font-bold text-white mb-2">Join SHOEFIE</h1>
+                <p className="text-gray-400">Create an account to start shopping</p>
+            </div>
 
             <form onSubmit={submitHandler} className="space-y-4">
                 <div>
-                    <label className="block mb-1 font-semibold">Name</label>
+                    <label className="block mb-1 text-sm font-semibold text-gray-300">Name</label>
                     <input
                         type='text'
                         placeholder='Enter name'
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full border p-2 rounded"
-                    ></input>
+                        className="input-field"
+                        required
+                    />
                 </div>
 
                 <div>
-                    <label className="block mb-1 font-semibold">Email Address</label>
+                    <label className="block mb-1 text-sm font-semibold text-gray-300">Email Address</label>
                     <input
                         type='email'
                         placeholder='Enter email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full border p-2 rounded"
-                    ></input>
+                        className="input-field"
+                        required
+                    />
                 </div>
 
                 <div>
-                    <label className="block mb-1 font-semibold">Password</label>
+                    <label className="block mb-1 text-sm font-semibold text-gray-300">Password</label>
                     <input
                         type='password'
                         placeholder='Enter password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full border p-2 rounded"
-                    ></input>
+                        className="input-field"
+                        required
+                    />
                 </div>
 
                 <div>
-                    <label className="block mb-1 font-semibold">Confirm Password</label>
+                    <label className="block mb-1 text-sm font-semibold text-gray-300">Confirm Password</label>
                     <input
                         type='password'
                         placeholder='Confirm password'
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        className="w-full border p-2 rounded"
-                    ></input>
+                        className="input-field"
+                        required
+                    />
                 </div>
 
                 <button
-                    disabled={isLoading}
                     type='submit'
-                    className="bg-black text-white py-2 px-4 rounded hover:bg-gray-800"
+                    disabled={isLoading}
+                    className="btn-primary w-full mt-4"
                 >
-                    Register
+                    {isLoading ? 'Creating Account...' : 'Register'}
                 </button>
 
                 {isLoading && <Loader />}
             </form>
 
-            <div className="py-3">
-                <p>
-                    Already have an account?{' '}
-                    <Link to={redirect ? `/login?redirect=${redirect}` : '/login'} className="text-blue-500 hover:underline">
-                        Login
-                    </Link>
-                </p>
+            <div className='py-4 text-center text-sm text-gray-400'>
+                Already have an account?{' '}
+                <Link to={redirect ? `/login?redirect=${redirect}` : '/login'} className="text-accent hover:underline font-semibold">
+                    Login
+                </Link>
             </div>
         </FormContainer>
     );
