@@ -173,6 +173,18 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Logout user / clear cookie
+// @route   POST /api/users/logout
+// @access  Public
+const logoutUser = asyncHandler(async (req, res) => {
+    // If using cookies, we would clear them here
+    // res.cookie('jwt', '', {
+    //     httpOnly: true,
+    //     expires: new Date(0),
+    // });
+    res.status(200).json({ message: 'Logged out successfully' });
+});
+
 module.exports = {
     authUser,
     registerUser,
@@ -182,5 +194,6 @@ module.exports = {
     deleteUser,
     getUserById,
     updateUser,
+    logoutUser,
 };
 

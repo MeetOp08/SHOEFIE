@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import "@paypal/react-paypal-js"
-
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import {
-
   createBrowserRouter,
   createRoutesFromElements,
   Route,
@@ -14,11 +12,11 @@ import store from './store';
 import App from './App.jsx';
 import './index.css';
 
-// Admin Routes (Placeholder for now)
+// Admin Routes
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 
-// Screen imports (Placeholders will be created next)
+// Screen imports
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
@@ -34,7 +32,6 @@ import ProductListScreen from './screens/admin/ProductListScreen';
 import ProductEditScreen from './screens/admin/ProductEditScreen';
 import OrderListScreen from './screens/admin/OrderListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
-
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -65,14 +62,21 @@ const router = createBrowserRouter(
         <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
       </Route>
     </Route>
-
   )
 );
+
+const initialOptions = {
+  "client-id": "test", // This will be overridden by the PayPal button component if needed, or by env vars ideally. Using "test" for dev.
+  currency: "USD",
+  intent: "capture",
+};
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <PayPalScriptProvider options={initialOptions}>
+        <RouterProvider router={router} />
+      </PayPalScriptProvider>
     </Provider>
   </React.StrictMode>
 );

@@ -35,6 +35,10 @@ app.get('/api/config/paypal', (req, res) =>
     res.send(process.env.PAYPAL_CLIENT_ID)
 );
 
+app.get('/api/config/razorpay', (req, res) =>
+    res.send({ keyId: process.env.RAZORPAY_KEY_ID || 'rzp_test_1234567890' })
+);
+
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 app.use(notFound);
@@ -42,5 +46,8 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    console.log('Server ready for logout verification');
+});
 

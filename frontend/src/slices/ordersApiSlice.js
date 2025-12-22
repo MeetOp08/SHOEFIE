@@ -47,6 +47,12 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
                 method: 'PUT',
             }),
         }),
+        getRazorpayKey: builder.query({
+            query: () => ({
+                url: '/api/config/razorpay',
+            }),
+            keepUnusedDataFor: 5,
+        }),
     }),
 });
 
@@ -58,4 +64,5 @@ export const {
     useGetMyOrdersQuery,
     useGetOrdersQuery,
     useDeliverOrderMutation,
+    useGetRazorpayKeyQuery,
 } = ordersApiSlice;

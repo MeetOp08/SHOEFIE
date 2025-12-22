@@ -9,6 +9,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
         orderItems,
         shippingAddress,
         paymentMethod,
+        paymentProvider, // [NEW]
         itemsPrice,
         taxPrice,
         shippingPrice,
@@ -21,10 +22,15 @@ const addOrderItems = asyncHandler(async (req, res) => {
         return;
     } else {
         const order = new Order({
-            orderItems,
+            orderItems: orderItems.map((x) => ({
+                ...x,
+                product: x.product || x._id,
+                _id: undefined,
+            })),
             user: req.user._id,
             shippingAddress,
             paymentMethod,
+            paymentProvider, // [NEW]
             itemsPrice,
             taxPrice,
             shippingPrice,

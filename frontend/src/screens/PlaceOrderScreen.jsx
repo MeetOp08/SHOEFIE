@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import { useCreateOrderMutation } from '../slices/ordersApiSlice';
+import { useCreateOrderMutation, useGetRazorpayKeyQuery, usePayOrderMutation } from '../slices/ordersApiSlice';
 import { clearCartItems } from '../slices/cartSlice';
 
 const PlaceOrderScreen = () => {
@@ -14,6 +14,8 @@ const PlaceOrderScreen = () => {
     const cart = useSelector((state) => state.cart);
 
     const [createOrder, { isLoading, error }] = useCreateOrderMutation();
+    const { data: razorpayKey } = useGetRazorpayKeyQuery();
+    const [payOrder] = usePayOrderMutation();
 
     useEffect(() => {
         if (!cart.shippingAddress.address) {
@@ -23,10 +25,56 @@ const PlaceOrderScreen = () => {
         }
     }, [cart.shippingAddress.address, cart.paymentMethod, navigate]);
 
+    const handleRazorpayPayment = async (order, res) => {
+        const options = {
+            key: razorpayKey?.keyId || 'rzp_test_placeholder', // Fallback for dev
+            amount: order.totalPrice * 100,
+            currency: 'INR',
+            name: 'Shoefie',
+            description: 'Order Payment',
+            image: '/images/logo.png',
+            order_id: res.razorpayOrderId, // If backend creates one
+            handler: async function (response) {
+                try {
+                    await payOrder({
+                        orderId: order._id,
+                        details: {
+                            id: response.razorpay_payment_id,
+                            status: 'COMPLETED',
+                            update_time: new Date().toISOString(),
+                            email_address: cart.shippingAddress.email || 'user@example.com',
+                        },
+                    });
+                    dispatch(clearCartItems());
+                    navigate(`/order/${order._id}`);
+                    toast.success('Payment Successful');
+                } catch (err) {
+                    toast.error(err?.data?.message || err.message);
+                }
+            },
+            prefill: {
+                name: cart.shippingAddress.name,
+                email: 'user@example.com',
+                contact: '9999999999',
+            },
+            theme: {
+                color: '#D4AF37',
+            },
+        };
+
+        const rzp1 = new window.Razorpay(options);
+        rzp1.open();
+    };
+
+
     const placeOrderHandler = async () => {
         try {
+            // 1. Create Order
             const res = await createOrder({
-                orderItems: cart.cartItems,
+                orderItems: cart.cartItems.map((item) => ({
+                    ...item,
+                    product: item._id,
+                })),
                 shippingAddress: cart.shippingAddress,
                 paymentMethod: cart.paymentMethod,
                 itemsPrice: cart.itemsPrice,
@@ -34,8 +82,17 @@ const PlaceOrderScreen = () => {
                 taxPrice: cart.taxPrice,
                 totalPrice: cart.totalPrice,
             }).unwrap();
-            dispatch(clearCartItems());
-            navigate(`/order/${res._id}`);
+
+            // 2. Handle Payment Flow
+            if (cart.paymentMethod === 'Razorpay') {
+                // Open Razorpay
+                handleRazorpayPayment(res, res); // In a real app, res would contain backend-generated order details
+            } else {
+                // COD or others
+                dispatch(clearCartItems());
+                navigate(`/order/${res._id}`);
+            }
+
         } catch (err) {
             toast.error(err?.data?.message || err.error);
         }
@@ -61,7 +118,7 @@ const PlaceOrderScreen = () => {
                         <h2 className="text-xl font-bold font-display text-accent mb-4">Payment Method</h2>
                         <p className="text-gray-300">
                             <strong className="text-white">Method: </strong>
-                            {cart.paymentMethod}
+                            {cart.paymentMethod} {cart.paymentProvider && cart.paymentProvider !== cart.paymentMethod ? `(${cart.paymentProvider})` : ''}
                         </p>
                     </div>
 
@@ -119,7 +176,7 @@ const PlaceOrderScreen = () => {
                             disabled={cart.cartItems.length === 0 || isLoading}
                             onClick={placeOrderHandler}
                         >
-                            Place Order
+                            {cart.paymentMethod === 'Razorpay' ? 'Pay & Place Order' : 'Place Order'}
                         </button>
                         {isLoading && <Loader />}
                     </div>

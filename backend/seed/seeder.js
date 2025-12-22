@@ -18,7 +18,11 @@ const importData = async () => {
         await Product.deleteMany();
         await User.deleteMany();
 
-        const createdUsers = await User.insertMany(users);
+        const createdUsers = [];
+        for (const user of users) {
+            const createdUser = await User.create(user);
+            createdUsers.push(createdUser);
+        }
 
         const adminUser = createdUsers[0]._id;
 

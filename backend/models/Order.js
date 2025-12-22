@@ -32,6 +32,10 @@ const orderSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        paymentProvider: {
+            type: String, // e.g., 'GooglePay', 'HDFC', 'AmazonPayForWallet'
+            required: false,
+        },
         paymentResult: {
             id: { type: String },
             status: { type: String },
