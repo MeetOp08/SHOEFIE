@@ -4,11 +4,13 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import OrderTracking from '../components/OrderTracking';
 import {
     useGetOrderDetailsQuery,
     usePayOrderMutation,
     useDeliverOrderMutation,
-} from '../slices/ordersApiSlice';
+    useUpdateOrderStatusMutation
+} from '../slices/ordersApiSlice'; // Need to add useUpdateOrderStatusMutation to slices
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
@@ -22,6 +24,8 @@ const OrderScreen = () => {
 
     const [payOrder, { isLoading: loadingPay }] = usePayOrderMutation();
     const [deliverOrder, { isLoading: loadingDeliver }] = useDeliverOrderMutation();
+    const [updateStatus, { isLoading: loadingStatus }] = useUpdateOrderStatusMutation(); // Hypothetical hook
+
     const { userInfo } = useSelector((state) => state.auth);
 
     const paymentHandler = async () => {
@@ -44,6 +48,16 @@ const OrderScreen = () => {
         }
     };
 
+    const statusHandler = async (status, extraData = {}) => {
+        try {
+            await updateStatus({ orderId, status, ...extraData }).unwrap();
+            refetch();
+            toast.success(`Order Updated to ${status}`);
+        } catch (err) {
+            toast.error(err?.data?.message || err.error);
+        }
+    };
+
     return isLoading ? (
         <Loader />
     ) : error ? (
@@ -51,6 +65,13 @@ const OrderScreen = () => {
     ) : (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-2xl md:text-3xl font-display font-bold text-white mb-8">Order <span className="text-accent">#{order._id}</span></h1>
+
+            <OrderTracking
+                status={order.status}
+                trackingId={order.trackingId}
+                estimatedDelivery={order.estimatedDeliveryDate}
+            />
+
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
                     <div className="card p-6">
@@ -67,6 +88,16 @@ const OrderScreen = () => {
                         ) : (
                             <Message variant='danger'>Not Delivered</Message>
                         )}
+
+                        {/* Origin Details */}
+                        {order.originDetails && order.originDetails.originCity && (
+                            <div className="mt-4 border-t border-gray-700 pt-4">
+                                <p className="text-gray-400 text-sm">Dispatched From:</p>
+                                <p className="text-white">
+                                    {order.originDetails.originWarehouse} - {order.originDetails.originCity}, {order.originDetails.originCountry}
+                                </p>
+                            </div>
+                        )}
                     </div>
 
                     <div className="card p-6">
@@ -74,6 +105,8 @@ const OrderScreen = () => {
                         <p className="text-gray-300 mb-4"><strong>Method: </strong> {order.paymentMethod}</p>
                         {order.isPaid ? (
                             <Message variant='success'>Paid on {order.paidAt}</Message>
+                        ) : order.paymentMethod === 'COD' ? (
+                            <Message variant='warning'>Pending Payment (Pay on Delivery)</Message>
                         ) : (
                             <Message variant='danger'>Not Paid</Message>
                         )}
@@ -136,14 +169,31 @@ const OrderScreen = () => {
                         )}
 
                         {loadingDeliver && <Loader />}
+
+                        {/* Admin Controls */}
                         {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
-                            <button
-                                type='button'
-                                className='btn-primary w-full mt-4'
-                                onClick={deliverOrderHandler}
-                            >
-                                Mark As Delivered
-                            </button>
+                            <div className="space-y-2 mt-6 border-t border-gray-700 pt-4">
+                                <h3 className="font-bold text-white mb-2">Admin Actions</h3>
+
+                                {order.status === 'Order Placed' && (
+                                    <button onClick={() => statusHandler('confirm')} className='btn-primary w-full'>Confirm Order</button>
+                                )}
+                                {order.status === 'Order Confirmed' && (
+                                    <button onClick={() => statusHandler('pack')} className='btn-primary w-full'>Pack Order</button>
+                                )}
+                                {order.status === 'Packed' && (
+                                    <button onClick={() => {
+                                        const tracking = prompt('Enter Tracking ID');
+                                        if (tracking) statusHandler('ship', { deliveryPartner: 'Amazon Logistics', trackingId: tracking, estimatedDeliveryDate: new Date(Date.now() + 86400000 * 3) })
+                                    }} className='btn-primary w-full'>Ship Order</button>
+                                )}
+                                {order.status === 'Shipped' && (
+                                    <button onClick={() => statusHandler('out')} className='btn-primary w-full'>Out for Delivery</button>
+                                )}
+                                {order.status === 'Out for Delivery' && (
+                                    <button onClick={deliverOrderHandler} className='btn-primary w-full'>Mark Delivered</button>
+                                )}
+                            </div>
                         )}
                     </div>
                 </div>

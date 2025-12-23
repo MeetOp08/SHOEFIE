@@ -1,8 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = localStorage.getItem('cart')
+const cartFromStorage = localStorage.getItem('cart')
     ? JSON.parse(localStorage.getItem('cart'))
-    : { cartItems: [], shippingAddress: {}, paymentMethod: 'Razorpay' };
+    : null;
+
+const initialState =
+    cartFromStorage && cartFromStorage.cartItems
+        ? cartFromStorage
+        : { cartItems: [], shippingAddress: {}, paymentMethod: 'Razorpay' };
 
 const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);

@@ -1,5 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Order = require('../models/Order');
+const Product = require('../models/Product');
+const sendEmail = require('../utils/sendEmail');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -21,6 +23,14 @@ const addOrderItems = asyncHandler(async (req, res) => {
         throw new Error('No order items');
         return;
     } else {
+        // Fetch the first product to get origin details (Simplified logic)
+        const product = await Product.findById(orderItems[0].product);
+
+        if (!product) {
+            res.status(404);
+            throw new Error('Product from order not found');
+        }
+
         const order = new Order({
             orderItems: orderItems.map((x) => ({
                 ...x,
@@ -30,14 +40,42 @@ const addOrderItems = asyncHandler(async (req, res) => {
             user: req.user._id,
             shippingAddress,
             paymentMethod,
-            paymentProvider, // [NEW]
+            paymentProvider,
             itemsPrice,
             taxPrice,
             shippingPrice,
             totalPrice,
+            originDetails: {
+                originWarehouse: product.originWarehouse,
+                originCity: product.originCity,
+                originState: product.originState,
+                originCountry: product.originCountry,
+                dispatchCenter: product.dispatchCenter
+            }
         });
 
         const createdOrder = await order.save();
+
+        // Send Order Confirmation Email
+        try {
+            await sendEmail({
+                email: req.user.email,
+                subject: `Order Confirmation - #${createdOrder._id}`,
+                message: `
+                    <h1>Thank you for your order!</h1>
+                    <p>Your order <strong>#${createdOrder._id}</strong> has been placed successfully.</p>
+                    <p><strong>Total Amount:</strong> $${createdOrder.totalPrice}</p>
+                    <p><strong>Payment Method:</strong> ${createdOrder.paymentMethod}</p>
+                    <hr />
+                    <h3>Order Items:</h3>
+                    <ul>
+                        ${createdOrder.orderItems.map(item => `<li>${item.name} x ${item.qty}</li>`).join('')}
+                    </ul>
+                `
+            });
+        } catch (error) {
+            console.error('Order email send failed:', error);
+        }
 
         res.status(201).json(createdOrder);
     }
@@ -94,15 +132,80 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     if (order) {
         order.isDelivered = true;
         order.deliveredAt = Date.now();
-
-        if (req.body.status) {
-            order.status = req.body.status;
-        } else {
-            order.status = 'Delivered';
-        }
+        order.status = 'Delivered';
 
         const updatedOrder = await order.save();
 
+        res.json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+});
+
+// @desc    Update order to Confirmed
+// @route   PUT /api/orders/:id/confirm
+// @access  Private/Admin
+const updateOrderToConfirmed = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.status = 'Order Confirmed';
+        const updatedOrder = await order.save();
+        res.json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+});
+
+// @desc    Update order to Packed
+// @route   PUT /api/orders/:id/pack
+// @access  Private/Admin
+const updateOrderToPacked = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.status = 'Packed';
+        // Logic to assign specific dispatch center if needed
+        const updatedOrder = await order.save();
+        res.json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+});
+
+// @desc    Update order to Shipped
+// @route   PUT /api/orders/:id/ship
+// @access  Private/Admin
+const updateOrderToShipped = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.status = 'Shipped';
+        order.shippedAt = Date.now();
+        order.deliveryPartner = req.body.deliveryPartner;
+        order.trackingId = req.body.trackingId;
+        order.estimatedDeliveryDate = req.body.estimatedDeliveryDate;
+
+        const updatedOrder = await order.save();
+        res.json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+});
+
+// @desc    Update order to Out for Delivery
+// @route   PUT /api/orders/:id/out
+// @access  Private/Admin
+const updateOrderToOutForDelivery = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.status = 'Out for Delivery';
+        const updatedOrder = await order.save();
         res.json(updatedOrder);
     } else {
         res.status(404);
@@ -131,6 +234,10 @@ module.exports = {
     getOrderById,
     updateOrderToPaid,
     updateOrderToDelivered,
+    updateOrderToConfirmed,
+    updateOrderToPacked,
+    updateOrderToShipped,
+    updateOrderToOutForDelivery,
     getMyOrders,
     getOrders,
 };

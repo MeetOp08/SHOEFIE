@@ -72,7 +72,31 @@ const productSchema = mongoose.Schema(
         ],
         colors: [
             { type: String }
-        ]
+        ],
+        originWarehouse: {
+            type: String,
+            enum: ['Warehouse', 'Seller'],
+            default: 'Warehouse',
+        },
+        originCity: {
+            type: String,
+            required: true,
+            default: 'Mumbai'
+        },
+        originState: {
+            type: String,
+            required: true,
+            default: 'Maharashtra'
+        },
+        originCountry: {
+            type: String,
+            required: true,
+            default: 'India'
+        },
+        dispatchCenter: {
+            type: String,
+            default: 'Mumbai Central Hub'
+        }
     },
     {
         timestamps: true,

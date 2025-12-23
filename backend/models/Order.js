@@ -75,8 +75,29 @@ const orderSchema = mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
-            default: 'Pending'
+            enum: ['Order Placed', 'Order Confirmed', 'Packed', 'Shipped', 'Out for Delivery', 'Delivered', 'Cancelled'],
+            default: 'Order Placed'
+        },
+        shippedAt: {
+            type: Date
+        },
+        deliveryPartner: {
+            type: String,
+            enum: ['Amazon Logistics', 'Flipkart Ekart', 'Delhivery', 'Blue Dart', 'DTDC', ''],
+            default: ''
+        },
+        trackingId: {
+            type: String
+        },
+        estimatedDeliveryDate: {
+            type: Date
+        },
+        originDetails: {
+            originWarehouse: { type: String },
+            originCity: { type: String },
+            originState: { type: String },
+            originCountry: { type: String },
+            dispatchCenter: { type: String }
         }
     },
     {

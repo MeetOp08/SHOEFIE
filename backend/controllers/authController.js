@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
+const sendEmail = require('../utils/sendEmail');
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -51,6 +52,21 @@ const registerUser = asyncHandler(async (req, res) => {
             isAdmin: user.isAdmin,
             token: generateToken(user._id),
         });
+
+        // Send Welcome Email
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'Welcome to SHOEFIE! 👟',
+                message: `
+                    <h1>Welcome, ${user.name}!</h1>
+                    <p>Thank you for registering with SHOEFIE. We are excited to have you on board.</p>
+                    <p>Start exploring our latest collection now!</p>
+                `
+            });
+        } catch (error) {
+            console.error('Email send failed:', error);
+        }
     } else {
         res.status(400);
         throw new Error('Invalid user data');
@@ -69,6 +85,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin,
+            phone: user.phone,
+            avatar: user.avatar,
+            notificationPreferences: user.notificationPreferences,
             addresses: user.addresses,
         });
     } else {
@@ -96,6 +115,13 @@ const updateUserProfile = asyncHandler(async (req, res) => {
             user.addresses = req.body.addresses;
         }
 
+        user.phone = req.body.phone || user.phone;
+        user.avatar = req.body.avatar || user.avatar;
+
+        if (req.body.notificationPreferences) {
+            user.notificationPreferences = req.body.notificationPreferences;
+        }
+
         const updatedUser = await user.save();
 
         res.json({
@@ -103,6 +129,10 @@ const updateUserProfile = asyncHandler(async (req, res) => {
             name: updatedUser.name,
             email: updatedUser.email,
             isAdmin: updatedUser.isAdmin,
+            phone: updatedUser.phone,
+            avatar: updatedUser.avatar,
+            notificationPreferences: updatedUser.notificationPreferences,
+            addresses: updatedUser.addresses,
             token: generateToken(updatedUser._id),
         });
     } else {

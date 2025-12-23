@@ -21,12 +21,28 @@ const userSchema = mongoose.Schema(
             required: true,
             default: false,
         },
+        phone: {
+            type: String,
+            required: false,
+        },
+        avatar: {
+            type: String,
+            required: false,
+            default: ''
+        },
+        notificationPreferences: {
+            email: { type: Boolean, default: true },
+            sms: { type: Boolean, default: true }
+        },
         addresses: [
             {
+                name: { type: String },
+                phoneNumber: { type: String },
                 address: { type: String },
                 city: { type: String },
                 postalCode: { type: String },
                 country: { type: String },
+                isDefault: { type: Boolean, default: false }
             },
         ],
     },
