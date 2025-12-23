@@ -8,11 +8,15 @@ const {
     createProduct,
     createProductReview,
     getTopProducts,
+    getBrands,
+    getCategories
 } = require('../controllers/productController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 router.route('/').get(getProducts).post(protect, admin, createProduct);
 router.route('/top').get(getTopProducts);
+router.route('/brands').get(getBrands);
+router.route('/categories').get(getCategories);
 router
     .route('/:id')
     .get(getProductById)

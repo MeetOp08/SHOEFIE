@@ -35,11 +35,17 @@ const productSchema = mongoose.Schema(
             { type: String } // Additional images
         ],
         brand: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
+            ref: 'Brand',
         },
         category: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            ref: 'Category',
+        },
+        subCategory: {
+            type: String, // e.g., 'Casual Shoes', 'Running Shoes'
             required: true,
         },
         description: {
@@ -61,6 +67,11 @@ const productSchema = mongoose.Schema(
             type: Number,
             required: true,
             default: 0,
+        },
+        discount: {
+            type: Number,
+            required: true,
+            default: 0, // Percentage discount
         },
         countInStock: {
             type: Number,

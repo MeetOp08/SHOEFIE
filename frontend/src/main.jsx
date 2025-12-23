@@ -66,12 +66,13 @@ const router = createBrowserRouter(
 );
 
 const initialOptions = {
-  "client-id": "test", // This will be overridden by the PayPal button component if needed, or by env vars ideally. Using "test" for dev.
+  "client-id": "test",
   currency: "USD",
   intent: "capture",
 };
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PayPalScriptProvider options={initialOptions}>

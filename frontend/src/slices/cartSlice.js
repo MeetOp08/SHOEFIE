@@ -19,11 +19,15 @@ const cartSlice = createSlice({
     reducers: {
         addToCart: (state, action) => {
             const item = action.payload;
-            const existItem = state.cartItems.find((x) => x._id === item._id);
+            const existItem = state.cartItems.find(
+                (x) => x._id === item._id && x.size === item.size && x.color === item.color
+            );
 
             if (existItem) {
                 state.cartItems = state.cartItems.map((x) =>
-                    x._id === existItem._id ? item : x
+                    x._id === existItem._id && x.size === existItem.size && x.color === existItem.color
+                        ? item
+                        : x
                 );
             } else {
                 state.cartItems = [...state.cartItems, item];
@@ -44,7 +48,15 @@ const cartSlice = createSlice({
             localStorage.setItem('cart', JSON.stringify(state));
         },
         removeFromCart: (state, action) => {
-            state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
+            const { id, size, color } = action.payload; // Payload should now be object or we need to change how we call it
+            // Backwards compatibility if payload is just ID (legacy)
+            if (typeof action.payload === 'string') {
+                state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
+            } else {
+                state.cartItems = state.cartItems.filter(
+                    (x) => !(x._id === id && x.size === size && x.color === color)
+                );
+            }
 
             // Recalculate prices (Copy-paste logic - ideally extract to helper)
             state.itemsPrice = addDecimals(

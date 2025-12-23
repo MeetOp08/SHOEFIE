@@ -25,6 +25,10 @@ const ProductScreen = () => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
 
+    // New State for Attributes
+    const [size, setSize] = useState('');
+    const [color, setColor] = useState('');
+
     const {
         data: product,
         isLoading,
@@ -36,7 +40,11 @@ const ProductScreen = () => {
         useCreateReviewMutation();
 
     const addToCartHandler = () => {
-        dispatch(addToCart({ ...product, qty }));
+        if (!size) {
+            toast.error('Please select a size');
+            return;
+        }
+        dispatch(addToCart({ ...product, qty, size, color }));
         navigate('/cart');
     };
 
@@ -81,8 +89,18 @@ const ProductScreen = () => {
                         <div className="space-y-6">
                             <div>
                                 <h3 className="text-3xl md:text-4xl font-display font-bold text-white mb-2">{product.name}</h3>
+                                {product.brand && (
+                                    <div className="flex items-center mb-2">
+                                        <p className="text-gray-400 text-sm">Brand: <span className="text-accent font-semibold">{product.brand.name}</span></p>
+                                    </div>
+                                )}
                                 <Rating value={product.rating} text={`${product.numReviews} reviews`} />
-                                <p className="text-4xl font-bold text-accent mb-4">${product.price}</p>
+                                <div className="flex items-center gap-4 mb-4">
+                                    <p className="text-4xl font-bold text-accent">${product.price}</p>
+                                    {product.discount > 0 && (
+                                        <span className="bg-red-600 text-white px-2 py-1 text-xs rounded-full">-{product.discount}% OFF</span>
+                                    )}
+                                </div>
                                 <p className="text-gray-300 leading-relaxed">{product.description}</p>
                             </div>
 
@@ -99,22 +117,60 @@ const ProductScreen = () => {
                                 </div>
 
                                 {product.countInStock > 0 && (
-                                    <div className="flex justify-between items-center mb-6">
-                                        <span className="text-gray-400">Qty:</span>
-                                        <select
-                                            className="bg-gray-800 border border-gray-600 rounded p-2 text-white focus:outline-none focus:border-accent"
-                                            value={qty}
-                                            onChange={(e) => setQty(Number(e.target.value))}
-                                        >
-                                            {[...Array(product.countInStock).keys()].map(
-                                                (x) => (
-                                                    <option key={x + 1} value={x + 1}>
-                                                        {x + 1}
-                                                    </option>
-                                                )
-                                            )}
-                                        </select>
-                                    </div>
+                                    <>
+                                        {/* Size Selector */}
+                                        <div className="mb-4">
+                                            <span className="block text-gray-400 mb-2">Select Size (UK/India):</span>
+                                            <div className="flex flex-wrap gap-2">
+                                                {product.sizes?.length > 0 ? (
+                                                    product.sizes.map((s) => (
+                                                        <button
+                                                            key={s}
+                                                            className={`px-3 py-1 border rounded ${size === s ? 'border-accent text-accent' : 'border-gray-600 text-gray-300 hover:border-gray-400'}`}
+                                                            onClick={() => setSize(s)}
+                                                        >
+                                                            {s}
+                                                        </button>
+                                                    ))
+                                                ) : <span className="text-sm text-gray-500">Standard</span>}
+                                            </div>
+                                        </div>
+
+                                        {/* Color Selector */}
+                                        {product.colors?.length > 0 && (
+                                            <div className="mb-4">
+                                                <span className="block text-gray-400 mb-2">Select Color:</span>
+                                                <div className="flex flex-wrap gap-2">
+                                                    {product.colors.map((c) => (
+                                                        <button
+                                                            key={c}
+                                                            className={`px-3 py-1 border rounded ${color === c ? 'border-accent text-accent' : 'border-gray-600 text-gray-300 hover:border-gray-400'}`}
+                                                            onClick={() => setColor(c)}
+                                                        >
+                                                            {c}
+                                                        </button>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        <div className="flex justify-between items-center mb-6">
+                                            <span className="text-gray-400">Qty:</span>
+                                            <select
+                                                className="bg-gray-800 border border-gray-600 rounded p-2 text-white focus:outline-none focus:border-accent"
+                                                value={qty}
+                                                onChange={(e) => setQty(Number(e.target.value))}
+                                            >
+                                                {[...Array(product.countInStock).keys()].map(
+                                                    (x) => (
+                                                        <option key={x + 1} value={x + 1}>
+                                                            {x + 1}
+                                                        </option>
+                                                    )
+                                                )}
+                                            </select>
+                                        </div>
+                                    </>
                                 )}
 
                                 <button

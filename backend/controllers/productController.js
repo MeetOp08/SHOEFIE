@@ -17,6 +17,14 @@ const getProducts = asyncHandler(async (req, res) => {
         }
         : {};
 
+    // Filter by Category and Brand if provided
+    if (req.query.category) {
+        keyword.category = req.query.category;
+    }
+    if (req.query.brand) {
+        keyword.brand = req.query.brand;
+    }
+
     const count = await Product.countDocuments({ ...keyword });
     const products = await Product.find({ ...keyword })
         .limit(pageSize)
@@ -29,7 +37,9 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route   GET /api/products/:id
 // @access  Public
 const getProductById = asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id)
+        .populate('brand', 'name logo')
+        .populate('category', 'name');
 
     if (product) {
         res.json(product);
@@ -162,6 +172,24 @@ const getTopProducts = asyncHandler(async (req, res) => {
     res.json(products);
 });
 
+// @desc    Get all brands
+// @route   GET /api/products/brands
+// @access  Public
+const getBrands = asyncHandler(async (req, res) => {
+    const Brand = require('../models/Brand'); // Local require to avoid circular dependency issues if any, though top-level is fine usually.
+    const brands = await Brand.find({});
+    res.json(brands);
+});
+
+// @desc    Get all categories
+// @route   GET /api/products/categories
+// @access  Public
+const getCategories = asyncHandler(async (req, res) => {
+    const Category = require('../models/Category');
+    const categories = await Category.find({});
+    res.json(categories);
+});
+
 module.exports = {
     getProducts,
     getProductById,
@@ -170,4 +198,6 @@ module.exports = {
     updateProduct,
     createProductReview,
     getTopProducts,
+    getBrands,
+    getCategories
 };

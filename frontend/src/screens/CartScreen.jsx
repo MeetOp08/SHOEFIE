@@ -15,8 +15,8 @@ const CartScreen = () => {
         dispatch(addToCart({ ...product, qty }));
     };
 
-    const removeFromCartHandler = async (id) => {
-        dispatch(removeFromCart(id));
+    const removeFromCartHandler = async (item) => {
+        dispatch(removeFromCart({ id: item._id, size: item.size, color: item.color }));
     };
 
     const checkoutHandler = () => {
@@ -35,7 +35,7 @@ const CartScreen = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-4">
                         {cartItems.map((item) => (
-                            <div key={item._id} className="card flex items-center p-4 gap-4">
+                            <div key={`${item._id}${item.size}${item.color}`} className="card flex items-center p-4 gap-4">
                                 <img src={item.image} alt={item.name} className="w-20 h-20 object-cover rounded-lg" />
 
                                 <div className="flex-grow">
@@ -43,6 +43,8 @@ const CartScreen = () => {
                                         {item.name}
                                     </Link>
                                     <p className="text-gray-400 text-sm">${item.price}</p>
+                                    {item.size && <p className="text-gray-500 text-xs">Size: {item.size}</p>}
+                                    {item.color && <p className="text-gray-500 text-xs">Color: {item.color}</p>}
                                 </div>
 
                                 <select
@@ -60,7 +62,7 @@ const CartScreen = () => {
                                 <button
                                     type='button'
                                     className='text-red-500 hover:text-red-400 transition-colors p-2'
-                                    onClick={() => removeFromCartHandler(item._id)}
+                                    onClick={() => removeFromCartHandler(item)}
                                 >
                                     <FaTrash />
                                 </button>
