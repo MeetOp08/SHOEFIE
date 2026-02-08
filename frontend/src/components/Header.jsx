@@ -41,7 +41,7 @@ const Header = () => {
                 {/* 2. Brand Logo */}
                 <Link to='/' className="flex items-center gap-1 group">
                     <span className="text-2xl font-display font-bold text-text-main tracking-tight group-hover:text-accent transition-colors">
-                        SHOE<span className="text-accent">FIE</span>.
+                        SHOE<span className="text-accent">FIE</span>
                     </span>
                 </Link>
 
