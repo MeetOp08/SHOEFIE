@@ -79,7 +79,10 @@ const Header = () => {
                             <div className="absolute right-0 mt-4 w-48 bg-white border border-border-color rounded-lg shadow-hover opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
                                 <Link to='/profile' className="block px-4 py-3 text-sm text-text-main hover:bg-secondary rounded-t-lg">Profile</Link>
                                 {userInfo.isAdmin && (
-                                    <Link to='/admin/dashboard' className="block px-4 py-3 text-sm text-text-main hover:bg-secondary">Dashboard</Link>
+                                    <>
+                                        <Link to='/admin/dashboard' className="block px-4 py-3 text-sm text-text-main hover:bg-secondary">Dashboard</Link>
+                                        <Link to='/admin/inventory' className="block px-4 py-3 text-sm text-text-main hover:bg-secondary">Inventory</Link>
+                                    </>
                                 )}
                                 <button onClick={logoutHandler} className="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-secondary rounded-b-lg font-medium">
                                     Sign Out

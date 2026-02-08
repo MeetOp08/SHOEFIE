@@ -9,13 +9,20 @@ const {
     createProductReview,
     getTopProducts,
     getBrands,
-    getCategories
+    getCategories,
+    getReviews,
+    deleteReview,
+    createBrand,
+    deleteBrand
 } = require('../controllers/productController');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 router.route('/').get(getProducts).post(protect, admin, createProduct);
+router.route('/reviews').get(protect, admin, getReviews);
+router.route('/reviews/:productId/:reviewId').delete(protect, admin, deleteReview);
 router.route('/top').get(getTopProducts);
-router.route('/brands').get(getBrands);
+router.route('/brands').get(getBrands).post(protect, admin, createBrand);
+router.route('/brands/:id').delete(protect, admin, deleteBrand);
 router.route('/categories').get(getCategories);
 router
     .route('/:id')

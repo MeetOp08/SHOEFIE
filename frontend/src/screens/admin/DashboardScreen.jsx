@@ -65,26 +65,26 @@ const DashboardScreen = () => {
                             <div className="text-center text-text-muted py-12">No sales data for the last 7 days</div>
                         ) : (
                             <div className="h-64 flex items-end space-x-4">
-                                {analytics.dailySales.map((item) => {
-                                    // Calculate height percentage based on max sales (simplified)
+                                {(() => {
                                     const maxSales = Math.max(...analytics.dailySales.map(d => d.sales));
-                                    const heightPercent = maxSales > 0 ? (item.sales / maxSales) * 100 : 0;
-
-                                    return (
-                                        <div key={item._id} className="flex-1 flex flex-col items-center group">
-                                            <div className="relative w-full flex justify-center items-end h-full">
-                                                <div
-                                                    className="w-full bg-accent/20 hover:bg-accent rounded-t transition-all duration-300 relative group-hover:scale-y-105 origin-bottom"
-                                                    style={{ height: `${heightPercent}%` }}
-                                                ></div>
-                                                <div className="absolute -top-8 text-xs text-accent font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    ${item.sales}
+                                    return analytics.dailySales.map((item) => {
+                                        const heightPercent = maxSales > 0 ? (item.sales / maxSales) * 100 : 0;
+                                        return (
+                                            <div key={item._id} className="flex-1 flex flex-col items-center group">
+                                                <div className="relative w-full flex justify-center items-end h-full">
+                                                    <div
+                                                        className="w-full bg-accent/20 hover:bg-accent rounded-t transition-all duration-300 relative group-hover:scale-y-105 origin-bottom"
+                                                        style={{ height: `${heightPercent}%` }}
+                                                    ></div>
+                                                    <div className="absolute -top-8 text-xs text-accent font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        ${item.sales}
+                                                    </div>
                                                 </div>
+                                                <div className="text-xs text-text-muted mt-2 font-mono">{item._id.substring(5)}</div>
                                             </div>
-                                            <div className="text-xs text-text-muted mt-2 font-mono">{item._id.substring(5)}</div>
-                                        </div>
-                                    );
-                                })}
+                                        );
+                                    });
+                                })()}
                             </div>
                         )}
                     </div>

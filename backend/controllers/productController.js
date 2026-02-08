@@ -260,6 +260,83 @@ const getCategories = asyncHandler(async (req, res) => {
     res.json(categories);
 });
 
+// @desc    Create a brand (Admin)
+// @route   POST /api/products/brands
+// @access  Private/Admin
+const createBrand = asyncHandler(async (req, res) => {
+    const Brand = require('../models/Brand');
+    const { name, logo, description } = req.body;
+    const brand = new Brand({
+        name,
+        logo: logo || '/images/sample-brand.jpg',
+        description,
+        user: req.user._id
+    });
+    const createdBrand = await brand.save();
+    res.status(201).json(createdBrand);
+});
+
+// @desc    Delete a brand (Admin)
+// @route   DELETE /api/products/brands/:id
+// @access  Private/Admin
+const deleteBrand = asyncHandler(async (req, res) => {
+    const Brand = require('../models/Brand');
+    const brand = await Brand.findById(req.params.id);
+    if (brand) {
+        await brand.deleteOne();
+        res.json({ message: 'Brand removed' });
+    } else {
+        res.status(404);
+        throw new Error('Brand not found');
+    }
+});
+
+// @desc    Get all reviews (Admin)
+// @route   GET /api/products/reviews
+// @access  Private/Admin
+const getReviews = asyncHandler(async (req, res) => {
+    const products = await Product.find({}).select('reviews name');
+    let reviews = [];
+    products.forEach(product => {
+        product.reviews.forEach(review => {
+            reviews.push({
+                ...review.toObject(),
+                productName: product.name,
+                productId: product._id
+            });
+        });
+    });
+    res.json(reviews);
+});
+
+// @desc    Delete review (Admin)
+// @route   DELETE /api/products/reviews/:productId/:reviewId
+// @access  Private/Admin
+const deleteReview = asyncHandler(async (req, res) => {
+    const { productId, reviewId } = req.params;
+    const product = await Product.findById(productId);
+
+    if (product) {
+        product.reviews = product.reviews.filter(
+            (r) => r._id.toString() !== reviewId
+        );
+
+        product.numReviews = product.reviews.length;
+
+        product.rating =
+            product.reviews.length > 0
+                ? product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+                product.reviews.length
+                : 0;
+
+        await product.save();
+        res.json({ message: 'Review removed' });
+    } else {
+        res.status(404);
+        throw new Error('Product not found');
+    }
+});
+
 module.exports = {
     getProducts,
     getProductById,
@@ -269,5 +346,9 @@ module.exports = {
     createProductReview,
     getTopProducts,
     getBrands,
-    getCategories
+    getCategories,
+    createBrand,
+    deleteBrand,
+    getReviews,
+    deleteReview
 };

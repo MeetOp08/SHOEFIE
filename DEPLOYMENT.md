@@ -1,57 +1,83 @@
 # Shoefie Deployment Guide
 
-This guide details how to deploy the Shoefie MERN application to production using **Render** (easiest for full-stack) or **Vercel + Render** (Backend/Frontend split).
-
-## Method 1: Single Service Deployment (Recommended for simplicity)
-
-Deploy both the Frontend and Backend as a single service on **Render**.
-
-1.  **Push your code to GitHub**.
-2.  Login to [Render.com](https://render.com).
-3.  Click **New +** and select **Web Service**.
-4.  Connect your GitHub repository.
-5.  Configure the service:
-    *   **Name**: `shoefie-app`
-    *   **Environment**: `Node`
-    *   **Build Command**: `npm run build`
-        *   *(This runs the root `build` script which installs verified deps and builds the React frontend)*
-    *   **Start Command**: `npm start`
-6.  **Environment Variables** (Add these in the "Environment" tab):
-    *   `NODE_ENV`: `production`
-    *   `MONGO_URI`: (Your MongoDB Atlas Connection String)
-    *   `JWT_SECRET`: (A random strong string)
-    *   `PAYPAL_CLIENT_ID`: (Optional for demo)
-    *   `CLOUDINARY_...`: (Your Cloudinary credentials for images)
-7.  **Click Create Web Service**.
-
-Render will now build your frontend, start your backend, and serve the frontend via the backend's static file serving logic.
+This guide details how to deploy the Shoefie MERN application to production. The recommended approach is a **Split Deployment**: Frontend on **Vercel** (for speed) and Backend on **Render** (for free tier Node.js hosting).
 
 ---
 
-## Method 2: Split Deployment (Frontend Vercel / Backend Render)
+## 🚀 Phase 1: Backend Deployment (Render)
 
-If you prefer to host the frontend separately on Vercel for better edge performance.
-
-### 1. Backend (Render)
-1.  Create a **Web Service** on Render connected to your repo.
-2.  **Root Directory**: `backend`
-3.  **Build Command**: `npm install`
-4.  **Start Command**: `node server.js`
-5.  **Environment Variables**: Same as above.
-
-### 2. Frontend (Vercel)
-1.  Login to [Vercel](https://vercel.com).
-2.  Import your GitHub repository.
-3.  **Root Directory**: `frontend`
-4.  **Build Command**: `vite build` (Default)
-5.  **Output Directory**: `dist` (Default)
+1.  **Push Code to GitHub**: Ensure your project is in a GitHub repository.
+2.  **Sign Up/Login**: Go to [Render.com](https://render.com).
+3.  **New Web Service**: Click **New +** > **Web Service**.
+4.  **Connect Repo**: Select your `shoefie` repository.
+5.  **Configuration**:
+    *   **Name**: `shoefie-api`
+    *   **Region**: Closest to you (e.g., Singapore/Frankfurt/Oregon).
+    *   **Branch**: `main`
+    *   **Root Directory**: `backend` (Important!)
+    *   **Runtime**: `Node`
+    *   **Build Command**: `npm install`
+    *   **Start Command**: `node server.js`
 6.  **Environment Variables**:
-    *   `VITE_API_URL`: (The URL of your deployed Render Backend, e.g., `https://shoefie-backend.onrender.com`)
-    *   *Note*: You need to update your frontend API calls to use this variable instead of proxying to localhost.
+    Add the following in the **Environment** tab:
+    *   `NODE_ENV`: `production`
+    *   `MONGO_URI`: `mongodb+srv://...` (Your Atlas Connection String)
+    *   `JWT_SECRET`: `(Generate a strong random string)`
+    *   `STRIPE_SECRET_KEY`: `(Your Stripe Secret Key)`
+    *   `STRIPE_WEBHOOK_SECRET`: `(Your Stripe Webhook Secret)`
+    *   `EMAIL_HOST`: `smtp.gmail.com`
+    *   `EMAIL_USER`: `(Your Email)`
+    *   `EMAIL_PASS`: `(Your App Password)`
+    *   `CLOUDINARY_...`: `(Your Cloudinary Keys)`
+7.  **Create Service**: Click **Create Web Service**.
+    *   *Note*: Render's free tier spins down after inactivity. The first request might take 30-50s.
+
+**Copy your Backend URL**: e.g., `https://shoefie-api.onrender.com`.
 
 ---
 
-## Post-Deployment Checklist
-1.  **Database**: Ensure your IP whitelist on MongoDB Atlas includes `0.0.0.0/0` (Allow Access from Anywhere) or the specific IP of your hosting provider.
-2.  **Admin User**: If you seeded data, log in with `admin@example.com` / `password123`.
-3.  **Images**: If using local uploads, they will **disappear** on free tier hosting (ephemeral file systems). *Strongly recommended* to configure Cloudinary in `.env` for persistent image storage.
+## 🌐 Phase 2: Frontend Deployment (Vercel)
+
+1.  **Sign Up/Login**: Go to [Vercel.com](https://vercel.com).
+2.  **Add New Project**: Import your `shoefie` repository.
+3.  **Project Configuration**:
+    *   **Framework Preset**: `Vite`
+    *   **Root Directory**: Click `Edit` and select `frontend`.
+4.  **Environment Variables**:
+    *   `VITE_API_URL`: Paste your Render Backend URL (e.g., `https://shoefie-api.onrender.com`).
+        *   *Note*: Ensure your frontend code uses `import.meta.env.VITE_API_URL` for API calls instead of hardcoded `localhost`.
+5.  **Deploy**: Click **Deploy**.
+
+Vercel will build your React app and provide a live URL (e.g., `https://shoefie.vercel.app`).
+
+---
+
+## 🛠 Phase 3: Final Configuration
+
+1.  **Update Stripe Webhook**:
+    *   Go to Stripe Dashboard > Developers > Webhooks.
+    *   Add Endpoint: `https://shoefie-api.onrender.com/api/payment/webhook`.
+    *   Select event: `checkout.session.completed`.
+
+2.  **Update MongoDB Access**:
+    *   Go to MongoDB Atlas > Network Access.
+    *   Ensure `0.0.0.0/0` (Allow Access from Anywhere) is whitelisted so Render can connect.
+
+3.  **Verify Admin Access**:
+    *   Visit your Vercel URL.
+    *   Login with Admin credentials to verify database connection.
+
+---
+
+## 🐛 Troubleshooting
+
+*   **CORS Errors**: If frontend cannot talk to backend, ensure your backend `server.js` allows the Vercel domain in `cors` origin.
+    ```javascript
+    app.use(cors({
+        origin: ['http://localhost:5173', 'https://shoefie.vercel.app'],
+        credentials: true
+    }));
+    ```
+*   **Images Not Loading**: Ensuring Cloudinary is configured correctly. Local uploads will disappear on Render.
+
+You are now live! 🚀

@@ -59,9 +59,37 @@ export const productsApiSlice = apiSlice.injectEndpoints({
             query: () => `${PRODUCTS_URL}/top`,
             keepUnusedDataFor: 5,
         }),
+        getReviews: builder.query({
+            query: () => `${PRODUCTS_URL}/reviews`,
+            keepUnusedDataFor: 5,
+            providesTags: ['Review'],
+        }),
+        deleteReview: builder.mutation({
+            query: (data) => ({
+                url: `${PRODUCTS_URL}/reviews/${data.productId}/${data.reviewId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Review', 'Product'],
+        }),
+        createBrand: builder.mutation({
+            query: (data) => ({
+                url: `${PRODUCTS_URL}/brands`,
+                method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['Brands'],
+        }),
+        deleteBrand: builder.mutation({
+            query: (id) => ({
+                url: `${PRODUCTS_URL}/brands/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Brands'],
+        }),
         getBrands: builder.query({
             query: () => `${PRODUCTS_URL}/brands`,
             keepUnusedDataFor: 5,
+            providesTags: ['Brands'],
         }),
         getCategories: builder.query({
             query: () => `${PRODUCTS_URL}/categories`,
@@ -81,4 +109,8 @@ export const {
     useGetTopProductsQuery,
     useGetBrandsQuery,
     useGetCategoriesQuery,
+    useGetReviewsQuery,
+    useDeleteReviewMutation,
+    useCreateBrandMutation,
+    useDeleteBrandMutation,
 } = productsApiSlice;

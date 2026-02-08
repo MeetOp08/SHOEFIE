@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Rating from '../components/Rating';
-import { FaHeart, FaTruck, FaUndo, FaShieldAlt, FaStar } from 'react-icons/fa';
+import { FaHeart, FaTruck, FaUndo, FaShieldAlt, FaStar, FaExclamationTriangle } from 'react-icons/fa';
 
 const ProductScreen = () => {
     const { id: productId } = useParams();
@@ -178,6 +178,14 @@ const ProductScreen = () => {
                                             </button>
                                         ))}
                                     </div>
+                                </div>
+                            )}
+
+                            {/* Low Stock Warning */}
+                            {product.countInStock > 0 && product.countInStock <= (product.lowStockThreshold || 5) && (
+                                <div className="text-red-600 font-bold mb-4 flex items-center animate-pulse">
+                                    <FaExclamationTriangle className="mr-2" />
+                                    Hurry! Only {product.countInStock} left in stock.
                                 </div>
                             )}
 

@@ -86,6 +86,18 @@ const productSchema = mongoose.Schema(
             required: true,
             default: 0,
         },
+        lowStockThreshold: {
+            type: Number,
+            required: true,
+            default: 5,
+        },
+        stockHistory: [
+            {
+                change: { type: Number, required: true },
+                reason: { type: String, required: true },
+                date: { type: Date, default: Date.now }
+            }
+        ],
         sizes: [
             { type: Number } // e.g., 7, 8, 9, 10
         ],

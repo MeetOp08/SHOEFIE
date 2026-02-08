@@ -181,7 +181,7 @@ const OrderScreen = () => {
                         {loadingDeliver && <Loader />}
 
                         {/* Admin Controls */}
-                        {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                        {userInfo && userInfo.isAdmin && !order.isDelivered && (order.isPaid || order.paymentMethod === 'COD') && (
                             <div className="space-y-3 mt-6 border-t border-border-color pt-4">
                                 <h3 className="font-bold text-text-main mb-2">Admin Actions</h3>
 
@@ -194,7 +194,7 @@ const OrderScreen = () => {
                                 {order.status === 'Packed' && (
                                     <button onClick={() => {
                                         const tracking = prompt('Enter Tracking ID');
-                                        if (tracking) statusHandler('ship', { deliveryPartner: 'Amazon Logistics', trackingId: tracking, estimatedDeliveryDate: new Date(Date.now() + 86400000 * 3) })
+                                        if (tracking) statusHandler('ship', { deliveryPartner: 'Logistics Partner', trackingId: tracking, estimatedDeliveryDate: new Date(Date.now() + 86400000 * 3) })
                                     }} className='btn-outline w-full hover:bg-accent hover:text-white hover:border-accent'>Ship Order</button>
                                 )}
                                 {order.status === 'Shipped' && (

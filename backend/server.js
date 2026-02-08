@@ -11,6 +11,11 @@ connectDB();
 
 const app = express();
 
+const { handleWebhook } = require('./controllers/paymentController');
+
+// Stripe Webhook - Must be before express.json() to get raw body
+app.post('/api/payment/webhook', express.raw({ type: 'application/json' }), handleWebhook);
+
 app.use(express.json());
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -42,6 +47,8 @@ const orderRoutes = require('./routes/orderRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const couponRoutes = require('./routes/couponRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const inventoryRoutes = require('./routes/inventoryRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 // ... (previous code)
@@ -52,6 +59,8 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/coupons', couponRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/payment', paymentRoutes);
+app.use('/api/inventory', inventoryRoutes);
 
 app.get('/api/config/paypal', (req, res) =>
     res.send(process.env.PAYPAL_CLIENT_ID)

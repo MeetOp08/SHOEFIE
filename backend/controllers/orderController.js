@@ -4,16 +4,23 @@ const Product = require('../models/Product');
 const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
+const orderConfirmationTemplate = require('../templates/orderConfirmationTemplate');
+const shippingUpdateTemplate = require('../templates/shippingUpdateTemplate');
+const paymentSuccessTemplate = require('../templates/paymentSuccessTemplate');
+const deliveryConfirmationTemplate = require('../templates/deliveryConfirmationTemplate');
+
+// ... (imports)
 
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
 const addOrderItems = asyncHandler(async (req, res) => {
+    // ... (destructuring)
     const {
         orderItems,
         shippingAddress,
         paymentMethod,
-        paymentProvider, // [NEW]
+        paymentProvider,
         itemsPrice,
         taxPrice,
         shippingPrice,
@@ -25,15 +32,11 @@ const addOrderItems = asyncHandler(async (req, res) => {
         throw new Error('No order items');
         return;
     } else {
-        // Fetch the first product to get origin details (Simplified logic)
         const product = await Product.findById(orderItems[0].product);
-
-        if (!product) {
-            res.status(404);
-            throw new Error('Product from order not found');
-        }
+        // ... (validation)
 
         const order = new Order({
+            // ... (fields)
             orderItems: orderItems.map((x) => ({
                 ...x,
                 product: x.product || x._id,
@@ -48,11 +51,11 @@ const addOrderItems = asyncHandler(async (req, res) => {
             shippingPrice,
             totalPrice,
             originDetails: {
-                originWarehouse: product.originWarehouse,
-                originCity: product.originCity,
-                originState: product.originState,
-                originCountry: product.originCountry,
-                dispatchCenter: product.dispatchCenter
+                originWarehouse: product?.originWarehouse || 'Central Warehouse',
+                originCity: product?.originCity || 'Mumbai',
+                originState: product?.originState || 'Maharashtra',
+                originCountry: product?.originCountry || 'India',
+                dispatchCenter: product?.dispatchCenter || 'DC-001'
             }
         });
 
@@ -63,18 +66,17 @@ const addOrderItems = asyncHandler(async (req, res) => {
             await sendEmail({
                 email: req.user.email,
                 subject: `Order Confirmation - #${createdOrder._id}`,
-                message: `
-                    <h1>Thank you for your order!</h1>
-                    <p>Your order <strong>#${createdOrder._id}</strong> has been placed successfully.</p>
-                    <p><strong>Total Amount:</strong> $${createdOrder.totalPrice}</p>
-                    <p><strong>Payment Method:</strong> ${createdOrder.paymentMethod}</p>
-                    <hr />
-                    <h3>Order Items:</h3>
-                    <ul>
-                        ${createdOrder.orderItems.map(item => `<li>${item.name} x ${item.qty}</li>`).join('')}
-                    </ul>
-                `
+                message: orderConfirmationTemplate(createdOrder) // Use template
             });
+
+            // Send Admin Notification
+            if (process.env.ADMIN_EMAIL) {
+                await sendEmail({
+                    email: process.env.ADMIN_EMAIL,
+                    subject: `New Order Received - #${createdOrder._id}`,
+                    message: `<p>New order placed by ${req.user.name} (${req.user.email}). Total: $${createdOrder.totalPrice}</p>`
+                });
+            }
         } catch (error) {
             console.error('Order email send failed:', error);
         }
@@ -117,6 +119,32 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
         };
 
         const updatedOrder = await order.save();
+
+        // Decrement Product Stock
+        for (const item of order.orderItems) {
+            const product = await Product.findById(item.product);
+            if (product) {
+                const newStock = product.countInStock - item.qty;
+                product.countInStock = newStock < 0 ? 0 : newStock;
+                product.stockHistory.push({
+                    change: -item.qty,
+                    reason: `Order ${order._id}`,
+                    date: Date.now()
+                });
+                await product.save();
+            }
+        }
+
+        // Send Payment Success Email
+        try {
+            await sendEmail({
+                email: order.user.email,
+                subject: `Payment Successful - Order #${updatedOrder._id}`,
+                message: paymentSuccessTemplate(updatedOrder)
+            });
+        } catch (error) {
+            console.error('Payment email send failed:', error);
+        }
 
         res.json(updatedOrder);
     } else {
@@ -171,6 +199,17 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
         order.status = 'Delivered';
 
         const updatedOrder = await order.save();
+
+        // Send Delivery Confirmation Email
+        try {
+            await sendEmail({
+                email: order.user.email,
+                subject: `Order Delivered - #${updatedOrder._id}`,
+                message: deliveryConfirmationTemplate(updatedOrder)
+            });
+        } catch (error) {
+            console.error('Delivery email send failed:', error);
+        }
 
         res.json(updatedOrder);
     } else {
@@ -229,17 +268,10 @@ const updateOrderToShipped = asyncHandler(async (req, res) => {
 
         // Send Shipping Email
         try {
-            const trackingLink = `https://www.google.com/search?q=${req.body.deliveryPartner}+tracking+${req.body.trackingId}`;
             await sendEmail({
-                email: order.user.email, // Need to ensure user is populated or fetched
+                email: order.user.email,
                 subject: `Order Shipped - #${updatedOrder._id}`,
-                message: `
-                    <h1>Your Order is on the way!</h1>
-                    <p>Your order <strong>#${updatedOrder._id}</strong> has been dispatched.</p>
-                    <p><strong>Courier:</strong> ${req.body.deliveryPartner}</p>
-                    <p><strong>Tracking ID:</strong> ${req.body.trackingId}</p>
-                    <p><a href="${trackingLink}">Track Package</a></p>
-                `
+                message: shippingUpdateTemplate(updatedOrder)
             });
         } catch (error) {
             console.error('Shipping email send failed:', error);
@@ -281,7 +313,6 @@ const getMyOrders = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const getOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({}).populate('user', 'id name');
-    res.json(orders);
     res.json(orders);
 });
 

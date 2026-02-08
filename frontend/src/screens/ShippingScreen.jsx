@@ -12,13 +12,15 @@ const ShippingScreen = () => {
     const [city, setCity] = useState(shippingAddress?.city || '');
     const [postalCode, setPostalCode] = useState(shippingAddress?.postalCode || '');
     const [country, setCountry] = useState(shippingAddress?.country || '');
+    const [fullName, setFullName] = useState(shippingAddress?.fullName || '');
+    const [phone, setPhone] = useState(shippingAddress?.phone || '');
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(saveShippingAddress({ address, city, postalCode, country }));
+        dispatch(saveShippingAddress({ address, city, postalCode, country, fullName, phone }));
         navigate('/payment');
     };
 
@@ -30,6 +32,30 @@ const ShippingScreen = () => {
                 <h1 className="text-3xl font-display font-bold mb-6 text-text-main border-b border-border-color pb-4">Shipping Details</h1>
 
                 <form onSubmit={submitHandler} className="space-y-6">
+                    <div>
+                        <label className="block mb-2 font-semibold text-text-main">Full Name</label>
+                        <input
+                            type='text'
+                            placeholder='Enter full name'
+                            value={fullName}
+                            required
+                            onChange={(e) => setFullName(e.target.value)}
+                            className="input-field"
+                        ></input>
+                    </div>
+
+                    <div>
+                        <label className="block mb-2 font-semibold text-text-main">Phone Number</label>
+                        <input
+                            type='text'
+                            placeholder='Enter phone number'
+                            value={phone}
+                            required
+                            onChange={(e) => setPhone(e.target.value)}
+                            className="input-field"
+                        ></input>
+                    </div>
+
                     <div>
                         <label className="block mb-2 font-semibold text-text-main">Address</label>
                         <input
