@@ -35,14 +35,14 @@ app.use(limiter);
 
 // Production Setup
 // Production Setup
-const __dirname = path.resolve(); // Define at top level for clarity
+const rootDir = path.resolve();
 const environment = (process.env.NODE_ENV || 'development').trim();
 
 if (environment === 'production') {
-    app.use(express.static(path.join(__dirname, '/frontend/dist')));
+    app.use(express.static(path.join(rootDir, '/frontend/dist')));
 
     app.get('*', (req, res) =>
-        res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+        res.sendFile(path.resolve(rootDir, 'frontend', 'dist', 'index.html'))
     );
 } else {
     app.get('/', (req, res) => {
