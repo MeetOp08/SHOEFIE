@@ -15,13 +15,14 @@ const makeAdmin = async () => {
         console.log("Connected!".green);
 
         const email = "patelmeet5967@gmail.com";
+        const pass = "123456";
         const user = await User.findOne({ email });
 
         if (user) {
             user.isAdmin = true;
-            user.password = '123456'; // Reset password
+            user.password = pass;
             await user.save();
-            console.log(`User ${user.name} (${email}) password reset to '123456' and is now an Admin! 👑`.green.bold);
+            console.log(`User ${user.name} (${email}) password reset to '${pass}' and is now an Admin! 👑`.green.bold);
         } else {
             console.log(`User with email ${email} not found!`.red);
             console.log("Please create an account on the website first.".yellow);
