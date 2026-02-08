@@ -34,8 +34,11 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // Production Setup
-if (process.env.NODE_ENV === 'production') {
-    const __dirname = path.resolve();
+// Production Setup
+const __dirname = path.resolve(); // Define at top level for clarity
+const environment = (process.env.NODE_ENV || 'development').trim();
+
+if (environment === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/dist')));
 
     app.get('*', (req, res) =>
@@ -43,7 +46,7 @@ if (process.env.NODE_ENV === 'production') {
     );
 } else {
     app.get('/', (req, res) => {
-        res.send('API is running...');
+        res.send(`API is running... (Environment: ${environment})`);
     });
 }
 
