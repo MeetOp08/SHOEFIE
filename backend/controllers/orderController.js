@@ -1,7 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const Order = require('../models/Order');
 const Product = require('../models/Product');
+const User = require('../models/User');
 const sendEmail = require('../utils/sendEmail');
+const crypto = require('crypto');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -123,6 +125,40 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Verify Razorpay Payment
+// @route   POST /api/orders/:id/pay/verify
+// @access  Private
+const verifyPayment = asyncHandler(async (req, res) => {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+    const sign = razorpay_order_id + "|" + razorpay_payment_id;
+    const expectedSign = crypto
+        .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+        .update(sign.toString())
+        .digest("hex");
+
+    if (razorpay_signature === expectedSign) {
+        const order = await Order.findById(req.params.id);
+        if (order) {
+            order.isPaid = true;
+            order.paidAt = Date.now();
+            order.paymentResult = {
+                id: razorpay_payment_id,
+                status: 'COMPLETED',
+                email_address: req.user.email,
+            };
+            const updatedOrder = await order.save();
+            res.json(updatedOrder);
+        } else {
+            res.status(404);
+            throw new Error('Order not found');
+        }
+    } else {
+        res.status(400);
+        throw new Error('Invalid signature');
+    }
+});
+
 // @desc    Update order to delivered
 // @route   PUT /api/orders/:id/deliver
 // @access  Private/Admin
@@ -190,6 +226,25 @@ const updateOrderToShipped = asyncHandler(async (req, res) => {
         order.estimatedDeliveryDate = req.body.estimatedDeliveryDate;
 
         const updatedOrder = await order.save();
+
+        // Send Shipping Email
+        try {
+            const trackingLink = `https://www.google.com/search?q=${req.body.deliveryPartner}+tracking+${req.body.trackingId}`;
+            await sendEmail({
+                email: order.user.email, // Need to ensure user is populated or fetched
+                subject: `Order Shipped - #${updatedOrder._id}`,
+                message: `
+                    <h1>Your Order is on the way!</h1>
+                    <p>Your order <strong>#${updatedOrder._id}</strong> has been dispatched.</p>
+                    <p><strong>Courier:</strong> ${req.body.deliveryPartner}</p>
+                    <p><strong>Tracking ID:</strong> ${req.body.trackingId}</p>
+                    <p><a href="${trackingLink}">Track Package</a></p>
+                `
+            });
+        } catch (error) {
+            console.error('Shipping email send failed:', error);
+        }
+
         res.json(updatedOrder);
     } else {
         res.status(404);
@@ -227,6 +282,44 @@ const getMyOrders = asyncHandler(async (req, res) => {
 const getOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({}).populate('user', 'id name');
     res.json(orders);
+    res.json(orders);
+});
+
+// @desc    Get dashboard analytics
+// @route   GET /api/orders/analytics
+// @access  Private/Admin
+const getAnalytics = asyncHandler(async (req, res) => {
+    const totalOrders = await Order.countDocuments();
+    const totalUsers = await User.countDocuments();
+
+    const orders = await Order.find({ isPaid: true });
+    const totalSales = orders.reduce((acc, order) => acc + order.totalPrice, 0);
+
+    const sevenDaysAgo = new Date(new Date().setDate(new Date().getDate() - 7));
+
+    const dailySales = await Order.aggregate([
+        {
+            $match: {
+                createdAt: { $gte: sevenDaysAgo },
+                isPaid: true
+            }
+        },
+        {
+            $group: {
+                _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                sales: { $sum: "$totalPrice" },
+                count: { $sum: 1 }
+            }
+        },
+        { $sort: { _id: 1 } }
+    ]);
+
+    res.json({
+        totalOrders,
+        totalUsers,
+        totalSales: totalSales.toFixed(2),
+        dailySales
+    });
 });
 
 module.exports = {
@@ -240,4 +333,6 @@ module.exports = {
     updateOrderToOutForDelivery,
     getMyOrders,
     getOrders,
+    getAnalytics,
+    verifyPayment,
 };

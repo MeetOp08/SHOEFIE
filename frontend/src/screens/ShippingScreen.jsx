@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { saveShippingAddress } from '../slices/cartSlice';
 
@@ -24,66 +23,74 @@ const ShippingScreen = () => {
     };
 
     return (
-        <FormContainer>
+        <div className="container mx-auto px-4 py-8 max-w-2xl">
             <CheckoutSteps step1 step2 />
-            <h1 className="text-3xl font-display font-bold mb-6 text-white text-center">Shipping Details</h1>
-            <form onSubmit={submitHandler} className="space-y-4">
-                <div>
-                    <label className="block mb-1 font-semibold text-gray-300">Address</label>
-                    <input
-                        type='text'
-                        placeholder='Enter full address'
-                        value={address}
-                        required
-                        onChange={(e) => setAddress(e.target.value)}
-                        className="input-field"
-                    ></input>
-                </div>
 
-                <div>
-                    <label className="block mb-1 font-semibold text-gray-300">City</label>
-                    <input
-                        type='text'
-                        placeholder='Enter city'
-                        value={city}
-                        required
-                        onChange={(e) => setCity(e.target.value)}
-                        className="input-field"
-                    ></input>
-                </div>
+            <div className="card p-8 md:p-10 mt-8 bg-white shadow-lg border border-border-color">
+                <h1 className="text-3xl font-display font-bold mb-6 text-text-main border-b border-border-color pb-4">Shipping Details</h1>
 
-                <div>
-                    <label className="block mb-1 font-semibold text-gray-300">Postal Code</label>
-                    <input
-                        type='text'
-                        placeholder='Enter postal code'
-                        value={postalCode}
-                        required
-                        onChange={(e) => setPostalCode(e.target.value)}
-                        className="input-field"
-                    ></input>
-                </div>
+                <form onSubmit={submitHandler} className="space-y-6">
+                    <div>
+                        <label className="block mb-2 font-semibold text-text-main">Address</label>
+                        <input
+                            type='text'
+                            placeholder='123 Main St, Apt 4B'
+                            value={address}
+                            required
+                            onChange={(e) => setAddress(e.target.value)}
+                            className="input-field"
+                        ></input>
+                    </div>
 
-                <div>
-                    <label className="block mb-1 font-semibold text-gray-300">Country</label>
-                    <input
-                        type='text'
-                        placeholder='Enter country'
-                        value={country}
-                        required
-                        onChange={(e) => setCountry(e.target.value)}
-                        className="input-field"
-                    ></input>
-                </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label className="block mb-2 font-semibold text-text-main">City</label>
+                            <input
+                                type='text'
+                                placeholder='New York'
+                                value={city}
+                                required
+                                onChange={(e) => setCity(e.target.value)}
+                                className="input-field"
+                            ></input>
+                        </div>
 
-                <button
-                    type='submit'
-                    className="btn-primary w-full mt-4"
-                >
-                    Continue
-                </button>
-            </form>
-        </FormContainer>
+                        <div>
+                            <label className="block mb-2 font-semibold text-text-main">Postal Code</label>
+                            <input
+                                type='text'
+                                placeholder='10001'
+                                value={postalCode}
+                                required
+                                onChange={(e) => setPostalCode(e.target.value)}
+                                className="input-field"
+                            ></input>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block mb-2 font-semibold text-text-main">Country</label>
+                        <input
+                            type='text'
+                            placeholder='United States'
+                            value={country}
+                            required
+                            onChange={(e) => setCountry(e.target.value)}
+                            className="input-field"
+                        ></input>
+                    </div>
+
+                    <div className="pt-4">
+                        <button
+                            type='submit'
+                            className="btn-primary w-full py-3 text-lg"
+                        >
+                            Continue to Payment
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 

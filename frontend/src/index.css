@@ -1,12 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Poppins:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@500;600;700&display=swap');
 
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
-
 @layer base {
   body {
-    @apply bg-primary text-secondary font-sans antialiased;
+    @apply bg-primary text-text-main font-sans antialiased selection:bg-accent selection:text-white;
   }
 
   h1,
@@ -15,25 +14,31 @@
   h4,
   h5,
   h6 {
-    @apply font-display font-bold;
+    @apply font-display font-semibold tracking-tight;
   }
 }
 
 @layer components {
+  /* Step 7: Reusable Button & Card Styles */
+
   .btn-primary {
-    @apply bg-accent text-primary px-6 py-3 rounded-full font-semibold tracking-wide hover:bg-yellow-500 transition-all duration-300 transform hover:scale-105 shadow-lg;
+    @apply bg-text-main text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-accent hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2;
   }
 
   .btn-outline {
-    @apply border-2 border-accent text-accent px-6 py-3 rounded-full font-semibold hover:bg-accent hover:text-primary transition-all duration-300;
+    @apply border border-text-main text-text-main px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-text-main hover:text-white disabled:opacity-50 flex items-center justify-center gap-2;
   }
 
   .card {
-    @apply bg-gray-dark rounded-xl shadow-lg border border-gray-700/50 backdrop-blur-sm p-4 hover:shadow-neon transition-all duration-300;
+    @apply bg-white rounded-xl border border-border-color shadow-soft hover:shadow-hover transition-all duration-300 overflow-hidden;
   }
 
   .input-field {
-    @apply w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors;
+    @apply w-full bg-white border border-border-color rounded-lg px-4 py-3 text-text-main focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors placeholder-text-muted;
+  }
+
+  .container-custom {
+    @apply container mx-auto px-4 md:px-6 lg:px-8;
   }
 }
 
@@ -43,14 +48,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #1A1A1A;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #444;
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #D4AF37;
+  background: #94a3b8;
 }

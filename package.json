@@ -1,0 +1,19 @@
+{
+    "name": "shoefie-root",
+    "version": "1.0.0",
+    "description": "Root package for Shoefie MERN Deployment",
+    "main": "backend/server.js",
+    "scripts": {
+        "start": "node backend/server.js",
+        "server": "cd backend && npm start",
+        "client": "cd frontend && npm run dev",
+        "dev": "concurrently \"npm run server\" \"npm run client\"",
+        "build": "npm install && cd backend && npm install && cd ../frontend && npm install && npm run build"
+    },
+    "dependencies": {
+        "concurrently": "^8.2.2"
+    },
+    "engines": {
+        "node": ">=16.0.0"
+    }
+}

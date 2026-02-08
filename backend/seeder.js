@@ -37,7 +37,7 @@ const importData = async () => {
             {
                 name: 'Admin User',
                 email: 'admin@example.com',
-                password, // 123456
+                password,
                 isAdmin: true,
             },
             {
@@ -45,165 +45,65 @@ const importData = async () => {
                 email: 'john@example.com',
                 password,
             },
-            {
-                name: 'Jane Smith',
-                email: 'jane@example.com',
-                password,
-            },
         ]);
 
         const adminUser = createdUsers[0]._id;
 
-        // --- 2. Create Categories ---
-        const categoriesData = [
-            { name: "Men's Footwear", description: 'Stylish and comfortable shoes for men', image: '/images/cat-men.jpg', user: adminUser },
-            { name: "Women's Footwear", description: 'Trendy and elegant footwear for women', image: '/images/cat-women.jpg', user: adminUser },
-            { name: "Kids' Footwear", description: 'Durable and fun shoes for kids', image: '/images/cat-kids.jpg', user: adminUser },
-            { name: 'Sports & Performance', description: 'High-performance gear for athletes', image: '/images/cat-sports.jpg', user: adminUser },
-            { name: 'Lifestyle & Fashion', description: 'Street style and limited editions', image: '/images/cat-lifestyle.jpg', user: adminUser },
-        ];
+        // --- 2. Load Products Data & Extract Unique Categories/Brands ---
+        const productsData = require('./data/products');
 
-        const createdCategories = await Category.insertMany(categoriesData);
-        // Helper to get ID by name
-        const getCatId = (name) => createdCategories.find(c => c.name === name)._id;
+        // Extract unique Categories
+        const uniqueCategories = [...new Set(productsData.map(p => p.category))];
+        const categoryDocs = uniqueCategories.map(name => ({
+            name,
+            description: `Best collection of ${name}`,
+            image: '/images/sample-category.jpg', // Placeholder
+            user: adminUser
+        }));
 
-        // --- 3. Create Brands ---
-        const brandsData = [
-            { name: 'Nike', description: 'Just Do It', logo: '/images/brand-nike.png', user: adminUser },
-            { name: 'Adidas', description: 'Impossible is Nothing', logo: '/images/brand-adidas.png', user: adminUser },
-            { name: 'Puma', description: 'Forever Faster', logo: '/images/brand-puma.png', user: adminUser },
-            { name: 'Reebok', description: 'Fitness is Life', logo: '/images/brand-reebok.png', user: adminUser },
-            { name: 'Bata', description: 'Comfort First', logo: '/images/brand-bata.png', user: adminUser },
-            { name: 'Woodland', description: 'Explore More', logo: '/images/brand-woodland.png', user: adminUser },
-        ];
+        const createdCategories = await Category.insertMany(categoryDocs);
 
-        const createdBrands = await Brand.insertMany(brandsData);
-        const getBrandId = (name) => createdBrands.find(b => b.name === name)._id;
+        // Extract unique Brands
+        const uniqueBrands = [...new Set(productsData.map(p => p.brand))];
+        const brandDocs = uniqueBrands.map(name => ({
+            name,
+            description: `Official ${name} Store`,
+            logo: `/images/brand-${name.toLowerCase()}.png`, // Placeholder
+            user: adminUser
+        }));
 
-        // --- 4. Create Products ---
-        const products = [
-            // MEN
-            {
-                name: 'Air Jordan 1 Retro High',
-                image: '/images/air-jordan-1.jpg',
-                description: 'The sneaker that started it all. Premium leather and timeless design.',
-                brand: getBrandId('Nike'),
-                category: getCatId("Men's Footwear"),
-                subCategory: 'Sneakers',
-                price: 180,
-                discount: 10,
-                countInStock: 15,
-                rating: 4.8,
-                numReviews: 12,
-                sizes: [8, 9, 10, 11, 12],
-                colors: ['Red', 'Black', 'White'],
+        const createdBrands = await Brand.insertMany(brandDocs);
+
+
+        // --- 3. Map Products to IDs and Insert ---
+        // --- 3. Map Products to IDs and Insert ---
+        const slugify = (text) => {
+            return text
+                .toString()
+                .toLowerCase()
+                .trim()
+                .replace(/\s+/g, '-')     // Replace spaces with -
+                .replace(/[^\w\-]+/g, '') // Remove all non-word chars
+                .replace(/\-\-+/g, '-');  // Replace multiple - with single -
+        };
+
+        const sampleProducts = productsData.map((product) => {
+            const categoryObj = createdCategories.find(c => c.name === product.category);
+            // If category matches, use its ID. If not found (e.g. data mismatch), default to first category or error.
+            // For robustness, we'll try to match.
+            const categoryId = categoryObj ? categoryObj._id : createdCategories[0]._id;
+
+            return {
+                ...product,
                 user: adminUser,
-            },
-            {
-                name: 'Ultraboost Light',
-                image: '/images/ultraboost.jpg',
-                description: 'Experience epic energy with the new Ultraboost Light, our lightest Ultraboost ever.',
-                brand: getBrandId('Adidas'),
-                category: getCatId('Sports & Performance'),
-                subCategory: 'Running Shoes',
-                price: 190,
-                discount: 0,
-                countInStock: 20,
-                rating: 4.7,
-                numReviews: 8,
-                sizes: [7, 8, 9, 10, 11],
-                colors: ['White', 'Black'],
-                user: adminUser,
-            },
-            {
-                name: 'Woodland Camel Leather Boots',
-                image: '/images/woodland-boots.jpg',
-                description: 'Rugged and durable leather boots perfect for trekking and outdoors.',
-                brand: getBrandId('Woodland'),
-                category: getCatId("Men's Footwear"),
-                subCategory: 'Casual Shoes',
-                price: 120,
-                discount: 15,
-                countInStock: 10,
-                rating: 4.5,
-                numReviews: 5,
-                sizes: [8, 9, 10],
-                colors: ['Camel', 'Brown'],
-                user: adminUser,
-            },
+                category: categoryId,
+                brand: product.brand, // Schema expects String
+                slug: slugify(product.name), // Schema expects unique slug
+                subCategory: product.subCategory,
+            };
+        });
 
-            // WOMEN
-            {
-                name: 'Puma Cali Star',
-                image: '/images/puma-cali.jpg',
-                description: 'Shine brighter than the rest in the Cali Star. A fresh take on the classic 80s California.',
-                brand: getBrandId('Puma'),
-                category: getCatId("Women's Footwear"),
-                subCategory: 'Sneakers',
-                price: 85,
-                discount: 5,
-                countInStock: 25,
-                rating: 4.6,
-                numReviews: 10,
-                sizes: [5, 6, 7, 8],
-                colors: ['White', 'Gold'],
-                user: adminUser,
-            },
-            {
-                name: 'Bata Comfit Flats',
-                image: '/images/bata-flats.jpg',
-                description: 'Everyday comfort with soft cushioning and elegant design.',
-                brand: getBrandId('Bata'),
-                category: getCatId("Women's Footwear"),
-                subCategory: 'Flats',
-                price: 40,
-                discount: 20,
-                countInStock: 50,
-                rating: 4.3,
-                numReviews: 22,
-                sizes: [5, 6, 7, 8],
-                colors: ['Black', 'Beige'],
-                user: adminUser,
-            },
-
-            // KIDS
-            {
-                name: 'Nike Revolution 6 Kids',
-                image: '/images/nike-rev-kids.jpg',
-                description: 'Versatile comfort for all-day play. Easy on/off strap.',
-                brand: getBrandId('Nike'),
-                category: getCatId("Kids' Footwear"),
-                subCategory: 'Sports Shoes',
-                price: 55,
-                discount: 0,
-                countInStock: 30,
-                rating: 4.8,
-                numReviews: 4,
-                sizes: [1, 2, 3, 4],
-                colors: ['Blue', 'Black'],
-                user: adminUser,
-            },
-
-            // SPORTS
-            {
-                name: 'Reebok Nano X3',
-                image: '/images/reebok-nano.jpg',
-                description: 'The most versatile workout shoe for lifting and running.',
-                brand: getBrandId('Reebok'),
-                category: getCatId('Sports & Performance'),
-                subCategory: 'Training Shoes',
-                price: 140,
-                discount: 10,
-                countInStock: 12,
-                rating: 4.9,
-                numReviews: 6,
-                sizes: [8, 9, 10, 11],
-                colors: ['Neon', 'Black'],
-                user: adminUser,
-            }
-        ];
-
-        await Product.insertMany(products);
+        await Product.insertMany(sampleProducts);
 
         console.log('Data Imported!'.green.inverse);
         process.exit();

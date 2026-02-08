@@ -11,25 +11,25 @@ const SearchBox = () => {
         e.preventDefault();
         if (keyword.trim()) {
             navigate(`/search/${keyword}`);
-            setKeyword('');
+            // Keep the keyword in the box
         } else {
             navigate('/');
         }
     };
 
     return (
-        <form onSubmit={submitHandler} className="flex items-center w-full relative">
+        <form onSubmit={submitHandler} className="flex items-center w-full max-w-md relative group">
+            <div className="absolute left-4 text-gray-400 group-focus-within:text-accent transition-colors pointer-events-none">
+                <FaSearch />
+            </div>
             <input
                 type="text"
                 name="q"
                 onChange={(e) => setKeyword(e.target.value)}
                 value={keyword}
-                placeholder="Search for premium footwear..."
-                className="w-full bg-gray-dark/50 border border-gray-600 rounded-full py-2 pl-4 pr-12 text-gray-200 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all placeholder-gray-500"
+                placeholder="Search..."
+                className="w-full bg-secondary/50 border border-transparent rounded-full py-2.5 pl-10 pr-4 text-text-main text-sm focus:outline-none focus:bg-white focus:border-accent/40 focus:ring-4 focus:ring-accent/10 transition-all placeholder-gray-500"
             />
-            <button type="submit" className="absolute right-1 top-1/2 transform -translate-y-1/2 p-2 bg-accent text-primary rounded-full hover:bg-yellow-500 transition-colors">
-                <FaSearch />
-            </button>
         </form>
     );
 };

@@ -17,16 +17,21 @@ const getProducts = asyncHandler(async (req, res) => {
         }
         : {};
 
-    // Filter by Category and Brand if provided
+    // Filter by Category
     if (req.query.category) {
-        keyword.category = req.query.category;
+        const categories = req.query.category.split(',');
+        keyword.category = { $in: categories };
     }
+
+    // Filter by Brand
     if (req.query.brand) {
-        keyword.brand = req.query.brand;
+        const brands = req.query.brand.split(',');
+        keyword.brand = { $in: brands };
     }
 
     const count = await Product.countDocuments({ ...keyword });
     const products = await Product.find({ ...keyword })
+        .populate('category', 'name')
         .limit(pageSize)
         .skip(pageSize * (page - 1));
 
@@ -67,23 +72,76 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private/Admin
-const createProduct = asyncHandler(async (req, res) => {
-    const product = new Product({
-        name: 'Sample Name',
-        price: 0,
-        user: req.user._id,
-        image: '/images/sample.jpg',
-        brand: 'Sample Brand',
-        category: 'Sample Category',
-        countInStock: 0,
-        numReviews: 0,
-        description: 'Sample description',
-        sizes: [],
-        colors: []
-    });
 
-    const createdProduct = await product.save();
-    res.status(201).json(createdProduct);
+
+
+// Helper for slug generation
+const generateSlug = (text) => {
+    return text.toString().toLowerCase()
+        .replace(/\s+/g, '-')           // Replace spaces with -
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+};
+
+// @desc    Create a product
+// @route   POST /api/products
+// @access  Private/Admin
+const createProduct = asyncHandler(async (req, res) => {
+    const {
+        name, price, discountPrice, image, images, brand, category,
+        countInStock, description, sizes, colors, isFeatured, isActive, status
+    } = req.body;
+
+    const slug = name ? generateSlug(name) : `sample-${Date.now()}`;
+
+    // If data is provided, create product with it
+    if (name && price && category) {
+        const product = new Product({
+            name,
+            slug,
+            price,
+            discountPrice: discountPrice || 0,
+            user: req.user._id,
+            image: image || '/images/sample.jpg',
+            images: images || [],
+            brand: brand || 'Sample Brand',
+            category,
+            countInStock: countInStock || 0,
+            numReviews: 0,
+            description: description || 'Sample description',
+            sizes: sizes || [],
+            colors: colors || [],
+            isFeatured: isFeatured || false,
+            isActive: isActive !== undefined ? isActive : true,
+            status: status || 'Published',
+        });
+        const createdProduct = await product.save();
+        res.status(201).json(createdProduct);
+    } else {
+        // Fallback or Draft creation
+        const product = new Product({
+            name: 'Sample Name',
+            slug: `sample-name-${Date.now()}`,
+            price: 0,
+            user: req.user._id,
+            image: '/images/sample.jpg',
+            brand: 'Sample Brand',
+            category: 'Sample Category',
+            countInStock: 0,
+            numReviews: 0,
+            description: 'Sample description',
+            sizes: [],
+            colors: [],
+            isFeatured: false,
+            isActive: true,
+            status: 'Draft'
+        });
+
+        const createdProduct = await product.save();
+        res.status(201).json(createdProduct);
+    }
 });
 
 // @desc    Update a product
@@ -93,27 +151,39 @@ const updateProduct = asyncHandler(async (req, res) => {
     const {
         name,
         price,
+        discountPrice,
         description,
         image,
+        images,
         brand,
         category,
         countInStock,
         sizes,
-        colors
+        colors,
+        isFeatured,
+        isActive,
+        status,
     } = req.body;
 
     const product = await Product.findById(req.params.id);
 
     if (product) {
-        product.name = name;
-        product.price = price;
-        product.description = description;
-        product.image = image;
-        product.brand = brand;
-        product.category = category;
-        product.countInStock = countInStock;
-        product.sizes = sizes || [];
-        product.colors = colors || [];
+        product.name = name || product.name;
+        if (name) product.slug = generateSlug(name);
+
+        product.price = price || product.price;
+        product.discountPrice = discountPrice !== undefined ? discountPrice : product.discountPrice;
+        product.description = description || product.description;
+        product.image = image || product.image;
+        product.images = images || product.images;
+        product.brand = brand || product.brand;
+        product.category = category || product.category;
+        product.countInStock = countInStock || product.countInStock;
+        product.sizes = sizes || product.sizes;
+        product.colors = colors || product.colors;
+        product.isFeatured = isFeatured !== undefined ? isFeatured : product.isFeatured;
+        product.isActive = isActive !== undefined ? isActive : product.isActive;
+        product.status = status || product.status;
 
         const updatedProduct = await product.save();
         res.json(updatedProduct);

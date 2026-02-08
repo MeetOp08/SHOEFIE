@@ -58,17 +58,17 @@ const AddressBook = () => {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold font-display text-white">My Addresses</h2>
+                <h2 className="text-2xl font-bold font-display text-text-main">My Addresses</h2>
                 {!isAdding && (
-                    <button onClick={() => setIsAdding(true)} className="btn-outline flex items-center space-x-2">
+                    <button onClick={() => setIsAdding(true)} className="btn-outline flex items-center space-x-2 text-sm py-2 px-4">
                         <FaPlus /> <span>Add New Address</span>
                     </button>
                 )}
             </div>
 
             {isAdding && (
-                <div className="card p-6 bg-gray-800 border border-gray-700 animate-fadeIn">
-                    <h3 className="text-lg font-bold text-accent mb-4">Add New Address</h3>
+                <div className="card p-6 bg-white border border-border-color shadow-md animate-fadeIn">
+                    <h3 className="text-lg font-bold text-text-main mb-4">Add New Address</h3>
                     <form onSubmit={handleAddAddress} className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <input type="text" placeholder="Full Name" className="input-field" required value={newAddress.name} onChange={(e) => setNewAddress({ ...newAddress, name: e.target.value })} />
@@ -81,12 +81,12 @@ const AddressBook = () => {
                             <input type="text" placeholder="Country" className="input-field" required value={newAddress.country} onChange={(e) => setNewAddress({ ...newAddress, country: e.target.value })} />
                         </div>
                         <label className="flex items-center space-x-3">
-                            <input type="checkbox" checked={newAddress.isDefault} onChange={(e) => setNewAddress({ ...newAddress, isDefault: e.target.checked })} className="form-checkbox text-accent bg-gray-700 border-gray-600 rounded" />
-                            <span className="text-gray-300">Make this my default address</span>
+                            <input type="checkbox" checked={newAddress.isDefault} onChange={(e) => setNewAddress({ ...newAddress, isDefault: e.target.checked })} className="form-checkbox text-accent border-gray-300 rounded focus:ring-accent" />
+                            <span className="text-text-muted text-sm">Make this my default address</span>
                         </label>
                         <div className="flex space-x-4 pt-4">
                             <button type="submit" className="btn-primary" disabled={isLoading}>Save Address</button>
-                            <button type="button" onClick={() => setIsAdding(false)} className="px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 font-bold transition-all">Cancel</button>
+                            <button type="button" onClick={() => setIsAdding(false)} className="px-6 py-3 bg-gray-100 text-text-main rounded-lg hover:bg-gray-200 font-bold transition-all border border-border-color">Cancel</button>
                         </div>
                     </form>
                 </div>
@@ -95,9 +95,9 @@ const AddressBook = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {(userInfo.addresses && userInfo.addresses.length > 0) ? (
                     userInfo.addresses.map((addr, index) => (
-                        <div key={index} className="card p-6 bg-gray-900 border border-gray-700 hover:border-accent/50 transition-colors relative group">
+                        <div key={index} className="card p-6 bg-white border border-border-color hover:border-accent transition-colors relative group shadow-sm">
                             <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onClick={() => handleDeleteAddress(addr._id)} className="text-gray-500 hover:text-red-500 transition-colors">
+                                <button onClick={() => handleDeleteAddress(addr._id)} className="text-gray-400 hover:text-red-500 transition-colors">
                                     <FaTrash />
                                 </button>
                             </div>
@@ -107,21 +107,23 @@ const AddressBook = () => {
                                 </div>
                                 <div>
                                     <div className="flex items-center space-x-2">
-                                        <h4 className="font-bold text-white text-lg">{addr.name || userInfo.name}</h4>
-                                        {addr.isDefault && <span className="bg-accent/20 text-accent text-xs px-2 py-0.5 rounded-full border border-accent/50">Default</span>}
+                                        <h4 className="font-bold text-text-main text-lg">{addr.name || userInfo.name}</h4>
+                                        {addr.isDefault && <span className="bg-orange-100 text-accent text-xs px-2 py-0.5 rounded-full border border-orange-200 font-medium">Default</span>}
                                     </div>
-                                    <p className="text-gray-400 mt-1">{addr.address}</p>
-                                    <p className="text-gray-400">{addr.city}, {addr.postalCode}</p>
-                                    <p className="text-gray-400">{addr.country}</p>
-                                    <p className="text-gray-300 mt-2 font-mono text-sm">Phone: {addr.phoneNumber || userInfo.phone || 'N/A'}</p>
+                                    <div className="text-text-muted text-sm mt-2 space-y-1">
+                                        <p>{addr.address}</p>
+                                        <p>{addr.city}, {addr.postalCode}</p>
+                                        <p>{addr.country}</p>
+                                        <p className="pt-2 font-medium text-text-main">Phone: {addr.phoneNumber || userInfo.phone || 'N/A'}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     ))
                 ) : (
                     !isAdding && (
-                        <div className="col-span-full text-center py-12 bg-gray-800/50 rounded-xl border border-gray-700 border-dashed">
-                            <p className="text-gray-400 mb-4">No addresses saved yet.</p>
+                        <div className="col-span-full text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+                            <p className="text-text-muted mb-4">No addresses saved yet.</p>
                             <button onClick={() => setIsAdding(true)} className="text-accent hover:underline font-bold">Add your first address</button>
                         </div>
                     )

@@ -60,6 +60,19 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 5,
         }),
+        getOrderAnalytics: builder.query({
+            query: () => ({
+                url: `${ORDERS_URL}/analytics`,
+            }),
+            keepUnusedDataFor: 5,
+        }),
+        verifyPayment: builder.mutation({
+            query: ({ orderId, details }) => ({
+                url: `${ORDERS_URL}/${orderId}/pay/verify`,
+                method: 'POST',
+                body: details,
+            }),
+        }),
     }),
 });
 
@@ -73,4 +86,6 @@ export const {
     useDeliverOrderMutation,
     useGetRazorpayKeyQuery,
     useUpdateOrderStatusMutation,
+    useGetOrderAnalyticsQuery,
+    useVerifyPaymentMutation,
 } = ordersApiSlice;

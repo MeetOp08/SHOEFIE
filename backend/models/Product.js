@@ -27,6 +27,11 @@ const productSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        slug: {
+            type: String,
+            required: true,
+            unique: true,
+        },
         image: {
             type: String, // Main image
             required: true,
@@ -35,9 +40,8 @@ const productSchema = mongoose.Schema(
             { type: String } // Additional images
         ],
         brand: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             required: true,
-            ref: 'Brand',
         },
         category: {
             type: mongoose.Schema.Types.ObjectId,
@@ -45,8 +49,8 @@ const productSchema = mongoose.Schema(
             ref: 'Category',
         },
         subCategory: {
-            type: String, // e.g., 'Casual Shoes', 'Running Shoes'
-            required: true,
+            type: String,
+            required: false,
         },
         description: {
             type: String,
@@ -72,6 +76,10 @@ const productSchema = mongoose.Schema(
             type: Number,
             required: true,
             default: 0, // Percentage discount
+        },
+        discountPrice: {
+            type: Number,
+            default: 0,
         },
         countInStock: {
             type: Number,
@@ -107,7 +115,20 @@ const productSchema = mongoose.Schema(
         dispatchCenter: {
             type: String,
             default: 'Mumbai Central Hub'
-        }
+        },
+        isFeatured: {
+            type: Boolean,
+            default: false,
+        },
+        isActive: {
+            type: Boolean,
+            default: true,
+        },
+        status: {
+            type: String,
+            enum: ['Draft', 'Published'],
+            default: 'Published',
+        },
     },
     {
         timestamps: true,

@@ -7,7 +7,7 @@ const cartFromStorage = localStorage.getItem('cart')
 const initialState =
     cartFromStorage && cartFromStorage.cartItems
         ? cartFromStorage
-        : { cartItems: [], shippingAddress: {}, paymentMethod: 'Razorpay' };
+        : { cartItems: [], shippingAddress: {}, paymentMethod: 'Razorpay', discount: 0, couponCode: '' };
 
 const addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -39,11 +39,13 @@ const cartSlice = createSlice({
             );
             state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
             state.taxPrice = addDecimals(Number((0.15 * state.itemsPrice).toFixed(2)));
-            state.totalPrice = (
-                Number(state.itemsPrice) +
-                Number(state.shippingPrice) +
-                Number(state.taxPrice)
-            ).toFixed(2);
+            let total = Number(state.itemsPrice) + Number(state.shippingPrice) + Number(state.taxPrice);
+
+            // Re-apply discount if exists
+            if (state.discount > 0) {
+                total = total - (total * (state.discount / 100));
+            }
+            state.totalPrice = total.toFixed(2);
 
             localStorage.setItem('cart', JSON.stringify(state));
         },
@@ -64,11 +66,12 @@ const cartSlice = createSlice({
             );
             state.shippingPrice = addDecimals(state.itemsPrice > 100 ? 0 : 10);
             state.taxPrice = addDecimals(Number((0.15 * state.itemsPrice).toFixed(2)));
-            state.totalPrice = (
-                Number(state.itemsPrice) +
-                Number(state.shippingPrice) +
-                Number(state.taxPrice)
-            ).toFixed(2);
+            let total = Number(state.itemsPrice) + Number(state.shippingPrice) + Number(state.taxPrice);
+
+            if (state.discount > 0) {
+                total = total - (total * (state.discount / 100));
+            }
+            state.totalPrice = total.toFixed(2);
 
             localStorage.setItem('cart', JSON.stringify(state));
         },
@@ -86,6 +89,19 @@ const cartSlice = createSlice({
         },
         clearCartItems: (state, action) => {
             state.cartItems = [];
+            state.discount = 0;
+            state.couponCode = '';
+            localStorage.setItem('cart', JSON.stringify(state));
+        },
+        applyDiscount: (state, action) => {
+            const { discount, code } = action.payload;
+            state.discount = discount;
+            state.couponCode = code;
+
+            let total = Number(state.itemsPrice) + Number(state.shippingPrice) + Number(state.taxPrice);
+            total = total - (total * (discount / 100));
+            state.totalPrice = total.toFixed(2);
+
             localStorage.setItem('cart', JSON.stringify(state));
         },
     },
@@ -98,6 +114,7 @@ export const {
     savePaymentMethod,
     savePaymentProvider,
     clearCartItems,
+    applyDiscount,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -1,0 +1,5 @@
+Loading env from: C:\Users\hp\OneDrive\Desktop\SHOEFIE\backend\.env
+MONGO_URI IS: mongodb://127.0.0.1:27017/shoefie
+MongoDB Connected: 127.0.0.1
+[7m[31mData Destroyed...[39m[27m
+ValidationError: slug: Path `slug` is required.

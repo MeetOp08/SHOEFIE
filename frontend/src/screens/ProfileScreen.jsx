@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import ProfileSidebar from '../components/profile/ProfileSidebar';
@@ -14,43 +14,49 @@ const ProfileScreen = () => {
     // Simple Overview Component
     const Overview = () => (
         <div className="space-y-6">
-            <div className="bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl p-8 border border-gray-700 shadow-lg">
+            <div className="bg-text-main rounded-xl p-8 border border-gray-800 shadow-xl text-white">
                 <div className="flex items-center space-x-6">
-                    <div className="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center text-4xl text-gray-400 border-2 border-accent">
-                        {userInfo.avatar ? <img src={userInfo.avatar} alt="Profile" className="w-full h-full rounded-full object-cover" /> : <FaUser />}
+                    <div className="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center text-4xl text-gray-400 border-2 border-accent overflow-hidden">
+                        {userInfo.avatar ? <img src={userInfo.avatar} alt="Profile" className="w-full h-full object-cover" /> : <FaUser />}
                     </div>
                     <div>
-                        <h2 className="text-3xl font-bold text-white mb-1">Hello, {userInfo.name}</h2>
-                        <p className="text-gray-400">From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
+                        <h2 className="text-3xl font-bold mb-1">Hello, {userInfo.name}</h2>
+                        <p className="text-gray-300 text-sm opacity-80">Welcome to your personal dashboard. Manage your orders and account details here.</p>
                     </div>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <button onClick={() => setActiveTab('orders')} className="card p-6 bg-gray-800 hover:bg-gray-700 transition-colors border border-gray-700 group text-left">
-                    <FaShoppingBag className="text-3xl text-accent mb-4 group-hover:scale-110 transition-transform" />
-                    <h3 className="text-xl font-bold text-white mb-2">Orders</h3>
-                    <p className="text-gray-400 text-sm">Check the status of your orders or browse history.</p>
+                <button onClick={() => setActiveTab('orders')} className="card p-6 bg-white hover:border-accent group text-left shadow-sm">
+                    <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4 group-hover:bg-accent transition-colors">
+                        <FaShoppingBag className="text-xl text-accent group-hover:text-white transition-colors" />
+                    </div>
+                    <h3 className="text-lg font-bold text-text-main mb-2">My Orders</h3>
+                    <p className="text-text-muted text-sm">Track active orders and view purchase history.</p>
                 </button>
 
-                <button onClick={() => setActiveTab('addresses')} className="card p-6 bg-gray-800 hover:bg-gray-700 transition-colors border border-gray-700 group text-left">
-                    <FaMapMarkerAlt className="text-3xl text-accent mb-4 group-hover:scale-110 transition-transform" />
-                    <h3 className="text-xl font-bold text-white mb-2">Addresses</h3>
-                    <p className="text-gray-400 text-sm">Manage your shipping and billing addresses.</p>
+                <button onClick={() => setActiveTab('addresses')} className="card p-6 bg-white hover:border-accent group text-left shadow-sm">
+                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4 group-hover:bg-blue-500 transition-colors">
+                        <FaMapMarkerAlt className="text-xl text-blue-500 group-hover:text-white transition-colors" />
+                    </div>
+                    <h3 className="text-lg font-bold text-text-main mb-2">Addresses</h3>
+                    <p className="text-text-muted text-sm">Manage your shipping and delivery locations.</p>
                 </button>
 
-                <button onClick={() => setActiveTab('personal')} className="card p-6 bg-gray-800 hover:bg-gray-700 transition-colors border border-gray-700 group text-left">
-                    <FaUser className="text-3xl text-accent mb-4 group-hover:scale-110 transition-transform" />
-                    <h3 className="text-xl font-bold text-white mb-2">Profile</h3>
-                    <p className="text-gray-400 text-sm">Edit personal details and change password.</p>
+                <button onClick={() => setActiveTab('personal')} className="card p-6 bg-white hover:border-accent group text-left shadow-sm">
+                    <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-500 transition-colors">
+                        <FaUser className="text-xl text-purple-500 group-hover:text-white transition-colors" />
+                    </div>
+                    <h3 className="text-lg font-bold text-text-main mb-2">Profile Details</h3>
+                    <p className="text-text-muted text-sm">Update your name, email, and password.</p>
                 </button>
             </div>
         </div>
     );
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-display font-bold text-white mb-8 border-b border-gray-700 pb-4">My Account</h1>
+        <div className="container mx-auto px-4 py-12">
+            <h1 className="text-3xl font-display font-bold text-text-main mb-8 pb-4 border-b border-border-color">My Account</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                 <div className="lg:col-span-1">

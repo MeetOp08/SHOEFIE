@@ -20,9 +20,9 @@ const ProfileSidebar = ({ activeTab, setActiveTab }) => {
     ];
 
     return (
-        <div className="bg-gray-dark rounded-xl border border-gray-700/50 overflow-hidden sticky top-24">
-            <div className="p-4 border-b border-gray-700/50 bg-gray-800/30">
-                <h3 className="text-gray-400 uppercase text-xs font-bold tracking-wider">Account Settings</h3>
+        <div className="bg-white rounded-xl border border-border-color overflow-hidden sticky top-24 shadow-sm">
+            <div className="p-4 border-b border-border-color bg-gray-50">
+                <h3 className="text-text-muted uppercase text-xs font-bold tracking-wider">Account Settings</h3>
             </div>
             <div className="flex flex-col">
                 {menuItems.map((item) => (
@@ -30,24 +30,24 @@ const ProfileSidebar = ({ activeTab, setActiveTab }) => {
                         key={item.id}
                         onClick={() => setActiveTab(item.id)}
                         className={`flex items-center px-6 py-4 transition-all duration-200 text-left border-l-4 ${activeTab === item.id
-                                ? 'bg-gray-800 border-accent text-white'
-                                : 'border-transparent text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
+                            ? 'bg-orange-50 border-accent text-accent font-semibold'
+                            : 'border-transparent text-text-muted hover:bg-gray-50 hover:text-text-main'
                             }`}
                     >
-                        <span className={`text-lg mr-4 ${activeTab === item.id ? 'text-accent' : 'text-gray-500'}`}>
+                        <span className={`text-lg mr-4 ${activeTab === item.id ? 'text-accent' : 'text-gray-400'}`}>
                             {item.icon}
                         </span>
-                        <span className="font-medium">{item.label}</span>
+                        <span>{item.label}</span>
                     </button>
                 ))}
 
-                <div className="border-t border-gray-700/50 mt-2">
+                <div className="border-t border-border-color mt-2">
                     <button
                         onClick={logoutHandler}
-                        className="w-full flex items-center px-6 py-4 text-left text-red-500 hover:bg-red-500/10 transition-colors"
+                        className="w-full flex items-center px-6 py-4 text-left text-red-500 hover:bg-red-50 transition-colors font-medium"
                     >
                         <span className="text-lg mr-4"><FaSignOutAlt /></span>
-                        <span className="font-medium">Logout</span>
+                        <span>Logout</span>
                     </button>
                 </div>
             </div>
