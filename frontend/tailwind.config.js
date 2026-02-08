@@ -6,27 +6,30 @@ export default {
     ],
     theme: {
         extend: {
-           colors: {
-  // 🌤 Backgrounds (warmer & softer)
-  primary: '#f5f5f4',        // Warm light gray (Stone-100)
-  secondary: '#e7e5e4',      // Slightly deeper section bg (Stone-200)
+          colors: {
+  // 🌤 Backgrounds
+  primary: '#f5f5f4',
+  secondary: '#e7e5e4',
 
   // 🧱 Surfaces
-  surface: '#ffffff',        // Cards / navbar
-  'border-color': '#d6d3d1', // Soft neutral border
+  surface: '#ffffff',
+  'border-color': '#d6d3d1',
 
   // 🔥 Accent
-  accent: '#ea580c',         // Premium orange CTA
+  accent: '#ea580c',
 
   // 📝 Text
-  'text-main': '#1c1917',    // Dark warm gray (not harsh black)
-  'text-muted': '#57534e',   // Medium warm gray
+  'text-main': '#111827',   // Headings
+  'text-body': '#292524',   // Paragraphs
+  'text-muted': '#6b7280',  // Secondary text
+  'text-light': '#9ca3af',  // Hints/placeholders
 
   // Status
   success: '#16a34a',
   danger: '#dc2626',
 }
-,
+
+            ,
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
                 display: ['Poppins', 'sans-serif'], // You might need to import Poppins in index.css

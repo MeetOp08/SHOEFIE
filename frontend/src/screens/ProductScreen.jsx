@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetProductDetailsQuery, useCreateReviewMutation } from '../slices/productsApiSlice';
+import { useGetProductDetailsQuery, useCreateReviewMutation, useGetProductsQuery } from '../slices/productsApiSlice';
+import Product from '../components/Product';
 import { addToCart } from '../slices/cartSlice';
 import { useAddToWishlistMutation } from '../slices/usersApiSlice';
 import { toast } from 'react-toastify';
@@ -24,6 +25,14 @@ const ProductScreen = () => {
     const [comment, setComment] = useState('');
 
     const { data: product, isLoading, refetch, error } = useGetProductDetailsQuery(productId);
+
+    // Fetch related products
+    const categoryId = product?.category?._id || product?.category;
+    const { data: relatedProductsData } = useGetProductsQuery(
+        { category: categoryId },
+        { skip: !categoryId }
+    );
+
     const [createReview, { isLoading: loadingProductReview }] = useCreateReviewMutation();
     const [addToWishlist] = useAddToWishlistMutation();
 
@@ -74,31 +83,37 @@ const ProductScreen = () => {
                 ) : (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
                         {/* 1. Left: Image Gallery */}
-                        <div className="space-y-4">
-                            <div className="bg-secondary rounded-2xl overflow-hidden aspect-[4/5] p-2 border border-border-color">
+                        <div className="space-y-6 sticky top-24 self-start">
+                            {/* Main Image */}
+                            <div className="bg-white rounded-3xl overflow-hidden aspect-[4/5] shadow-lg border border-gray-100 relative group">
                                 <img
                                     src={activeImage || product.image}
                                     alt={product.name}
-                                    className="w-full h-full object-cover rounded-xl"
+                                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 cursor-zoom-in"
                                 />
+                                {/* Optional: Zoom hint icon could go here */}
                             </div>
+
                             {/* Thumbnails */}
-                            <div className="grid grid-cols-5 gap-4">
-                                <div
-                                    className={`cursor-pointer rounded-lg overflow-hidden border-2 ${!activeImage || activeImage === product.image ? 'border-accent' : 'border-transparent'}`}
-                                    onClick={() => setActiveImage(product.image)}
-                                >
-                                    <img src={product.image} className="w-full h-full object-cover" alt="Main" />
-                                </div>
-                                {product.images?.map((img, idx) => (
-                                    <div
-                                        key={idx}
-                                        className={`cursor-pointer rounded-lg overflow-hidden border-2 ${activeImage === img ? 'border-accent' : 'border-transparent'}`}
-                                        onClick={() => setActiveImage(img)}
-                                    >
-                                        <img src={img} className="w-full h-full object-cover" alt={`Thumb ${idx}`} />
-                                    </div>
-                                ))}
+                            <div className="grid grid-cols-5 gap-3">
+                                {product.images && [product.image, ...product.images].map((img, idx) => {
+                                    // Deduplicate main image if it appears in images array
+                                    if (idx > 0 && img === product.image) return null;
+
+                                    const isActive = (activeImage || product.image) === img;
+
+                                    return (
+                                        <div
+                                            key={idx}
+                                            className={`cursor-pointer rounded-xl overflow-hidden aspect-square border transition-all duration-200 ${isActive
+                                                ? 'border-accent ring-2 ring-accent ring-offset-2 opacity-100'
+                                                : 'border-gray-100 hover:border-gray-300 opacity-70 hover:opacity-100'}`}
+                                            onClick={() => setActiveImage(img)}
+                                        >
+                                            <img src={img} className="w-full h-full object-cover" alt={`View ${idx + 1}`} />
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
 
@@ -154,8 +169,8 @@ const ProductScreen = () => {
                                             <button
                                                 key={s}
                                                 className={`w-12 h-12 rounded-lg border-2 font-bold flex items-center justify-center transition-all ${size === s
-                                                        ? 'border-accent bg-accent text-white shadow-lg'
-                                                        : 'border-border-color text-text-main hover:border-gray-400'
+                                                    ? 'border-accent bg-accent text-white shadow-lg'
+                                                    : 'border-border-color text-text-main hover:border-gray-400'
                                                     }`}
                                                 onClick={() => setSize(s)}
                                             >
@@ -209,6 +224,23 @@ const ProductScreen = () => {
                                     <span className="text-xs font-bold text-text-main block">Secure Pay</span>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Related Products Section */}
+                {relatedProductsData?.products?.length > 1 && (
+                    <div className="mt-20 border-t border-border-color pt-10">
+                        <h3 className="text-2xl font-display font-bold text-text-main mb-8">
+                            You Might Also Like
+                        </h3>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                            {relatedProductsData.products
+                                .filter((p) => p._id !== productId)
+                                .slice(0, 4)
+                                .map((product) => (
+                                    <Product key={product._id} product={product} />
+                                ))}
                         </div>
                     </div>
                 )}

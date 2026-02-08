@@ -23,20 +23,24 @@ const Product = ({ product }) => {
             )}
 
             {/* Image Container */}
-            <Link to={`/product/${product._id}`} className="block relative overflow-hidden bg-secondary rounded-t-xl aspect-[4/5]">
+            <Link to={`/product/${product._id}`} className="block relative overflow-hidden bg-gray-50 rounded-t-xl aspect-[4/5]">
                 <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    loading="lazy"
                 />
+
+                {/* Overlay gradient for text readability if needed, or just subtle darken */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none" />
 
                 {/* Quick Add Button (Visible on Hover) */}
                 <button
                     onClick={addToCartHandler}
-                    className="absolute bottom-4 right-4 bg-white text-text-main p-3 rounded-full shadow-lg translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hover:bg-accent hover:text-white"
+                    className="absolute bottom-4 right-4 bg-white text-text-main w-10 h-10 flex items-center justify-center rounded-full shadow-lg translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75 hover:bg-accent hover:text-white z-20"
                     title="Quick Add"
                 >
-                    <FaPlus />
+                    <FaPlus className="text-sm" />
                 </button>
             </Link>
 
