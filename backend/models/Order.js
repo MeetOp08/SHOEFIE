@@ -90,7 +90,7 @@ const orderSchema = mongoose.Schema(
         },
         deliveryPartner: {
             type: String,
-            enum: ['Amazon Logistics', 'Flipkart Ekart', 'Delhivery', 'Blue Dart', 'DTDC', ''],
+            enum: ['Amazon Logistics', 'Flipkart Ekart', 'Delhivery', 'Blue Dart', 'DTDC', 'Logistics Partner', 'Other', ''],
             default: ''
         },
         trackingId: {

@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
     useGetCategoriesQuery,
-    useGetBrandsQuery
+    useGetBrandsQuery,
+    useCreateProductMutation
 } from '../../slices/productsApiSlice';
-import productService from '../../services/productService';
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
 import { FaUpload, FaArrowLeft } from 'react-icons/fa';
@@ -19,8 +19,8 @@ const ProductCreateScreen = () => {
     const [price, setPrice] = useState(0);
     const [discountPrice, setDiscountPrice] = useState(0);
     const [description, setDescription] = useState('');
-    const [brand, setBrand] = useState(''); // Stores Name now, potentially ID if using select
-    const [category, setCategory] = useState(''); // Stores ID
+    const [brand, setBrand] = useState('');
+    const [category, setCategory] = useState('');
     const [countInStock, setCountInStock] = useState(0);
     const [gender, setGender] = useState('Unisex');
     const [material, setMaterial] = useState('');
@@ -33,11 +33,11 @@ const ProductCreateScreen = () => {
     // Images
     const [files, setFiles] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
-    const [uploading, setUploading] = useState(false);
 
     // Queries
-    const { data: categories, isLoading: loadingCategories, error: errorCategories } = useGetCategoriesQuery();
-    const { data: brands, isLoading: loadingBrands, error: errorBrands } = useGetBrandsQuery();
+    const { data: categories, isLoading: loadingCategories } = useGetCategoriesQuery();
+    const { data: brands, isLoading: loadingBrands } = useGetBrandsQuery();
+    const [createProduct, { isLoading: uploading }] = useCreateProductMutation();
 
     // Standard Sizes/Colors Options
     const sizeOptions = [6, 7, 8, 9, 10, 11, 12];
@@ -85,22 +85,13 @@ const ProductCreateScreen = () => {
         formData.append('price', price);
         formData.append('discountPrice', discountPrice);
         formData.append('description', description);
-        formData.append('brand', brand); // Assuming User types Brand or selects from list? I'll use list if available.
+        formData.append('brand', brand);
         formData.append('category', category); // ID
         formData.append('countInStock', countInStock);
         formData.append('gender', gender);
         formData.append('material', material);
         formData.append('isFeatured', isFeatured);
 
-        // Arrays
-        // Multer/Express handles arrays cleaner if sent individually or stringified?
-        // My backend maps: sizesAvailable.split(',') OR JSON.parse. 
-        // Safer to send as JSON string if Backend expects it or simple repeated fields.
-        // My backend logic: JSON.parse(sizesAvailable) OR split.
-        // I will verify backend logic: 
-        // if (typeof sizesAvailable === 'string') split.
-        // FormData usually sends array as separate fields 'sizesAvailable': 6, 'sizesAvailable': 7
-        // Let's rely on JSON stringify to be explicit.
         formData.append('sizesAvailable', JSON.stringify(sizesAvailable));
         formData.append('colorsAvailable', JSON.stringify(colorsAvailable));
 
@@ -110,14 +101,11 @@ const ProductCreateScreen = () => {
         }
 
         try {
-            setUploading(true);
-            await productService.createProduct(formData);
-            setUploading(false);
+            await createProduct(formData).unwrap();
             toast.success('Product Created Successfully');
             navigate('/admin/productlist');
         } catch (err) {
-            setUploading(false);
-            toast.error(err.response?.data?.message || err.message);
+            toast.error(err?.data?.message || err.error);
         }
     };
 
