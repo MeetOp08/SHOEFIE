@@ -16,8 +16,9 @@ const {
     deleteBrand
 } = require('../controllers/productController');
 const { protect, admin } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 
-router.route('/').get(getProducts).post(protect, admin, createProduct);
+router.route('/').get(getProducts).post(protect, admin, upload.array('images'), createProduct);
 router.route('/reviews').get(protect, admin, getReviews);
 router.route('/reviews/:productId/:reviewId').delete(protect, admin, deleteReview);
 router.route('/top').get(getTopProducts);

@@ -101,9 +101,24 @@ const productSchema = mongoose.Schema(
         sizes: [
             { type: Number } // e.g., 7, 8, 9, 10
         ],
-        colors: [
+        gender: {
+            type: String,
+            required: true,
+            enum: ['Men', 'Women', 'Kids', 'Unisex'],
+        },
+        material: {
+            type: String,
+            required: true,
+        },
+        sizesAvailable: [
+            { type: Number }
+        ],
+        colorsAvailable: [
             { type: String }
         ],
+        // Legacy Fields (Optional Keep for compatibility)
+        sizes: [{ type: Number }],
+        colors: [{ type: String }],
         originWarehouse: {
             type: String,
             enum: ['Warehouse', 'Seller'],

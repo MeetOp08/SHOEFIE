@@ -10,10 +10,12 @@ const getProducts = asyncHandler(async (req, res) => {
 
     const keyword = req.query.keyword
         ? {
-            name: {
-                $regex: req.query.keyword,
-                $options: 'i',
-            },
+            $or: [
+                { name: { $regex: req.query.keyword, $options: 'i' } },
+                { description: { $regex: req.query.keyword, $options: 'i' } },
+                { brand: { $regex: req.query.keyword, $options: 'i' } },
+                { subCategory: { $regex: req.query.keyword, $options: 'i' } },
+            ],
         }
         : {};
 
@@ -88,59 +90,116 @@ const generateSlug = (text) => {
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private/Admin
+// @desc    Create a product (with image upload)
+// @route   POST /api/products
+// @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
-    const {
-        name, price, discountPrice, image, images, brand, category,
-        countInStock, description, sizes, colors, isFeatured, isActive, status
-    } = req.body;
+    // --- DEBUG LOGS START ---
+    console.log("-----------------------------------------");
+    console.log("1. Create Product Controller Reached");
+    console.log("2. User:", req.user ? req.user._id : "No User Found");
+    console.log("3. Req Body:", JSON.stringify(req.body, null, 2));
+    console.log("4. Req Files:", req.files ? req.files.length : "No Files");
+    // --- DEBUG LOGS END ---
 
-    const slug = name ? generateSlug(name) : `sample-${Date.now()}`;
-
-    // If data is provided, create product with it
-    if (name && price && category) {
-        const product = new Product({
+    try {
+        const {
             name,
-            slug,
+            price,
+            discountPrice,
+            description,
+            brand,
+            category,
+            countInStock,
+            gender,
+            material,
+            sizesAvailable,
+            colorsAvailable,
+            isFeatured
+        } = req.body;
+
+        // Image Handling
+        let images = [];
+        if (req.files && req.files.length > 0) {
+            images = req.files.map(file => file.path); // Cloudinary URL
+        }
+
+        console.log("5. Images Processed:", images);
+
+        // Validate
+        if (!name || !price || !category || !gender || !material) {
+            console.log("!!! Validation Failed: Missing required fields !!!");
+            res.status(400);
+            throw new Error('Please fill all required fields');
+        }
+
+        // Parse Arrays if sent as strings (FormData quirk)
+        let parsedSizes = [];
+        if (typeof sizesAvailable === 'string') {
+            try {
+                parsedSizes = JSON.parse(sizesAvailable);
+            } catch (e) {
+                console.log("Error parsing sizes:", e.message);
+                parsedSizes = sizesAvailable.split(',').map(s => Number(s.trim()));
+            }
+        } else if (Array.isArray(sizesAvailable)) {
+            parsedSizes = sizesAvailable.map(Number);
+        }
+
+        let parsedColors = [];
+        if (typeof colorsAvailable === 'string') {
+            try {
+                parsedColors = JSON.parse(colorsAvailable);
+            } catch (e) {
+                console.log("Error parsing colors:", e.message);
+                parsedColors = colorsAvailable.split(',').map(c => c.trim());
+            }
+        } else if (Array.isArray(colorsAvailable)) {
+            parsedColors = colorsAvailable;
+        }
+
+        console.log("6. Sizes/Colors Parsed:", parsedSizes, parsedColors);
+
+        // Create Product
+        const product = new Product({
+            user: req.user._id,
+            name,
             price,
             discountPrice: discountPrice || 0,
-            user: req.user._id,
-            image: image || '/images/sample.jpg',
-            images: images || [],
-            brand: brand || 'Sample Brand',
-            category,
+            image: images[0] || '/images/sample.jpg', // Main image
+            images: images,
+            brand,
+            category, // Expecting ObjectId from Frontend
             countInStock: countInStock || 0,
+            gender,
+            material,
+            sizesAvailable: parsedSizes,
+            colorsAvailable: parsedColors,
+            // Legacy mapping
+            sizes: parsedSizes,
+            colors: parsedColors,
+
+            description,
+            isFeatured: isFeatured === 'true' || isFeatured === true, // Check boolean
             numReviews: 0,
-            description: description || 'Sample description',
-            sizes: sizes || [],
-            colors: colors || [],
-            isFeatured: isFeatured || false,
-            isActive: isActive !== undefined ? isActive : true,
-            status: status || 'Published',
-        });
-        const createdProduct = await product.save();
-        res.status(201).json(createdProduct);
-    } else {
-        // Fallback or Draft creation
-        const product = new Product({
-            name: 'Sample Name',
-            slug: `sample-name-${Date.now()}`,
-            price: 0,
-            user: req.user._id,
-            image: '/images/sample.jpg',
-            brand: 'Sample Brand',
-            category: 'Sample Category',
-            countInStock: 0,
-            numReviews: 0,
-            description: 'Sample description',
-            sizes: [],
-            colors: [],
-            isFeatured: false,
-            isActive: true,
-            status: 'Draft'
+            rating: 0,
+            slug: name.toLowerCase().split(' ').join('-') + '-' + Date.now()
         });
 
+        console.log("7. Saving Product to DB...");
         const createdProduct = await product.save();
+        console.log("8. Product Saved Successfully:", createdProduct._id);
+
         res.status(201).json(createdProduct);
+    } catch (error) {
+        // --- ERROR LOG START ---
+        console.error("!!! ERROR SAVING PRODUCT !!!");
+        console.error("Error Message:", error.message);
+        if (error.errors) console.error("Validation Errors:", error.errors);
+        // --- ERROR LOG END ---
+
+        res.status(400);
+        throw new Error(error.message);
     }
 });
 
