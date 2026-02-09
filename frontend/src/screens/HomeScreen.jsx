@@ -1,28 +1,33 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useSearchParams } from 'react-router-dom';
 import { useGetProductsQuery } from '../slices/productsApiSlice';
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import FilterSidebar from '../components/FilterSidebar';
-import { useState } from 'react';
+// import { useState } from 'react'; // Removed
 
 const HomeScreen = () => {
     const { pageNumber, keyword } = useParams();
-    const [categoryFilter, setCategoryFilter] = useState('');
-    const [brandFilter, setBrandFilter] = useState('');
+
+    // Read Query Params
+    const [searchParams] = useSearchParams();
+    const categoryFilter = searchParams.get('category') || '';
+    const brandFilter = searchParams.get('brand') || '';
+    const genderFilter = searchParams.get('gender') || '';
 
     const { data, isLoading, error } = useGetProductsQuery({
         keyword,
         pageNumber,
         category: categoryFilter,
         brand: brandFilter,
+        gender: genderFilter,
     });
 
     return (
         <div className="min-h-screen bg-primary pb-20">
             {/* Hero Section (Optional Placeholder) */}
-            {!keyword && !categoryFilter && !brandFilter && (
+            {!keyword && !categoryFilter && !brandFilter && !genderFilter && (
                 <div className="bg-secondary mb-12 py-16 md:py-24 text-center border-b border-border-color">
                     <div className="container-custom">
                         <h1 className="text-4xl md:text-6xl font-display font-bold text-text-main mb-4">
@@ -43,10 +48,7 @@ const HomeScreen = () => {
 
                     {/* Sidebar Filter */}
                     <aside className="w-full lg:w-1/4">
-                        <FilterSidebar
-                            setCategoryFilter={setCategoryFilter}
-                            setBrandFilter={setBrandFilter}
-                        />
+                        <FilterSidebar />
                     </aside>
 
                     {/* Product Grid */}

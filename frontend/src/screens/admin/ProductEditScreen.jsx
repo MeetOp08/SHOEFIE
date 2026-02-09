@@ -19,6 +19,7 @@ const ProductEditScreen = () => {
     const [image, setImage] = useState('');
     const [brand, setBrand] = useState('');
     const [category, setCategory] = useState('');
+    const [gender, setGender] = useState('Unisex'); // Added gender state
     const [discountPrice, setDiscountPrice] = useState(0);
     const [countInStock, setCountInStock] = useState(0);
     const [description, setDescription] = useState('');
@@ -57,6 +58,7 @@ const ProductEditScreen = () => {
             setImage(product.image);
             setBrand(product.brand);
             setCategory(product.category?._id || product.category); // Handle populated or unpopulated
+            setGender(product.gender || 'Unisex'); // Set gender
             setDiscountPrice(product.discountPrice || 0);
             setCountInStock(product.countInStock);
             setDescription(product.description);
@@ -81,6 +83,7 @@ const ProductEditScreen = () => {
                 images,
                 brand,
                 category,
+                gender,
                 description,
                 countInStock,
                 sizes,
@@ -182,6 +185,19 @@ const ProductEditScreen = () => {
                                             ))}
                                         </select>
                                     )}
+                                </div>
+                                <div>
+                                    <label className="block mb-2 font-bold text-text-main">Gender</label>
+                                    <select
+                                        value={gender}
+                                        onChange={(e) => setGender(e.target.value)}
+                                        className="input-field"
+                                    >
+                                        <option value="Unisex">Unisex</option>
+                                        <option value="Men">Men</option>
+                                        <option value="Women">Women</option>
+                                        <option value="Kids">Kids</option>
+                                    </select>
                                 </div>
                             </div>
 

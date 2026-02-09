@@ -19,6 +19,13 @@ const getProducts = asyncHandler(async (req, res) => {
         }
         : {};
 
+    console.log('🔍 Filtering Products:', {
+        keyword: req.query.keyword,
+        category: req.query.category,
+        brand: req.query.brand,
+        gender: req.query.gender
+    });
+
     // Filter by Category
     if (req.query.category) {
         const categories = req.query.category.split(',');
@@ -29,6 +36,12 @@ const getProducts = asyncHandler(async (req, res) => {
     if (req.query.brand) {
         const brands = req.query.brand.split(',');
         keyword.brand = { $in: brands };
+    }
+
+    // Filter by Gender
+    if (req.query.gender) {
+        const genders = req.query.gender.split(',');
+        keyword.gender = { $in: genders };
     }
 
     const count = await Product.countDocuments({ ...keyword });
@@ -216,6 +229,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         images,
         brand,
         category,
+        gender,
         countInStock,
         sizes,
         colors,
@@ -237,6 +251,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         product.images = images || product.images;
         product.brand = brand || product.brand;
         product.category = category || product.category;
+        product.gender = gender || product.gender; // Update Gender
         product.countInStock = countInStock || product.countInStock;
         product.sizes = sizes || product.sizes;
         product.colors = colors || product.colors;
