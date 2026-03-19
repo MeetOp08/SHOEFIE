@@ -31,11 +31,16 @@ const importData = async () => {
 
         console.log('Cleared Products and Brands.'.red);
 
-        // 2. GET ADMIN USER
-        const adminUser = await User.findOne({ isAdmin: true });
+        // 2. GET OR CREATE ADMIN USER
+        let adminUser = await User.findOne({ isAdmin: true });
+        
         if (!adminUser) {
-            console.error('No Admin User found! Please create a user first.'.red.inverse);
-            process.exit(1);
+            console.log('No Admin User found. Creating default users...'.yellow);
+            const { users } = require('./data');
+            // We use User.create instead of insertMany to trigger password hashing pre-save hooks
+            await User.create(users);
+            adminUser = await User.findOne({ isAdmin: true });
+            console.log('Default users created!'.green);
         }
         const adminUserId = adminUser._id;
 
@@ -102,6 +107,7 @@ const importData = async () => {
             const modelName = faker.commerce.productName().split(' ').slice(0, 2).join(' ');
             const shoeType = faker.helpers.arrayElement(['Runner', 'Sneaker', 'Boot', 'Loafer', 'Trainer', 'Walker']);
             const finalName = `${brandObj.name} ${modelName} ${shoeType}`;
+            const slug = finalName.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now() + '-' + i;
 
             const mainImage = faker.helpers.arrayElement(imagePool);
             const additionalImages = faker.helpers.arrayElements(imagePool, 3);
@@ -119,6 +125,7 @@ const importData = async () => {
             productsData.push({
                 user: adminUserId,
                 name: finalName,
+                slug: slug,
                 image: mainImage,
                 images: additionalImages,
                 brand: brandObj._id,

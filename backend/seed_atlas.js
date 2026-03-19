@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const colors = require('colors');
-const users = require('./data/users');
-const products = require('./data/products');
+const { users, products } = require('./seed/data');
 const User = require('./models/User');
 const Product = require('./models/Product');
 const Order = require('./models/Order');

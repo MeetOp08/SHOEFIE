@@ -1,0 +1,8 @@
+[33mLoading env from: C:\Users\hp\OneDrive\Desktop\SHOEFIE\backend\.env[39m
+[4m[36mStarting Safe Product Seeding...[39m[24m
+MongoDB Connected: ac-e0k6wd3-shard-00-00.cormt6o.mongodb.net
+[31mCleared Products and Brands.[39m
+[33mNo Admin User found. Creating default users...[39m
+[32mDefault users created![39m
+[32mCreated 8 Brands[39m
+ValidationError: slug: Path `slug` is required.
