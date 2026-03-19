@@ -11,6 +11,7 @@ import {
     useDeliverOrderMutation,
     useUpdateOrderStatusMutation
 } from '../slices/ordersApiSlice';
+import '../styles/OrderScreen.css';
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
@@ -63,8 +64,8 @@ const OrderScreen = () => {
     ) : error ? (
         <Message variant='danger'>{error?.data?.message || error.error}</Message>
     ) : (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-2xl md:text-3xl font-display font-bold text-text-main mb-8">Order <span className="text-accent">#{order._id}</span></h1>
+        <div className="container-custom order-container">
+            <h1 className="order-title">Order <span className="order-title-accent">#{order._id}</span></h1>
 
             <OrderTracking
                 status={order.status}
@@ -72,21 +73,21 @@ const OrderScreen = () => {
                 estimatedDelivery={order.estimatedDeliveryDate}
             />
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
-                <div className="lg:col-span-2 space-y-6">
+            <div className="order-layout">
+                <div className="order-details-col">
                     {/* Shipping Info */}
-                    <div className="card p-6 bg-white border border-border-color shadow-sm">
-                        <h2 className="text-xl font-bold font-display text-text-main mb-4 border-b border-border-color pb-2">Shipping Information</h2>
-                        <div className="space-y-2 text-text-muted">
-                            <p><strong className="text-text-main">Name: </strong> {order.user.name}</p>
-                            <p><strong className="text-text-main">Email: </strong> <a href={`mailto:${order.user.email}`} className="hover:text-accent transition-colors">{order.user.email}</a></p>
+                    <div className="order-card">
+                        <h2 className="order-card-title">Shipping Information</h2>
+                        <div className="order-card-text">
+                            <p><strong className="order-card-label">Name: </strong> {order.user.name}</p>
+                            <p><strong className="order-card-label">Email: </strong> <a href={`mailto:${order.user.email}`} className="order-email-link">{order.user.email}</a></p>
                             <p>
-                                <strong className="text-text-main">Address: </strong>
+                                <strong className="order-card-label">Address: </strong>
                                 {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
                                 {order.shippingAddress.postalCode}, {order.shippingAddress.country}
                             </p>
                         </div>
-                        <div className="mt-4">
+                        <div className="order-status-msg">
                             {order.isDelivered ? (
                                 <Message variant='success'>Delivered on {order.deliveredAt}</Message>
                             ) : (
@@ -96,9 +97,9 @@ const OrderScreen = () => {
 
                         {/* Origin Details */}
                         {order.originDetails && order.originDetails.originCity && (
-                            <div className="mt-6 border-t border-border-color pt-4">
-                                <p className="text-text-muted text-sm font-semibold">Dispatched From:</p>
-                                <p className="text-text-main">
+                            <div className="order-origin-details">
+                                <p className="order-origin-label">Dispatched From:</p>
+                                <p className="order-origin-value">
                                     {order.originDetails.originWarehouse} - {order.originDetails.originCity}, {order.originDetails.originCountry}
                                 </p>
                             </div>
@@ -106,9 +107,11 @@ const OrderScreen = () => {
                     </div>
 
                     {/* Payment Info */}
-                    <div className="card p-6 bg-white border border-border-color shadow-sm">
-                        <h2 className="text-xl font-bold font-display text-text-main mb-4 border-b border-border-color pb-2">Payment Method</h2>
-                        <p className="text-text-muted mb-4"><strong className="text-text-main">Method: </strong> {order.paymentMethod}</p>
+                    <div className="order-card">
+                        <h2 className="order-card-title">Payment Method</h2>
+                        <p className="order-card-text" style={{ marginBottom: '1rem' }}>
+                            <strong className="order-card-label">Method: </strong> {order.paymentMethod}
+                        </p>
                         {order.isPaid ? (
                             <Message variant='success'>Paid on {order.paidAt}</Message>
                         ) : order.paymentMethod === 'COD' ? (
@@ -119,22 +122,22 @@ const OrderScreen = () => {
                     </div>
 
                     {/* Order Items */}
-                    <div className="card p-6 bg-white border border-border-color shadow-sm">
-                        <h2 className="text-xl font-bold font-display text-text-main mb-4 border-b border-border-color pb-2">Order Items</h2>
+                    <div className="order-card">
+                        <h2 className="order-card-title">Order Items</h2>
                         {order.orderItems.length === 0 ? (
                             <Message>Order is empty</Message>
                         ) : (
-                            <div className="space-y-4">
+                            <div className="order-items-list">
                                 {order.orderItems.map((item, index) => (
-                                    <div key={index} className="flex items-center space-x-4 border-b border-border-color pb-4 last:border-0 last:pb-0">
-                                        <div className="w-16 h-16 bg-secondary rounded-lg overflow-hidden flex-shrink-0">
-                                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                    <div key={index} className="order-item-row">
+                                        <div className="order-item-img-wrap">
+                                            <img src={item.image} alt={item.name} className="order-item-img" />
                                         </div>
-                                        <Link to={`/product/${item.product}`} className="hover:text-accent font-semibold flex-grow text-text-main">
+                                        <Link to={`/product/${item.product}`} className="order-item-name">
                                             {item.name}
                                         </Link>
-                                        <div className="text-text-muted">
-                                            {item.qty} x <span className="font-medium">₹{item.price.toLocaleString()}</span> = <span className="text-text-main font-bold">₹{(item.qty * item.price).toLocaleString()}</span>
+                                        <div className="order-item-price-calc">
+                                            {item.qty} x <span className="order-item-price-unit">₹{item.price.toLocaleString()}</span> = <span className="order-item-price-total">₹{(item.qty * item.price).toLocaleString()}</span>
                                         </div>
                                     </div>
                                 ))}
@@ -144,34 +147,34 @@ const OrderScreen = () => {
                 </div>
 
                 {/* Order Summary */}
-                <div className="col-span-1">
-                    <div className="card p-6 sticky top-24 bg-white border border-border-color shadow-lg">
-                        <h2 className="text-2xl font-bold font-display text-text-main mb-6 border-b border-border-color pb-4">Order Summary</h2>
-                        <div className="space-y-3 text-text-muted text-sm">
-                            <div className="flex justify-between">
+                <div className="order-summary-col">
+                    <div className="order-summary-card">
+                        <h2 className="order-summary-title">Order Summary</h2>
+                        <div className="order-summary-details">
+                            <div className="order-summary-row">
                                 <span>Items</span>
                                 <span>₹{Number(order.itemsPrice).toLocaleString()}</span>
                             </div>
-                            <div className="flex justify-between">
+                            <div className="order-summary-row">
                                 <span>Shipping</span>
                                 <span>₹{Number(order.shippingPrice).toLocaleString()}</span>
                             </div>
-                            <div className="flex justify-between">
+                            <div className="order-summary-row">
                                 <span>Tax</span>
                                 <span>₹{Number(order.taxPrice).toLocaleString()}</span>
                             </div>
-                            <div className="flex justify-between border-t border-border-color pt-3 font-bold text-xl text-text-main">
+                            <div className="order-summary-total">
                                 <span>Total</span>
                                 <span>₹{Number(order.totalPrice).toLocaleString()}</span>
                             </div>
                         </div>
 
                         {!order.isPaid && (
-                            <div className="mt-6">
+                            <div className="order-pay-btn-wrap">
                                 {loadingPay && <Loader />}
                                 <button
                                     onClick={paymentHandler}
-                                    className="btn-primary w-full shadow-lg"
+                                    className="btn-primary order-pay-btn"
                                 >
                                     Pay Order (Simulate)
                                 </button>
@@ -182,26 +185,26 @@ const OrderScreen = () => {
 
                         {/* Admin Controls */}
                         {userInfo && userInfo.isAdmin && !order.isDelivered && (order.isPaid || order.paymentMethod === 'COD') && (
-                            <div className="space-y-3 mt-6 border-t border-border-color pt-4">
-                                <h3 className="font-bold text-text-main mb-2">Admin Actions</h3>
+                            <div className="order-admin-actions">
+                                <h3 className="order-admin-title">Admin Actions</h3>
 
                                 {order.status === 'Order Placed' && (
-                                    <button onClick={() => statusHandler('confirm')} className='btn-outline w-full hover:bg-accent hover:text-white hover:border-accent'>Confirm Order</button>
+                                    <button onClick={() => statusHandler('confirm')} className='order-admin-btn'>Confirm Order</button>
                                 )}
                                 {order.status === 'Order Confirmed' && (
-                                    <button onClick={() => statusHandler('pack')} className='btn-outline w-full hover:bg-accent hover:text-white hover:border-accent'>Pack Order</button>
+                                    <button onClick={() => statusHandler('pack')} className='order-admin-btn'>Pack Order</button>
                                 )}
                                 {order.status === 'Packed' && (
                                     <button onClick={() => {
                                         const tracking = prompt('Enter Tracking ID');
                                         if (tracking) statusHandler('ship', { deliveryPartner: 'Logistics Partner', trackingId: tracking, estimatedDeliveryDate: new Date(Date.now() + 86400000 * 3) })
-                                    }} className='btn-outline w-full hover:bg-accent hover:text-white hover:border-accent'>Ship Order</button>
+                                    }} className='order-admin-btn'>Ship Order</button>
                                 )}
                                 {order.status === 'Shipped' && (
-                                    <button onClick={() => statusHandler('out')} className='btn-outline w-full hover:bg-accent hover:text-white hover:border-accent'>Out for Delivery</button>
+                                    <button onClick={() => statusHandler('out')} className='order-admin-btn'>Out for Delivery</button>
                                 )}
                                 {order.status === 'Out for Delivery' && (
-                                    <button onClick={deliverOrderHandler} className='btn-primary w-full'>Mark Delivered</button>
+                                    <button onClick={deliverOrderHandler} className='order-admin-btn-primary'>Mark Delivered</button>
                                 )}
                             </div>
                         )}

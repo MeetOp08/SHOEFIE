@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaCheck } from 'react-icons/fa';
+import '../styles/CheckoutSteps.css';
 
 const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
     const steps = [
@@ -10,18 +11,17 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
     ];
 
     return (
-        <div className='flex justify-center mb-8'>
-            <div className='flex items-center space-x-2 md:space-x-4'>
+        <div className='checkout-steps-container'>
+            <div className='checkout-steps-wrapper'>
                 {steps.map((step, index) => (
-                    <div key={index} className="flex items-center">
+                    <div key={index} className="checkout-step-item">
                         {/* Step Circle */}
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors ${step.active ? 'bg-accent border-accent text-primary' : 'bg-transparent border-gray-600 text-gray-500'
-                            }`}>
+                        <div className={`checkout-step-circle ${step.active ? 'active' : ''}`}>
                             {step.active && index < 3 && step4 ? <FaCheck /> : index + 1}
                         </div>
 
                         {/* Step Label (Hidden on small screens if not active) */}
-                        <span className={`ml-2 font-semibold text-sm ${step.active ? 'text-white' : 'text-gray-500 hidden md:inline'}`}>
+                        <span className={`checkout-step-label ${step.active ? 'active' : ''}`}>
                             {step.active && step.link ? (
                                 <Link to={step.link}>{step.name}</Link> // Make link clickable if active/passed
                             ) : (
@@ -31,7 +31,7 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
 
                         {/* Separator Line */}
                         {index < steps.length - 1 && (
-                            <div className={`w-8 md:w-16 h-1 mx-2 rounded ${step.active && steps[index + 1].active ? 'bg-accent' : 'bg-gray-700'}`}></div>
+                            <div className={`checkout-step-separator ${step.active && steps[index + 1]?.active ? 'active' : ''}`}></div>
                         )}
                     </div>
                 ))}

@@ -7,9 +7,9 @@ import {
     useGetCategoriesQuery,
     useCreateCategoryMutation,
     useDeleteCategoryMutation,
-    useUpdateCategoryMutation
 } from '../../slices/categoriesApiSlice';
 import { toast } from 'react-toastify';
+import '../../styles/admin/CategoryListScreen.css';
 
 const CategoryListScreen = () => {
     const { data: categories, isLoading, error, refetch } = useGetCategoriesQuery();
@@ -79,27 +79,27 @@ const CategoryListScreen = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <Link className='btn-outline px-4 py-2 inline-flex items-center text-sm mb-8' to='/'>
+        <div className="container-custom admin-cat-container">
+            <Link className="btn-outline admin-cat-back" to='/'>
                 <FaArrowLeft className="mr-2" /> Go Back
             </Link>
 
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                <h1 className="text-3xl font-display font-bold text-text-main">Categories</h1>
+            <div className="admin-cat-header">
+                <h1 className="admin-cat-title">Categories</h1>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="admin-cat-layout">
                 {/* Create/Edit Form */}
-                <div className="lg:col-span-1">
-                    <div className="bg-white rounded-xl shadow-sm border border-border-color p-6 sticky top-24">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-bold text-text-main">{editMode ? 'Edit Category' : 'Create Category'}</h2>
-                            {editMode && <button onClick={cancelEdit} className="text-xs text-text-muted hover:text-accent">Cancel</button>}
+                <div className="admin-cat-sidebar">
+                    <div className="admin-cat-form-card">
+                        <div className="admin-cat-form-header">
+                            <h2 className="admin-cat-form-title">{editMode ? 'Edit Category' : 'Create Category'}</h2>
+                            {editMode && <button onClick={cancelEdit} className="admin-cat-form-cancel">Cancel</button>}
                         </div>
 
-                        <form onSubmit={submitHandler} className="space-y-4">
+                        <form onSubmit={submitHandler} className="admin-cat-form">
                             <div>
-                                <label className="block mb-1 text-sm font-bold text-text-main">Name</label>
+                                <label className="admin-cat-label">Name</label>
                                 <input
                                     type='text'
                                     placeholder='Category Name'
@@ -110,7 +110,7 @@ const CategoryListScreen = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block mb-1 text-sm font-bold text-text-main">Image URL</label>
+                                <label className="admin-cat-label">Image URL</label>
                                 <input
                                     type='text'
                                     placeholder='/images/sample.jpg'
@@ -120,7 +120,7 @@ const CategoryListScreen = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block mb-1 text-sm font-bold text-text-main">Description</label>
+                                <label className="admin-cat-label">Description</label>
                                 <textarea
                                     placeholder='Description (Optional)'
                                     value={description}
@@ -131,7 +131,7 @@ const CategoryListScreen = () => {
                             </div>
                             <button
                                 type='submit'
-                                className={`btn-primary w-full flex items-center justify-center ${editMode ? 'bg-orange-600 hover:bg-orange-700' : ''}`}
+                                className={`btn-primary admin-cat-submit ${editMode ? 'edit' : ''}`}
                                 disabled={loadingCreate || loadingUpdate}
                             >
                                 {editMode ? <><FaEdit className="mr-2" /> Update Category</> : <><FaPlus className="mr-2" /> Create Category</>}
@@ -141,56 +141,58 @@ const CategoryListScreen = () => {
                 </div>
 
                 {/* Categories List */}
-                <div className="lg:col-span-2">
+                <div className="admin-cat-list-area">
                     {isLoading ? (
                         <Loader />
                     ) : error ? (
                         <Message variant='danger'>{error?.data?.message || error.error}</Message>
                     ) : (
-                        <div className="bg-white rounded-xl shadow-sm border border-border-color overflow-hidden">
-                            <table className="w-full text-left">
-                                <thead className="bg-gray-50 border-b border-border-color text-text-muted uppercase text-xs font-semibold">
-                                    <tr>
-                                        <th className="px-6 py-4">Image</th>
-                                        <th className="px-6 py-4">Name</th>
-                                        <th className="px-6 py-4">Description</th>
-                                        <th className="px-6 py-4 text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100">
-                                    {categories.map((category) => (
-                                        <tr key={category._id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="px-6 py-4">
-                                                <div className="w-12 h-12 rounded-lg bg-gray-100 border border-gray-200 overflow-hidden">
-                                                    <img src={category.image} alt={category.name} className="w-full h-full object-cover" />
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 font-bold text-text-main">{category.name}</td>
-                                            <td className="px-6 py-4 text-sm text-text-muted max-w-xs truncate">{category.description}</td>
-                                            <td className="px-6 py-4 text-center">
-                                                <div className="flex justify-center gap-2">
-                                                    <button
-                                                        onClick={() => editHandler(category)}
-                                                        className="text-blue-600 hover:text-blue-800 p-2 rounded hover:bg-blue-50 transition-colors"
-                                                        title="Edit"
-                                                    >
-                                                        <FaEdit />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => deleteHandler(category._id)}
-                                                        className="text-red-500 hover:text-red-700 p-2 rounded hover:bg-red-50 transition-colors"
-                                                        disabled={loadingDelete}
-                                                        title="Delete"
-                                                    >
-                                                        <FaTrash />
-                                                    </button>
-                                                </div>
-                                            </td>
+                        <div className="admin-cat-table-card">
+                            <div className="overflow-x-auto"> {/* Keep horizontal scroll */}
+                                <table className="admin-cat-table">
+                                    <thead className="admin-cat-thead">
+                                        <tr>
+                                            <th className="admin-cat-th">Image</th>
+                                            <th className="admin-cat-th">Name</th>
+                                            <th className="admin-cat-th">Description</th>
+                                            <th className="admin-cat-th center">Actions</th>
                                         </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                            {categories.length === 0 && <div className="p-8 text-center text-text-muted">No categories found</div>}
+                                    </thead>
+                                    <tbody className="admin-cat-tbody">
+                                        {categories.map((category) => (
+                                            <tr key={category._id} className="admin-cat-tr">
+                                                <td className="admin-cat-td">
+                                                    <div className="admin-cat-img-wrap">
+                                                        <img src={category.image} alt={category.name} className="admin-cat-img" />
+                                                    </div>
+                                                </td>
+                                                <td className="admin-cat-td admin-cat-td-name">{category.name}</td>
+                                                <td className="admin-cat-td admin-cat-td-desc">{category.description}</td>
+                                                <td className="admin-cat-td center">
+                                                    <div className="admin-cat-actions">
+                                                        <button
+                                                            onClick={() => editHandler(category)}
+                                                            className="admin-cat-btn edit"
+                                                            title="Edit"
+                                                        >
+                                                            <FaEdit />
+                                                        </button>
+                                                        <button
+                                                            onClick={() => deleteHandler(category._id)}
+                                                            className="admin-cat-btn delete"
+                                                            disabled={loadingDelete}
+                                                            title="Delete"
+                                                        >
+                                                            <FaTrash />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                {categories.length === 0 && <div className="admin-cat-empty">No categories found</div>}
+                            </div>
                         </div>
                     )}
                 </div>

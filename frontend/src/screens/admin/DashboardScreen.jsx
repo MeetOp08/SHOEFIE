@@ -4,13 +4,14 @@ import Loader from '../../components/Loader';
 import Message from '../../components/Message';
 import { useGetOrderAnalyticsQuery } from '../../slices/ordersApiSlice';
 import { FaChartLine, FaShoppingBag, FaUsers, FaMoneyBillWave } from 'react-icons/fa';
+import '../../styles/admin/DashboardScreen.css';
 
 const DashboardScreen = () => {
     const { data: analytics, isLoading, error } = useGetOrderAnalyticsQuery();
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-display font-bold text-text-main mb-8">Admin Dashboard</h1>
+        <div className="container-custom admin-dashboard-container">
+            <h1 className="admin-dashboard-title">Admin Dashboard</h1>
 
             {isLoading ? (
                 <Loader />
@@ -19,68 +20,68 @@ const DashboardScreen = () => {
             ) : (
                 <>
                     {/* Stats Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <div className="admin-stats-grid">
                         {/* Total Sales */}
-                        <div className="bg-white rounded-xl shadow-sm border border-border-color p-6 border-l-4 border-l-green-500 flex items-center justify-between hover:shadow-md transition-shadow">
+                        <div className="admin-stat-card sales">
                             <div>
-                                <p className="text-text-muted text-sm font-semibold uppercase tracking-wider">Total Revenue</p>
-                                <p className="text-3xl font-bold text-text-main mt-1">${analytics.totalSales}</p>
+                                <p className="admin-stat-label">Total Revenue</p>
+                                <p className="admin-stat-value">${analytics.totalSales}</p>
                             </div>
-                            <div className="bg-green-100 p-4 rounded-full text-green-600 text-2xl">
+                            <div className="admin-stat-icon-wrap sales">
                                 <FaMoneyBillWave />
                             </div>
                         </div>
 
                         {/* Total Orders */}
-                        <div className="bg-white rounded-xl shadow-sm border border-border-color p-6 border-l-4 border-l-accent flex items-center justify-between hover:shadow-md transition-shadow">
+                        <div className="admin-stat-card orders">
                             <div>
-                                <p className="text-text-muted text-sm font-semibold uppercase tracking-wider">Total Orders</p>
-                                <p className="text-3xl font-bold text-text-main mt-1">{analytics.totalOrders}</p>
+                                <p className="admin-stat-label">Total Orders</p>
+                                <p className="admin-stat-value">{analytics.totalOrders}</p>
                             </div>
-                            <div className="bg-orange-100 p-4 rounded-full text-accent text-2xl">
+                            <div className="admin-stat-icon-wrap orders">
                                 <FaShoppingBag />
                             </div>
                         </div>
 
                         {/* Total Users */}
-                        <div className="bg-white rounded-xl shadow-sm border border-border-color p-6 border-l-4 border-l-blue-500 flex items-center justify-between hover:shadow-md transition-shadow">
+                        <div className="admin-stat-card users">
                             <div>
-                                <p className="text-text-muted text-sm font-semibold uppercase tracking-wider">Total Users</p>
-                                <p className="text-3xl font-bold text-text-main mt-1">{analytics.totalUsers}</p>
+                                <p className="admin-stat-label">Total Users</p>
+                                <p className="admin-stat-value">{analytics.totalUsers}</p>
                             </div>
-                            <div className="bg-blue-100 p-4 rounded-full text-blue-600 text-2xl">
+                            <div className="admin-stat-icon-wrap users">
                                 <FaUsers />
                             </div>
                         </div>
                     </div>
 
                     {/* Sales Chart Section (Simple Bar Visual) */}
-                    <div className="bg-white rounded-xl shadow-sm border border-border-color p-8">
-                        <div className="flex items-center justify-between mb-8">
-                            <h2 className="text-xl font-bold text-text-main">Sales Overview (Last 7 Days)</h2>
-                            <FaChartLine className="text-text-muted text-xl" />
+                    <div className="admin-chart-section">
+                        <div className="admin-chart-header">
+                            <h2 className="admin-chart-title">Sales Overview (Last 7 Days)</h2>
+                            <FaChartLine className="admin-chart-header-icon" />
                         </div>
 
                         {analytics.dailySales.length === 0 ? (
-                            <div className="text-center text-text-muted py-12">No sales data for the last 7 days</div>
+                            <div className="admin-chart-empty">No sales data for the last 7 days</div>
                         ) : (
-                            <div className="h-64 flex items-end space-x-4">
+                            <div className="admin-chart-bars">
                                 {(() => {
                                     const maxSales = Math.max(...analytics.dailySales.map(d => d.sales));
                                     return analytics.dailySales.map((item) => {
                                         const heightPercent = maxSales > 0 ? (item.sales / maxSales) * 100 : 0;
                                         return (
-                                            <div key={item._id} className="flex-1 flex flex-col items-center group">
-                                                <div className="relative w-full flex justify-center items-end h-full">
+                                            <div key={item._id} className="admin-chart-bar-container">
+                                                <div className="admin-chart-bar-wrap">
                                                     <div
-                                                        className="w-full bg-accent/20 hover:bg-accent rounded-t transition-all duration-300 relative group-hover:scale-y-105 origin-bottom"
+                                                        className="admin-chart-bar-inner"
                                                         style={{ height: `${heightPercent}%` }}
                                                     ></div>
-                                                    <div className="absolute -top-8 text-xs text-accent font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <div className="admin-chart-bar-tooltip">
                                                         ${item.sales}
                                                     </div>
                                                 </div>
-                                                <div className="text-xs text-text-muted mt-2 font-mono">{item._id.substring(5)}</div>
+                                                <div className="admin-chart-bar-date">{item._id.substring(5)}</div>
                                             </div>
                                         );
                                     });

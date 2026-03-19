@@ -10,6 +10,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Rating from '../components/Rating';
 import { FaHeart, FaTruck, FaUndo, FaShieldAlt, FaStar, FaExclamationTriangle } from 'react-icons/fa';
+import '../styles/ProductScreen.css';
 
 const ProductScreen = () => {
     const { id: productId } = useParams();
@@ -70,9 +71,9 @@ const ProductScreen = () => {
     };
 
     return (
-        <div className="min-h-screen bg-primary py-10">
+        <div className="product-screen-container">
             <div className="container-custom">
-                <Link to="/" className="text-sm font-medium text-text-muted hover:text-accent mb-6 inline-block">
+                <Link to="/" className="product-back-link">
                     &larr; Back to Collection
                 </Link>
 
@@ -81,21 +82,21 @@ const ProductScreen = () => {
                 ) : error ? (
                     <Message variant='danger'>{error?.data?.message || error.error}</Message>
                 ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
+                    <div className="product-layout">
                         {/* 1. Left: Image Gallery */}
-                        <div className="space-y-6 sticky top-24 self-start">
+                        <div className="product-gallery">
                             {/* Main Image */}
-                            <div className="bg-white rounded-3xl overflow-hidden aspect-[4/5] shadow-lg border border-gray-100 relative group">
+                            <div className="product-main-image-card">
                                 <img
                                     src={activeImage || product.image}
                                     alt={product.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 cursor-zoom-in"
+                                    className="product-main-img"
                                 />
                                 {/* Optional: Zoom hint icon could go here */}
                             </div>
 
                             {/* Thumbnails */}
-                            <div className="grid grid-cols-5 gap-3">
+                            <div className="product-thumbnails-grid">
                                 {product.images && [product.image, ...product.images].map((img, idx) => {
                                     // Deduplicate main image if it appears in images array
                                     if (idx > 0 && img === product.image) return null;
@@ -105,12 +106,10 @@ const ProductScreen = () => {
                                     return (
                                         <div
                                             key={idx}
-                                            className={`cursor-pointer rounded-xl overflow-hidden aspect-square border transition-all duration-200 ${isActive
-                                                ? 'border-accent ring-2 ring-accent ring-offset-2 opacity-100'
-                                                : 'border-gray-100 hover:border-gray-300 opacity-70 hover:opacity-100'}`}
+                                            className={`product-thumbnail-wrap ${isActive ? 'active' : 'inactive'}`}
                                             onClick={() => setActiveImage(img)}
                                         >
-                                            <img src={img} className="w-full h-full object-cover" alt={`View ${idx + 1}`} />
+                                            <img src={img} className="product-thumbnail-img" alt={`View ${idx + 1}`} />
                                         </div>
                                     );
                                 })}
@@ -118,60 +117,57 @@ const ProductScreen = () => {
                         </div>
 
                         {/* 2. Right: Product Details */}
-                        <div className="flex flex-col">
+                        <div className="product-details-col">
                             {/* Header */}
-                            <div className="mb-6">
-                                <h2 className="text-sm font-bold text-accent uppercase tracking-wider mb-2">
+                            <div className="product-header">
+                                <h2 className="product-brand">
                                     {typeof product.brand === 'object' ? product.brand.name : product.brand}
                                 </h2>
-                                <h1 className="text-3xl md:text-5xl font-display font-bold text-text-main mb-4">
+                                <h1 className="product-title">
                                     {product.name}
                                 </h1>
-                                <div className="flex items-center gap-4">
-                                    <div className="flex text-yellow-500 text-sm">
+                                <div className="product-rating-row">
+                                    <div className="product-stars">
                                         <Rating value={product.rating} />
                                     </div>
-                                    <span className="text-text-muted text-sm border-l border-border-color pl-4">
+                                    <span className="product-reviews-count">
                                         {product.numReviews} Verified Reviews
                                     </span>
                                 </div>
                             </div>
 
                             {/* Pricing */}
-                            <div className="mb-8 p-6 bg-secondary rounded-xl border border-border-color">
-                                <div className="flex items-baseline gap-3 mb-2">
+                            <div className="product-pricing-card">
+                                <div className="product-pricing-row">
                                     {product.discountPrice > 0 ? (
                                         <>
-                                            <span className="text-4xl font-bold text-text-main">₹{product.discountPrice.toLocaleString()}</span>
-                                            <span className="text-xl text-text-muted line-through">₹{product.price.toLocaleString()}</span>
-                                            <span className="text-sm font-bold text-green-600 bg-green-100 px-2 py-1 rounded">
+                                            <span className="product-price-main">₹{product.discountPrice.toLocaleString()}</span>
+                                            <span className="product-price-muted">₹{product.price.toLocaleString()}</span>
+                                            <span className="product-discount-badge">
                                                 {product.discount}% OFF
                                             </span>
                                         </>
                                     ) : (
-                                        <span className="text-4xl font-bold text-text-main">₹{product.price.toLocaleString()}</span>
+                                        <span className="product-price-main">₹{product.price.toLocaleString()}</span>
                                     )}
                                 </div>
-                                <p className="text-sm text-text-muted">Includes all taxes & duties. Free shipping.</p>
+                                <p className="product-pricing-note">Includes all taxes & duties. Free shipping.</p>
                             </div>
 
                             {/* Description */}
-                            <p className="text-text-muted leading-relaxed mb-8">
+                            <p className="product-description-text">
                                 {product.description}
                             </p>
 
                             {/* Size Selector */}
                             {product.sizes?.length > 0 && (
-                                <div className="mb-8">
-                                    <label className="block text-sm font-bold text-text-main mb-3">Select Size (UK/India)</label>
-                                    <div className="flex flex-wrap gap-3">
+                                <div className="product-size-container">
+                                    <label className="product-size-label">Select Size (UK/India)</label>
+                                    <div className="product-size-grid">
                                         {product.sizes.map((s) => (
                                             <button
                                                 key={s}
-                                                className={`w-12 h-12 rounded-lg border-2 font-bold flex items-center justify-center transition-all ${size === s
-                                                    ? 'border-accent bg-accent text-white shadow-lg'
-                                                    : 'border-border-color text-text-main hover:border-gray-400'
-                                                    }`}
+                                                className={`product-size-btn ${size === s ? 'active' : 'inactive'}`}
                                                 onClick={() => setSize(s)}
                                             >
                                                 {s}
@@ -183,17 +179,17 @@ const ProductScreen = () => {
 
                             {/* Low Stock Warning */}
                             {product.countInStock > 0 && product.countInStock <= (product.lowStockThreshold || 5) && (
-                                <div className="text-red-600 font-bold mb-4 flex items-center animate-pulse">
-                                    <FaExclamationTriangle className="mr-2" />
+                                <div className="product-stock-warning">
+                                    <FaExclamationTriangle />
                                     Hurry! Only {product.countInStock} left in stock.
                                 </div>
                             )}
 
                             {/* Action Buttons */}
-                            <div className="flex gap-4 mb-8">
-                                <div className="w-24">
+                            <div className="product-actions-row">
+                                <div className="product-qty-select-wrap">
                                     <select
-                                        className="input-field h-full font-bold text-center"
+                                        className="input-field product-qty-select"
                                         value={qty}
                                         onChange={(e) => setQty(Number(e.target.value))}
                                     >
@@ -205,31 +201,31 @@ const ProductScreen = () => {
                                 <button
                                     onClick={addToCartHandler}
                                     disabled={product.countInStock === 0}
-                                    className="btn-primary flex-grow text-lg shadow-xl"
+                                    className="btn-primary product-add-cart-btn"
                                 >
                                     {product.countInStock > 0 ? 'Add to Cart' : 'Sold Out'}
                                 </button>
                                 <button
                                     onClick={addToWishlistHandler}
-                                    className="w-14 h-14 rounded-lg border border-border-color flex items-center justify-center text-text-muted hover:text-red-500 hover:border-red-500 transition-colors"
+                                    className="product-wishlist-btn"
                                 >
-                                    <FaHeart className="text-xl" />
+                                    <FaHeart className="product-wishlist-icon" />
                                 </button>
                             </div>
 
                             {/* Trust Badges */}
-                            <div className="grid grid-cols-3 gap-6 pt-6 border-t border-border-color">
-                                <div className="text-center">
-                                    <FaTruck className="text-2xl text-accent mx-auto mb-2" />
-                                    <span className="text-xs font-bold text-text-main block">Fast Delivery</span>
+                            <div className="product-trust-badges">
+                                <div className="product-trust-item">
+                                    <FaTruck className="product-trust-icon" />
+                                    <span className="product-trust-text">Fast Delivery</span>
                                 </div>
-                                <div className="text-center">
-                                    <FaUndo className="text-2xl text-accent mx-auto mb-2" />
-                                    <span className="text-xs font-bold text-text-main block">Easy Returns</span>
+                                <div className="product-trust-item">
+                                    <FaUndo className="product-trust-icon" />
+                                    <span className="product-trust-text">Easy Returns</span>
                                 </div>
-                                <div className="text-center">
-                                    <FaShieldAlt className="text-2xl text-accent mx-auto mb-2" />
-                                    <span className="text-xs font-bold text-text-main block">Secure Pay</span>
+                                <div className="product-trust-item">
+                                    <FaShieldAlt className="product-trust-icon" />
+                                    <span className="product-trust-text">Secure Pay</span>
                                 </div>
                             </div>
                         </div>
@@ -238,11 +234,11 @@ const ProductScreen = () => {
 
                 {/* Related Products Section */}
                 {relatedProductsData?.products?.length > 1 && (
-                    <div className="mt-20 border-t border-border-color pt-10">
-                        <h3 className="text-2xl font-display font-bold text-text-main mb-8">
+                    <div className="product-section product-section-top-border">
+                        <h3 className="product-section-title">
                             You Might Also Like
                         </h3>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div className="product-related-grid">
                             {relatedProductsData.products
                                 .filter((p) => p._id !== productId)
                                 .slice(0, 4)
@@ -254,33 +250,33 @@ const ProductScreen = () => {
                 )}
 
                 {/* Reviews Section */}
-                <div className="mt-20">
-                    <h3 className="text-2xl font-display font-bold text-text-main mb-8 border-b border-border-color pb-4">
+                <div className="product-section">
+                    <h3 className="product-section-title product-section-title-border">
                         Customer Reviews
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div className="product-reviews-layout">
                         {/* Existing Reviews */}
-                        <div className="space-y-6">
+                        <div className="product-reviews-list">
                             {product?.reviews.length === 0 && <Message>No reviews yet.</Message>}
                             {product?.reviews.map((review) => (
-                                <div key={review._id} className="card p-6">
-                                    <div className="flex justify-between mb-2">
-                                        <strong className="font-bold text-text-main">{review.name}</strong>
+                                <div key={review._id} className="card product-review-card">
+                                    <div className="product-review-header">
+                                        <strong className="product-review-author">{review.name}</strong>
                                         <Rating value={review.rating} />
                                     </div>
-                                    <p className="text-text-muted text-sm mb-2">{review.createdAt.substring(0, 10)}</p>
-                                    <p className="text-text-main">{review.comment}</p>
+                                    <p className="product-review-date">{review.createdAt.substring(0, 10)}</p>
+                                    <p className="product-review-text">{review.comment}</p>
                                 </div>
                             ))}
                         </div>
 
                         {/* Write Review */}
-                        <div className="card p-8 bg-secondary">
-                            <h4 className="text-xl font-bold mb-4">Write a Review</h4>
+                        <div className="card product-review-write">
+                            <h4 className="product-review-write-title">Write a Review</h4>
                             {userInfo ? (
-                                <form onSubmit={submitHandler} className="space-y-4">
+                                <form onSubmit={submitHandler} className="product-review-form">
                                     <div>
-                                        <label className="block text-sm font-medium mb-1">Rating</label>
+                                        <label className="product-review-label">Rating</label>
                                         <select
                                             value={rating}
                                             onChange={(e) => setRating(Number(e.target.value))}
@@ -295,7 +291,7 @@ const ProductScreen = () => {
                                         </select>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-1">Comment</label>
+                                        <label className="product-review-label">Comment</label>
                                         <textarea
                                             rows="4"
                                             value={comment}
@@ -304,12 +300,12 @@ const ProductScreen = () => {
                                             placeholder="How was the product?"
                                         ></textarea>
                                     </div>
-                                    <button type="submit" className="btn-primary w-full" disabled={loadingProductReview}>
+                                    <button type="submit" className="btn-primary product-review-submit-btn" disabled={loadingProductReview}>
                                         Submit Review
                                     </button>
                                 </form>
                             ) : (
-                                <Message>Please <Link to="/login" className="text-accent underline">sign in</Link> to write a review</Message>
+                                <Message>Please <Link to="/login" className="product-review-login-link">sign in</Link> to write a review</Message>
                             )}
                         </div>
                     </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import '../styles/AuthScreen.css';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import { useLoginMutation } from '../slices/usersApiSlice';
@@ -39,16 +40,16 @@ const LoginScreen = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-[80vh] bg-primary py-12 px-4 sm:px-6 lg:px-8">
-            <div className="card w-full max-w-md p-10 bg-white shadow-xl rounded-2xl border border-border-color">
-                <div className="text-center mb-8">
-                    <h1 className="text-3xl font-display font-bold text-text-main mb-2">Welcome Back</h1>
-                    <p className="text-text-muted text-sm">Enter your credentials to access your account.</p>
+        <div className="auth-container">
+            <div className="card auth-card">
+                <div className="auth-header">
+                    <h1 className="auth-title">Welcome Back</h1>
+                    <p className="auth-subtitle">Enter your credentials to access your account.</p>
                 </div>
 
-                <form onSubmit={submitHandler} className="space-y-6">
+                <form onSubmit={submitHandler} className="auth-form">
                     <div>
-                        <label className="block mb-2 text-sm font-semibold text-text-main">Email Address</label>
+                        <label className="auth-label">Email Address</label>
                         <input
                             type='email'
                             placeholder='name@example.com'
@@ -60,9 +61,9 @@ const LoginScreen = () => {
                     </div>
 
                     <div>
-                        <div className="flex justify-between items-center mb-2">
-                            <label className="text-sm font-semibold text-text-main">Password</label>
-                            <Link to="/forgot-password" className="text-xs text-accent hover:underline">Forgot password?</Link>
+                        <div className="auth-label-group">
+                            <label className="auth-label">Password</label>
+                            <Link to="/forgot-password" className="auth-forgot-link">Forgot password?</Link>
                         </div>
                         <input
                             type='password'
@@ -77,17 +78,17 @@ const LoginScreen = () => {
                     <button
                         type='submit'
                         disabled={isLoading}
-                        className="btn-primary w-full py-3 text-base"
+                        className="btn-primary auth-btn"
                     >
                         {isLoading ? 'Signing In...' : 'Sign In'}
                     </button>
 
-                    {isLoading && <div className="flex justify-center mt-4"><Loader /></div>}
+                    {isLoading && <div className="auth-loader-container"><Loader /></div>}
                 </form>
 
-                <div className='mt-8 pt-6 border-t border-border-color text-center text-sm text-text-muted'>
+                <div className='auth-footer'>
                     <span>Not a member? </span>
-                    <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className="text-accent font-bold hover:underline ml-1">
+                    <Link to={redirect ? `/register?redirect=${redirect}` : '/register'} className="auth-link">
                         Create an account
                     </Link>
                 </div>

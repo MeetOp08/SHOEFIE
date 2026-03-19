@@ -1,0 +1,137 @@
+.admin-list-container {
+    padding-top: 2rem; /* py-8 */
+    padding-bottom: 2rem;
+}
+
+.admin-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem; /* mb-8 */
+}
+
+.admin-list-title {
+    font-size: 1.875rem; /* text-3xl */
+    font-family: 'Poppins', sans-serif; /* font-display */
+    font-weight: 700;
+    color: #111827; /* text-text-main */
+}
+
+.admin-list-create-btn {
+    display: flex;
+    align-items: center;
+    padding: 0.625rem 1.25rem; /* py-2.5 px-5 */
+    font-size: 0.875rem; /* text-sm */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+}
+
+.admin-list-create-icon {
+    margin-right: 0.5rem; /* mr-2 */
+}
+
+.admin-table-card {
+    background-color: #fff;
+    border-radius: 0.75rem; /* rounded-xl */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    border: 1px solid #d6d3d1; /* border-border-color */
+    overflow: hidden;
+    margin-bottom: 1.5rem; /* mb-6 */
+}
+
+.admin-table-responsive {
+    overflow-x: auto;
+}
+
+.admin-table {
+    min-width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table-head {
+    background-color: #f9fafb; /* bg-gray-50 */
+    border-bottom: 1px solid #d6d3d1; /* border-b border-border-color */
+}
+
+.admin-table-th {
+    padding: 1rem 1.5rem; /* py-4 px-6 */
+    text-align: left;
+    font-size: 0.75rem; /* text-xs */
+    font-weight: 600; /* font-semibold */
+    color: #6b7280; /* text-text-muted */
+    text-transform: uppercase;
+    letter-spacing: 0.05em; /* tracking-wider */
+}
+
+
+
+.admin-table-tr {
+    border-bottom: 1px solid #e5e7eb; /* divide-y equivalent */
+    transition: background-color 0.2s ease;
+}
+
+.admin-table-tr:last-child {
+    border-bottom: none;
+}
+
+.admin-table-tr:hover {
+    background-color: #f9fafb; /* hover:bg-gray-50 */
+}
+
+.admin-table-td {
+    padding: 1rem 1.5rem; /* py-4 px-6 */
+    font-size: 0.875rem; /* text-sm default */
+}
+
+.admin-table-td-id {
+    color: #6b7280; /* text-text-muted */
+    font-family: monospace; /* font-mono */
+}
+
+.admin-table-td-name {
+    font-weight: 500; /* font-medium */
+    color: #111827; /* text-text-main */
+}
+
+.admin-table-td-price {
+    font-weight: 700; /* font-bold */
+    color: #111827; /* text-text-main */
+}
+
+.admin-table-td-muted {
+    color: #6b7280; /* text-text-muted */
+}
+
+.admin-table-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* space-x-4 equivalent */
+}
+
+.admin-action-btn {
+    padding: 0.5rem; /* p-2 */
+    border-radius: 0.5rem; /* rounded-lg */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.admin-action-btn-edit {
+    background-color: #eff6ff; /* bg-blue-50 */
+    color: #2563eb; /* text-blue-600 */
+}
+
+.admin-action-btn-edit:hover {
+    background-color: #dbeafe; /* hover:bg-blue-100 */
+}
+
+.admin-action-btn-delete {
+    background-color: #fef2f2; /* bg-red-50 */
+    color: #ef4444; /* text-red-500 */
+}
+
+.admin-action-btn-delete:hover {
+    background-color: #fee2e2; /* hover:bg-red-100 */
+}

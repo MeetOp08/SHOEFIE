@@ -1,0 +1,137 @@
+.admin-order-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.admin-order-title {
+    font-size: 1.875rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+}
+
+.admin-order-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #d6d3d1;
+    overflow: hidden;
+}
+
+.admin-order-table-wrapper {
+    overflow-x: auto;
+}
+
+.admin-order-table {
+    min-width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-order-thead {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #d6d3d1;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-order-th {
+    padding: 1rem 1.5rem;
+}
+
+.admin-order-tr {
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s ease;
+}
+
+.admin-order-tr:last-child {
+    border-bottom: none;
+}
+
+.admin-order-tr:hover {
+    background-color: #f9fafb;
+}
+
+.admin-order-td {
+    padding: 1rem 1.5rem;
+    font-size: 0.875rem;
+}
+
+.admin-order-td-id {
+    color: #6b7280;
+    font-family: monospace;
+}
+
+.admin-order-td-user {
+    font-weight: 500;
+    color: #111827;
+}
+
+.admin-order-td-date {
+    color: #6b7280;
+}
+
+.admin-order-td-total {
+    font-weight: 700;
+    color: #111827;
+}
+
+.admin-order-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.admin-order-badge.paid {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.admin-order-badge.pending {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.admin-order-select {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+.admin-order-select.delivered {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.admin-order-select.cancelled {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.admin-order-select.default {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.admin-order-link {
+    color: #fca311;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.admin-order-link:hover {
+    color: #c2410c;
+    text-decoration: underline;
+}

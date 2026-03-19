@@ -1,0 +1,94 @@
+.admin-layout-container {
+    display: flex;
+    background-color: rgba(231, 229, 228, 0.3); /* bg-secondary/30 */
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: #111827; /* text-main */
+}
+
+.admin-layout-main {
+    flex: 1 1 0%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.admin-layout-content {
+    padding: 2rem; /* p-8 */
+}
+
+/* Sidebar CSS */
+.admin-sidebar-container {
+    width: 16rem; /* w-64 */
+    background-color: #ffffff;
+    border-right: 1px solid #d6d3d1; /* border-border-color */
+    height: calc(100vh - 80px); /* h-[calc(100vh-80px)] */
+    position: sticky;
+    top: 5rem; /* top-20 */
+    display: none;
+    overflow-y: auto;
+}
+@media (min-width: 768px) {
+    .admin-sidebar-container { display: block; } /* md:block */
+}
+
+.admin-sidebar-header {
+    padding: 1.5rem; /* p-6 */
+    border-bottom: 1px solid #d6d3d1;
+}
+
+.admin-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* gap-2 */
+    text-decoration: none;
+}
+
+.admin-sidebar-brand-text {
+    font-size: 1.5rem; /* text-2xl */
+    font-family: 'Poppins', sans-serif; /* font-display */
+    font-weight: 700;
+    color: #ea580c; /* text-accent */
+    letter-spacing: -0.05em; /* tracking-tighter */
+}
+
+.admin-sidebar-nav {
+    margin-top: 1.5rem; /* mt-6 */
+    padding-left: 1rem; /* px-4 */
+    padding-right: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* space-y-2 */
+}
+
+.admin-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* gap-3 */
+    padding: 0.75rem 1rem; /* px-4 py-3 */
+    border-radius: 0.5rem; /* rounded-lg */
+    transition: colors 150ms;
+    font-weight: 500;
+    text-decoration: none;
+    color: #6b7280; /* text-muted */
+}
+.admin-sidebar-link:hover {
+    background-color: #e7e5e4; /* hover:bg-secondary */
+    color: #111827; /* hover:text-main */
+}
+.admin-sidebar-link.active {
+    background-color: #ea580c; /* bg-accent */
+    color: #ffffff;
+}
+
+.admin-sidebar-section-title {
+    padding-top: 1rem; /* pt-4 */
+    padding-bottom: 0.5rem; /* pb-2 */
+    padding-left: 1rem; /* px-4 */
+    padding-right: 1rem;
+    font-size: 0.75rem; /* text-xs */
+    font-weight: 700;
+    color: #6b7280; /* text-muted */
+    text-transform: uppercase;
+    letter-spacing: 0.05em; /* tracking-wider */
+}

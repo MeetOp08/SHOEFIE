@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useGetCategoriesQuery, useGetBrandsQuery } from '../slices/productsApiSlice';
 import Loader from './Loader';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
+import '../styles/FilterSidebar.css';
 
 const FilterSidebar = () => {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -66,26 +67,26 @@ const FilterSidebar = () => {
     const selectedGenders = genderParam ? genderParam.split(',') : [];
 
     return (
-        <div className="bg-white p-6 rounded-xl border border-border-color shadow-sm h-fit sticky top-24">
-            <h3 className="text-xl font-display font-bold text-accent mb-6 border-b border-border-color pb-4">Refine By</h3>
+        <div className="filter-sidebar-container">
+            <h3 className="filter-title">Refine By</h3>
 
             {/* Gender Filter (New) */}
-            <div className="mb-8">
+            <div className="filter-section">
                 <button
                     onClick={() => setIsGenderOpen(!isGenderOpen)}
-                    className="flex justify-between items-center w-full mb-4 text-sm font-bold uppercase tracking-widest text-text-main hover:text-accent transition-colors"
+                    className="filter-header"
                 >
                     <span>Gender</span>
                     {isGenderOpen ? <FaChevronUp /> : <FaChevronDown />}
                 </button>
                 {isGenderOpen && (
-                    <div className="space-y-2">
+                    <div className="filter-list">
                         {['Men', 'Women', 'Kids', 'Unisex'].map((g) => (
-                            <div key={g} className="flex items-center group cursor-pointer" onClick={() => handleGenderClick(g)}>
-                                <div className={`w-4 h-4 rounded border flex items-center justify-center mr-3 transition-colors ${selectedGenders.includes(g) ? 'bg-accent border-accent' : 'border-gray-300 group-hover:border-accent'}`}>
-                                    {selectedGenders.includes(g) && <div className="w-2 h-2 rounded bg-white"></div>}
+                            <div key={g} className="filter-checkbox-label" onClick={() => handleGenderClick(g)}>
+                                <div className={`filter-checkbox-box ${selectedGenders.includes(g) ? 'checked' : ''}`}>
+                                    {selectedGenders.includes(g) && <div className="filter-checkbox-inner"></div>}
                                 </div>
-                                <span className={`text-sm ${selectedGenders.includes(g) ? 'text-text-main font-bold' : 'text-text-muted group-hover:text-text-main'}`}>
+                                <span className={`filter-checkbox-text ${selectedGenders.includes(g) ? 'checked' : ''}`}>
                                     {g}
                                 </span>
                             </div>
@@ -95,10 +96,10 @@ const FilterSidebar = () => {
             </div>
 
             {/* Categories */}
-            <div className="mb-8">
+            <div className="filter-section">
                 <button
                     onClick={() => setIsCatOpen(!isCatOpen)}
-                    className="flex justify-between items-center w-full mb-4 text-sm font-bold uppercase tracking-widest text-text-main hover:text-accent transition-colors"
+                    className="filter-header"
                 >
                     <span>Category</span>
                     {isCatOpen ? <FaChevronUp /> : <FaChevronDown />}
@@ -106,12 +107,12 @@ const FilterSidebar = () => {
 
                 {isCatOpen && (
                     loadingCats ? <Loader /> : (
-                        <ul className="space-y-3">
+                        <ul className="filter-list-gap-3">
                             {categories?.map((cat) => (
                                 <li
                                     key={cat._id}
                                     onClick={() => handleCategoryClick(cat._id)}
-                                    className={`cursor-pointer transition-all duration-200 text-sm ${selectedCategory === cat._id ? 'text-accent font-bold pl-2 border-l-2 border-accent' : 'text-text-muted hover:text-text-main'}`}
+                                    className={`filter-category-item ${selectedCategory === cat._id ? 'active' : ''}`}
                                 >
                                     {cat.name}
                                 </li>
@@ -122,10 +123,10 @@ const FilterSidebar = () => {
             </div>
 
             {/* Brands */}
-            <div>
+            <div className="filter-section">
                 <button
                     onClick={() => setIsBrandOpen(!isBrandOpen)}
-                    className="flex justify-between items-center w-full mb-4 text-sm font-bold uppercase tracking-widest text-text-main hover:text-accent transition-colors"
+                    className="filter-header"
                 >
                     <span>Brand</span>
                     {isBrandOpen ? <FaChevronUp /> : <FaChevronDown />}
@@ -133,13 +134,13 @@ const FilterSidebar = () => {
 
                 {isBrandOpen && (
                     loadingBrands ? <Loader /> : (
-                        <div className="space-y-3">
+                        <div className="filter-list-gap-3">
                             {brands?.map((brand) => (
-                                <div key={brand._id} className="flex items-center group cursor-pointer" onClick={() => handleBrandChange(brand.name)}>
-                                    <div className={`w-4 h-4 rounded border flex items-center justify-center mr-3 transition-colors ${selectedBrands.includes(brand.name) ? 'bg-accent border-accent' : 'border-gray-300 group-hover:border-accent'}`}>
-                                        {selectedBrands.includes(brand.name) && <div className="w-2 h-2 rounded bg-white"></div>}
+                                <div key={brand._id} className="filter-checkbox-label" onClick={() => handleBrandChange(brand.name)}>
+                                    <div className={`filter-checkbox-box ${selectedBrands.includes(brand.name) ? 'checked' : ''}`}>
+                                        {selectedBrands.includes(brand.name) && <div className="filter-checkbox-inner"></div>}
                                     </div>
-                                    <span className={`text-sm ${selectedBrands.includes(brand.name) ? 'text-text-main font-bold' : 'text-text-muted group-hover:text-text-main'}`}>
+                                    <span className={`filter-checkbox-text ${selectedBrands.includes(brand.name) ? 'checked' : ''}`}>
                                         {brand.name}
                                     </span>
                                 </div>

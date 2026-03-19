@@ -1,0 +1,89 @@
+.profile-sidebar-container {
+    background-color: #ffffff;
+    border-radius: 0.75rem; /* rounded-xl */
+    border: 1px solid #d6d3d1; /* border-border-color */
+    overflow: hidden;
+    position: sticky;
+    top: 6rem; /* top-24 */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+}
+
+.profile-sidebar-header {
+    padding: 1rem; /* p-4 */
+    border-bottom: 1px solid #d6d3d1; /* border-border-color */
+    background-color: #f9fafb; /* bg-gray-50 */
+}
+
+.profile-sidebar-title {
+    color: #6b7280; /* text-muted */
+    text-transform: uppercase;
+    font-size: 0.75rem; /* text-xs */
+    font-weight: 700;
+    letter-spacing: 0.05em; /* tracking-wider */
+    margin: 0;
+}
+
+.profile-sidebar-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-sidebar-btn {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem; /* px-6 py-4 */
+    transition: all 200ms;
+    text-align: left;
+    border-left: 4px solid transparent;
+    cursor: pointer;
+    background: transparent;
+    width: 100%;
+}
+
+.profile-sidebar-btn.default {
+    color: #6b7280; /* text-muted */
+}
+.profile-sidebar-btn.default:hover {
+    background-color: #f9fafb; /* hover:bg-gray-50 */
+    color: #111827; /* hover:text-main */
+}
+
+.profile-sidebar-btn.active {
+    background-color: #fff7ed; /* bg-orange-50 */
+    border-color: #ea580c; /* border-accent */
+    color: #ea580c; /* text-accent */
+    font-weight: 600;
+}
+
+.profile-sidebar-icon {
+    font-size: 1.125rem; /* text-lg */
+    margin-right: 1rem; /* mr-4 */
+}
+.profile-sidebar-icon.default {
+    color: #9ca3af; /* text-gray-400 */
+}
+.profile-sidebar-icon.active {
+    color: #ea580c; /* text-accent */
+}
+
+.profile-sidebar-logout-wrapper {
+    border-top: 1px solid #d6d3d1;
+    margin-top: 0.5rem; /* mt-2 */
+}
+
+.profile-sidebar-logout-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.5rem; /* px-6 py-4 */
+    text-align: left;
+    color: #ef4444; /* text-red-500 */
+    font-weight: 500;
+    transition: background-color 150ms;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.profile-sidebar-logout-btn:hover {
+    background-color: #fef2f2; /* hover:bg-red-50 */
+}

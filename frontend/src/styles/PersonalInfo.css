@@ -1,0 +1,85 @@
+.personal-info-card {
+    background-color: #ffffff;
+    border: 1px solid #d6d3d1; /* border-border-color */
+    border-radius: 0.75rem; /* rounded-xl (from .card) */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    padding: 2rem; /* p-8 */
+}
+
+.personal-info-title {
+    font-size: 1.5rem; /* text-2xl */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #111827; /* text-main */
+    margin-bottom: 1.5rem; /* mb-6 */
+}
+
+.personal-info-form {
+    display: flex;
+    flex-direction: colum   n;
+    gap: 1.5rem; /* space-y-6 */
+}
+
+.personal-info-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem; /* gap-6 */
+}
+@media (min-width: 768px) {
+    .personal-info-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.personal-info-label {
+    display: block;
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 700;
+    color: #111827; /* text-main */
+    margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.personal-info-section {
+    border-top: 1px solid #d6d3d1; /* border-border-color */
+    padding-top: 1.5rem; /* pt-6 */
+}
+
+.personal-info-section-title {
+    font-size: 1.125rem; /* text-lg */
+    font-weight: 700;
+    color: #111827; /* text-main */
+    margin-bottom: 1rem; /* mb-4 */
+}
+
+.personal-info-checkbox-group {
+    display: flex;
+    gap: 1.5rem; /* space-x-6 */
+}
+
+.personal-info-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* space-x-3 */
+    cursor: pointer;
+}
+
+.personal-info-checkbox {
+    height: 1.25rem; /* h-5 */
+    width: 1.25rem; /* w-5 */
+    color: #ea580c; /* text-accent */
+    border-radius: 0.25rem; /* rounded */
+    border: 1px solid #d1d5db; /* border-gray-300 */
+}
+
+.personal-info-checkbox-text {
+    color: #6b7280; /* text-muted */
+}
+
+.personal-info-submit {
+    width: 100%;
+    padding-left: 2rem; /* px-8 */
+    padding-right: 2rem;
+    padding-top: 0.75rem; /* py-3 */
+    padding-bottom: 0.75rem;
+}
+@media (min-width: 768px) {
+    .personal-info-submit { width: auto; /* md:w-auto */ }
+}

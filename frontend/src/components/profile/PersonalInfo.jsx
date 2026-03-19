@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useProfileMutation } from '../../slices/usersApiSlice';
 import { setCredentials } from '../../slices/authSlice';
 import Loader from '../Loader';
+import '../../styles/PersonalInfo.css';
 
 const PersonalInfo = () => {
     const [name, setName] = useState('');
@@ -53,13 +54,13 @@ const PersonalInfo = () => {
     };
 
     return (
-        <div className="card p-8 bg-white border border-border-color shadow-sm">
-            <h2 className="text-2xl font-bold font-display text-text-main mb-6">Personal Information</h2>
+        <div className="personal-info-card">
+            <h2 className="personal-info-title">Personal Information</h2>
 
-            <form onSubmit={submitHandler} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <form onSubmit={submitHandler} className="personal-info-form">
+                <div className="personal-info-grid">
                     <div>
-                        <label className="block text-sm font-bold text-text-main mb-2">Full Name</label>
+                        <label className="personal-info-label">Full Name</label>
                         <input
                             type="text"
                             placeholder="Enter full name"
@@ -69,7 +70,7 @@ const PersonalInfo = () => {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm font-bold text-text-main mb-2">Email Address</label>
+                        <label className="personal-info-label">Email Address</label>
                         <input
                             type="email"
                             placeholder="Enter email"
@@ -81,7 +82,7 @@ const PersonalInfo = () => {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold text-text-main mb-2">Phone Number</label>
+                    <label className="personal-info-label">Phone Number</label>
                     <input
                         type="text"
                         placeholder="Enter phone number"
@@ -91,11 +92,11 @@ const PersonalInfo = () => {
                     />
                 </div>
 
-                <div className="border-t border-border-color pt-6">
-                    <h3 className="text-lg font-bold text-text-main mb-4">Change Password</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="personal-info-section">
+                    <h3 className="personal-info-section-title">Change Password</h3>
+                    <div className="personal-info-grid">
                         <div>
-                            <label className="block text-sm font-bold text-text-main mb-2">New Password</label>
+                            <label className="personal-info-label">New Password</label>
                             <input
                                 type="password"
                                 placeholder="Leave blank to keep current"
@@ -105,7 +106,7 @@ const PersonalInfo = () => {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-bold text-text-main mb-2">Confirm Password</label>
+                            <label className="personal-info-label">Confirm Password</label>
                             <input
                                 type="password"
                                 placeholder="Confirm new password"
@@ -117,31 +118,31 @@ const PersonalInfo = () => {
                     </div>
                 </div>
 
-                <div className="border-t border-border-color pt-6">
-                    <h3 className="text-lg font-bold text-text-main mb-4">Notification Preferences</h3>
-                    <div className="flex space-x-6">
-                        <label className="flex items-center space-x-3 cursor-pointer">
+                <div className="personal-info-section">
+                    <h3 className="personal-info-section-title">Notification Preferences</h3>
+                    <div className="personal-info-checkbox-group">
+                        <label className="personal-info-checkbox-label">
                             <input
                                 type="checkbox"
                                 checked={notificationPreferences.email}
                                 onChange={(e) => setNotificationPreferences({ ...notificationPreferences, email: e.target.checked })}
-                                className="form-checkbox h-5 w-5 text-accent rounded border-gray-300 focus:ring-accent"
+                                className="personal-info-checkbox form-checkbox"
                             />
-                            <span className="text-text-muted">Email Notifications</span>
+                            <span className="personal-info-checkbox-text">Email Notifications</span>
                         </label>
-                        <label className="flex items-center space-x-3 cursor-pointer">
+                        <label className="personal-info-checkbox-label">
                             <input
                                 type="checkbox"
                                 checked={notificationPreferences.sms}
                                 onChange={(e) => setNotificationPreferences({ ...notificationPreferences, sms: e.target.checked })}
-                                className="form-checkbox h-5 w-5 text-accent rounded border-gray-300 focus:ring-accent"
+                                className="personal-info-checkbox form-checkbox"
                             />
-                            <span className="text-text-muted">SMS Notifications</span>
+                            <span className="personal-info-checkbox-text">SMS Notifications</span>
                         </label>
                     </div>
                 </div>
 
-                <button type="submit" className="btn-primary w-full md:w-auto px-8 py-3" disabled={isLoading}>
+                <button type="submit" className="btn-primary personal-info-submit" disabled={isLoading}>
                     {isLoading ? 'Updating...' : 'Save Changes'}
                 </button>
             </form>

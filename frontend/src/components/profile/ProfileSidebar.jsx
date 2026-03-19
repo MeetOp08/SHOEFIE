@@ -2,6 +2,7 @@ import { FaUser, FaMapMarkerAlt, FaBoxOpen, FaSignOutAlt, FaIdCard } from 'react
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../slices/authSlice';
+import '../../styles/ProfileSidebar.css';
 
 const ProfileSidebar = ({ activeTab, setActiveTab }) => {
     const dispatch = useDispatch();
@@ -20,33 +21,30 @@ const ProfileSidebar = ({ activeTab, setActiveTab }) => {
     ];
 
     return (
-        <div className="bg-white rounded-xl border border-border-color overflow-hidden sticky top-24 shadow-sm">
-            <div className="p-4 border-b border-border-color bg-gray-50">
-                <h3 className="text-text-muted uppercase text-xs font-bold tracking-wider">Account Settings</h3>
+        <div className="profile-sidebar-container">
+            <div className="profile-sidebar-header">
+                <h3 className="profile-sidebar-title">Account Settings</h3>
             </div>
-            <div className="flex flex-col">
+            <div className="profile-sidebar-menu">
                 {menuItems.map((item) => (
                     <button
                         key={item.id}
                         onClick={() => setActiveTab(item.id)}
-                        className={`flex items-center px-6 py-4 transition-all duration-200 text-left border-l-4 ${activeTab === item.id
-                            ? 'bg-orange-50 border-accent text-accent font-semibold'
-                            : 'border-transparent text-text-muted hover:bg-gray-50 hover:text-text-main'
-                            }`}
+                        className={`profile-sidebar-btn ${activeTab === item.id ? 'active' : 'default'}`}
                     >
-                        <span className={`text-lg mr-4 ${activeTab === item.id ? 'text-accent' : 'text-gray-400'}`}>
+                        <span className={`profile-sidebar-icon ${activeTab === item.id ? 'active' : 'default'}`}>
                             {item.icon}
                         </span>
                         <span>{item.label}</span>
                     </button>
                 ))}
 
-                <div className="border-t border-border-color mt-2">
+                <div className="profile-sidebar-logout-wrapper">
                     <button
                         onClick={logoutHandler}
-                        className="w-full flex items-center px-6 py-4 text-left text-red-500 hover:bg-red-50 transition-colors font-medium"
+                        className="profile-sidebar-logout-btn"
                     >
-                        <span className="text-lg mr-4"><FaSignOutAlt /></span>
+                        <span className="profile-sidebar-icon"><FaSignOutAlt /></span>
                         <span>Logout</span>
                     </button>
                 </div>

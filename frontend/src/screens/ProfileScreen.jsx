@@ -6,6 +6,7 @@ import PersonalInfo from '../components/profile/PersonalInfo';
 import AddressBook from '../components/profile/AddressBook';
 import OrderHistory from '../components/profile/OrderHistory';
 import { FaUser, FaShoppingBag, FaMapMarkerAlt } from 'react-icons/fa';
+import '../styles/ProfileScreen.css';
 
 const ProfileScreen = () => {
     const [activeTab, setActiveTab] = useState('overview');
@@ -13,57 +14,57 @@ const ProfileScreen = () => {
 
     // Simple Overview Component
     const Overview = () => (
-        <div className="space-y-6">
-            <div className="bg-text-main rounded-xl p-8 border border-gray-800 shadow-xl text-white">
-                <div className="flex items-center space-x-6">
-                    <div className="w-20 h-20 bg-gray-700 rounded-full flex items-center justify-center text-4xl text-gray-400 border-2 border-accent overflow-hidden">
-                        {userInfo.avatar ? <img src={userInfo.avatar} alt="Profile" className="w-full h-full object-cover" /> : <FaUser />}
+        <div className="profile-overview-layout">
+            <div className="profile-welcome-card">
+                <div className="profile-welcome-content">
+                    <div className="profile-avatar-wrap">
+                        {userInfo.avatar ? <img src={userInfo.avatar} alt="Profile" className="profile-avatar-img" /> : <FaUser />}
                     </div>
                     <div>
-                        <h2 className="text-3xl font-bold mb-1">Hello, {userInfo.name}</h2>
-                        <p className="text-gray-300 text-sm opacity-80">Welcome to your personal dashboard. Manage your orders and account details here.</p>
+                        <h2 className="profile-welcome-title">Hello, {userInfo.name}</h2>
+                        <p className="profile-welcome-subtitle">Welcome to your personal dashboard. Manage your orders and account details here.</p>
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <button onClick={() => setActiveTab('orders')} className="card p-6 bg-white hover:border-accent group text-left shadow-sm">
-                    <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center mb-4 group-hover:bg-accent transition-colors">
-                        <FaShoppingBag className="text-xl text-accent group-hover:text-white transition-colors" />
+            <div className="profile-cards-grid">
+                <button onClick={() => setActiveTab('orders')} className="profile-action-card">
+                    <div className="profile-action-icon-wrap profile-icon-orders-bg">
+                        <FaShoppingBag className="profile-action-icon profile-icon-orders" />
                     </div>
-                    <h3 className="text-lg font-bold text-text-main mb-2">My Orders</h3>
-                    <p className="text-text-muted text-sm">Track active orders and view purchase history.</p>
+                    <h3 className="profile-card-title">My Orders</h3>
+                    <p className="profile-card-desc">Track active orders and view purchase history.</p>
                 </button>
 
-                <button onClick={() => setActiveTab('addresses')} className="card p-6 bg-white hover:border-accent group text-left shadow-sm">
-                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4 group-hover:bg-blue-500 transition-colors">
-                        <FaMapMarkerAlt className="text-xl text-blue-500 group-hover:text-white transition-colors" />
+                <button onClick={() => setActiveTab('addresses')} className="profile-action-card">
+                    <div className="profile-action-icon-wrap profile-icon-address-bg">
+                        <FaMapMarkerAlt className="profile-action-icon profile-icon-address" />
                     </div>
-                    <h3 className="text-lg font-bold text-text-main mb-2">Addresses</h3>
-                    <p className="text-text-muted text-sm">Manage your shipping and delivery locations.</p>
+                    <h3 className="profile-card-title">Addresses</h3>
+                    <p className="profile-card-desc">Manage your shipping and delivery locations.</p>
                 </button>
 
-                <button onClick={() => setActiveTab('personal')} className="card p-6 bg-white hover:border-accent group text-left shadow-sm">
-                    <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-500 transition-colors">
-                        <FaUser className="text-xl text-purple-500 group-hover:text-white transition-colors" />
+                <button onClick={() => setActiveTab('personal')} className="profile-action-card">
+                    <div className="profile-action-icon-wrap profile-icon-personal-bg">
+                        <FaUser className="profile-action-icon profile-icon-personal" />
                     </div>
-                    <h3 className="text-lg font-bold text-text-main mb-2">Profile Details</h3>
-                    <p className="text-text-muted text-sm">Update your name, email, and password.</p>
+                    <h3 className="profile-card-title">Profile Details</h3>
+                    <p className="profile-card-desc">Update your name, email, and password.</p>
                 </button>
             </div>
         </div>
     );
 
     return (
-        <div className="container mx-auto px-4 py-12">
-            <h1 className="text-3xl font-display font-bold text-text-main mb-8 pb-4 border-b border-border-color">My Account</h1>
+        <div className="container-custom profile-screen-container">
+            <h1 className="profile-screen-title">My Account</h1>
 
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-                <div className="lg:col-span-1">
+            <div className="profile-main-layout">
+                <div className="profile-sidebar-col">
                     <ProfileSidebar activeTab={activeTab} setActiveTab={setActiveTab} />
                 </div>
 
-                <div className="lg:col-span-3">
+                <div className="profile-content-col">
                     <motion.div
                         key={activeTab}
                         initial={{ opacity: 0, x: 20 }}

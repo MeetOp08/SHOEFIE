@@ -1,0 +1,16 @@
+.form-container-wrapper {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+}
+.form-container-card {
+    width: 100%;
+    max-width: 28rem;
+    padding: 2rem;
+}

@@ -1,0 +1,185 @@
+.admin-inv-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.admin-inv-title {
+    font-size: 1.875rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+}
+
+.admin-inv-warning {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.admin-inv-warning-icon {
+    margin-right: 0.5rem;
+}
+
+.admin-inv-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #d6d3d1;
+    overflow: hidden;
+}
+
+.admin-inv-table-wrapper {
+    overflow-x: auto;
+}
+
+.admin-inv-table {
+    min-width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-inv-thead {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #d6d3d1;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-inv-th {
+    padding: 1rem 1.5rem;
+}
+
+.admin-inv-tr {
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s ease;
+}
+
+.admin-inv-tr:last-child {
+    border-bottom: none;
+}
+
+.admin-inv-tr:hover {
+    background-color: #f9fafb;
+}
+
+.admin-inv-tr.low-stock {
+    background-color: #fef2f2;
+}
+
+.admin-inv-tr.low-stock:hover {
+    background-color: rgba(254, 226, 226, 0.5); /* hover:bg-red-100/50 approx */
+}
+
+.admin-inv-td {
+    padding: 1rem 1.5rem;
+}
+
+.admin-inv-product-flex {
+    display: flex;
+    align-items: center;
+}
+
+.admin-inv-img-wrap {
+    height: 2.5rem;
+    width: 2.5rem;
+    flex-shrink: 0;
+}
+
+.admin-inv-img {
+    height: 100%;
+    width: 100%;
+    border-radius: 9999px;
+    object-fit: cover;
+}
+
+.admin-inv-product-info {
+    margin-left: 1rem;
+}
+
+.admin-inv-product-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+.admin-inv-product-brand {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.admin-inv-td-ref {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-family: monospace;
+}
+
+.admin-inv-td-stock {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.admin-inv-td-thresh {
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.admin-inv-restock-inline {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* space-x-2 equivalent */
+}
+
+.admin-inv-restock-input {
+    width: 5rem;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-inv-restock-input:focus {
+    border-color: #fca311;
+    box-shadow: 0 0 0 1px #fca311;
+}
+
+.admin-inv-btn-confirm {
+    color: #16a34a; /* green-600 */
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.admin-inv-btn-confirm:hover {
+    color: #166534; /* green-800 */
+}
+
+.admin-inv-btn-cancel {
+    color: #6b7280;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.admin-inv-btn-cancel:hover {
+    color: #374151; /* gray-700 */
+}
+
+.admin-inv-btn-trigger {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.admin-inv-btn-icon {
+    margin-right: 0.25rem;
+}

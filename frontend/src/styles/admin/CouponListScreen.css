@@ -1,0 +1,225 @@
+.admin-coupon-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.admin-coupon-back {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+}
+
+.admin-coupon-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .admin-coupon-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.admin-coupon-title {
+    font-size: 1.875rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #111827;
+}
+
+.admin-coupon-layout {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+    .admin-coupon-layout {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* Sidebar */
+.admin-coupon-sidebar {
+    grid-column: span 1 / span 1;
+}
+
+.admin-coupon-form-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #d6d3d1;
+    padding: 1.5rem;
+    position: sticky;
+    top: 6rem;
+}
+
+.admin-coupon-form-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+}
+
+.admin-coupon-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.admin-coupon-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.admin-coupon-input-code {
+    font-family: monospace;
+    text-transform: uppercase;
+}
+
+.admin-coupon-submit {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* List Area */
+/* empty */
+
+@media (min-width: 1024px) {
+    .admin-coupon-list-area {
+        grid-column: span 2 / span 2;
+    }
+}
+
+.admin-coupon-table-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #d6d3d1;
+    overflow: hidden;
+    overflow-x: auto;
+}
+
+.admin-coupon-table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+}
+
+.admin-coupon-thead {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #d6d3d1;
+    color: #6b7280;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.admin-coupon-th {
+    padding: 1rem 1.5rem;
+}
+
+.admin-coupon-th.center {
+    text-align: center;
+}
+
+/* empty */
+
+.admin-coupon-tr {
+    border-bottom: 1px solid #f3f4f6;
+    transition: background-color 0.2s ease;
+}
+
+.admin-coupon-tr:last-child {
+    border-bottom: none;
+}
+
+.admin-coupon-tr:hover {
+    background-color: #f9fafb;
+}
+
+.admin-coupon-td {
+    padding: 1rem 1.5rem;
+    white-space: nowrap;
+}
+
+.admin-coupon-td-id {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.admin-coupon-td-code {
+    font-weight: 700;
+    color: #fca311; /* accent */
+    font-family: monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-coupon-td-discount {
+    font-weight: 500;
+}
+
+.admin-coupon-td-expiry {
+    color: #6b7280;
+}
+
+.admin-coupon-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.admin-coupon-badge.expired {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.admin-coupon-badge.active {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.admin-coupon-td-actions {
+    text-align: center;
+}
+
+.admin-coupon-btn-delete {
+    color: #ef4444;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.admin-coupon-btn-delete:hover {
+    color: #b91c1c;
+    background-color: #fef2f2;
+}
+
+.admin-coupon-btn-delete:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.admin-coupon-empty {
+    padding: 2rem;
+    text-align: center;
+    color: #6b7280;
+}

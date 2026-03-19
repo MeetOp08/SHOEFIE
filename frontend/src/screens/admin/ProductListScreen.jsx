@@ -9,6 +9,7 @@ import {
     useDeleteProductMutation,
 } from '../../slices/productsApiSlice';
 import { toast } from 'react-toastify';
+import '../../styles/admin/ProductListScreen.css';
 
 const ProductListScreen = () => {
     const { pageNumber } = useParams();
@@ -37,11 +38,11 @@ const ProductListScreen = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className='flex justify-between items-center mb-8'>
-                <h1 className='text-3xl font-display font-bold text-text-main'>Products</h1>
-                <button className='btn-primary flex items-center px-5 py-2.5 text-sm shadow-lg' onClick={createProductHandler}>
-                    <FaPlus className="mr-2" /> Create Product
+        <div className="container-custom admin-list-container">
+            <div className="admin-list-header">
+                <h1 className="admin-list-title">Products</h1>
+                <button className="btn-primary admin-list-create-btn" onClick={createProductHandler}>
+                    <FaPlus className="admin-list-create-icon" /> Create Product
                 </button>
             </div>
 
@@ -54,40 +55,42 @@ const ProductListScreen = () => {
                 <Message variant='danger'>{error?.data?.message || error.error}</Message>
             ) : (
                 <>
-                    <div className="bg-white rounded-xl shadow-sm border border-border-color overflow-hidden mb-6">
-                        <div className="overflow-x-auto">
-                            <table className='min-w-full'>
-                                <thead>
-                                    <tr className="bg-gray-50 border-b border-border-color text-left text-xs font-semibold text-text-muted uppercase tracking-wider">
-                                        <th className="py-4 px-6">ID</th>
-                                        <th className="py-4 px-6">NAME</th>
-                                        <th className="py-4 px-6">PRICE</th>
-                                        <th className="py-4 px-6">CATEGORY</th>
-                                        <th className="py-4 px-6">BRAND</th>
-                                        <th className="py-4 px-6">ACTIONS</th>
+                    <div className="admin-table-card">
+                        <div className="admin-table-responsive">
+                            <table className="admin-table">
+                                <thead className="admin-table-head">
+                                    <tr>
+                                        <th className="admin-table-th">ID</th>
+                                        <th className="admin-table-th">NAME</th>
+                                        <th className="admin-table-th">PRICE</th>
+                                        <th className="admin-table-th">CATEGORY</th>
+                                        <th className="admin-table-th">BRAND</th>
+                                        <th className="admin-table-th">ACTIONS</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-border-color">
+                                <tbody className="admin-table-body">
                                     {data.products.map((product) => (
-                                        <tr key={product._id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="py-4 px-6 text-sm text-text-muted font-mono">{product._id}</td>
-                                            <td className="py-4 px-6 font-medium text-text-main">{product.name}</td>
-                                            <td className="py-4 px-6 text-text-main font-bold">${product.price}</td>
-                                            <td className="py-4 px-6 text-text-muted">{product.category?.name}</td>
-                                            <td className="py-4 px-6 text-text-muted">{product.brand}</td>
-                                            <td className="py-4 px-6 flex items-center space-x-4">
-                                                <Link to={`/admin/product/${product._id}/edit`}>
-                                                    <button className='p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors' title="Edit">
-                                                        <FaEdit />
+                                        <tr key={product._id} className="admin-table-tr">
+                                            <td className="admin-table-td admin-table-td-id">{product._id}</td>
+                                            <td className="admin-table-td admin-table-td-name">{product.name}</td>
+                                            <td className="admin-table-td admin-table-td-price">${product.price}</td>
+                                            <td className="admin-table-td admin-table-td-muted">{product.category?.name}</td>
+                                            <td className="admin-table-td admin-table-td-muted">{product.brand}</td>
+                                            <td className="admin-table-td">
+                                                <div className="admin-table-actions">
+                                                    <Link to={`/admin/product/${product._id}/edit`}>
+                                                        <button className="admin-action-btn admin-action-btn-edit" title="Edit">
+                                                            <FaEdit />
+                                                        </button>
+                                                    </Link>
+                                                    <button
+                                                        className="admin-action-btn admin-action-btn-delete"
+                                                        onClick={() => deleteHandler(product._id)}
+                                                        title="Delete"
+                                                    >
+                                                        <FaTrash />
                                                     </button>
-                                                </Link>
-                                                <button
-                                                    className='p-2 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 transition-colors'
-                                                    onClick={() => deleteHandler(product._id)}
-                                                    title="Delete"
-                                                >
-                                                    <FaTrash />
-                                                </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}

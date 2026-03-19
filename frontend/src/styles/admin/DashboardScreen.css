@@ -1,0 +1,184 @@
+.admin-dashboard-container {
+    padding-top: 2rem; /* py-8 */
+    padding-bottom: 2rem;
+}
+
+.admin-dashboard-title {
+    font-size: 1.875rem; /* text-3xl */
+    font-family: 'Poppins', sans-serif; /* font-display */
+    font-weight: 700;
+    color: #111827; /* text-text-main */
+    margin-bottom: 2rem; /* mb-8 */
+}
+
+.admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem; /* gap-6 */
+    margin-bottom: 3rem; /* mb-12 */
+}
+
+@media (min-width: 768px) {
+    .admin-stats-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)); /* md:grid-cols-3 */
+    }
+}
+
+.admin-stat-card {
+    background-color: #fff;
+    border-radius: 0.75rem; /* rounded-xl */
+    border: 1px solid #d6d3d1; /* border-border-color */
+    padding: 1.5rem; /* p-6 */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    transition: box-shadow 0.3s ease; /* transition-shadow */
+}
+
+.admin-stat-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* hover:shadow-md */
+}
+
+.admin-stat-card.sales {
+    border-left: 4px solid #22c55e; /* border-l-4 border-l-green-500 */
+}
+
+.admin-stat-card.orders {
+    border-left: 4px solid #fca311; /* border-l-4 border-l-accent */
+}
+
+.admin-stat-card.users {
+    border-left: 4px solid #3b82f6; /* border-l-4 border-l-blue-500 */
+}
+
+.admin-stat-label {
+    color: #6b7280; /* text-text-muted */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 600; /* font-semibold */
+    text-transform: uppercase;
+    letter-spacing: 0.05em; /* tracking-wider */
+}
+
+.admin-stat-value {
+    font-size: 1.875rem; /* text-3xl */
+    font-weight: 700;
+    color: #111827; /* text-text-main */
+    margin-top: 0.25rem; /* mt-1 */
+}
+
+.admin-stat-icon-wrap {
+    padding: 1rem; /* p-4 */
+    border-radius: 9999px; /* rounded-full */
+    font-size: 1.5rem; /* text-2xl */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-stat-icon-wrap.sales {
+    background-color: #dcfce7; /* bg-green-100 */
+    color: #16a34a; /* text-green-600 */
+}
+
+.admin-stat-icon-wrap.orders {
+    background-color: rgba(255, 237, 213, 0.5); /* bg-orange-100 approximate */
+    color: #fca311; /* text-accent */
+}
+
+.admin-stat-icon-wrap.users {
+    background-color: #dbeafe; /* bg-blue-100 */
+    color: #2563eb; /* text-blue-600 */
+}
+
+.admin-chart-section {
+    background-color: #fff;
+    border-radius: 0.75rem; /* rounded-xl */
+    border: 1px solid #d6d3d1; /* border-border-color */
+    padding: 2rem; /* p-8 */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+}
+
+.admin-chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem; /* mb-8 */
+}
+
+.admin-chart-title {
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 700;
+    color: #111827; /* text-text-main */
+}
+
+.admin-chart-header-icon {
+    color: #6b7280; /* text-text-muted */
+    font-size: 1.25rem; /* text-xl */
+}
+
+.admin-chart-empty {
+    text-align: center;
+    color: #6b7280; /* text-text-muted */
+    padding-top: 3rem; /* py-12 */
+    padding-bottom: 3rem;
+}
+
+.admin-chart-bars {
+    height: 16rem; /* h-64 */
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem; /* space-x-4 */
+}
+
+.admin-chart-bar-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.admin-chart-bar-wrap {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 100%;
+}
+
+.admin-chart-bar-inner {
+    width: 100%;
+    background-color: rgba(252, 163, 17, 0.2); /* bg-accent/20 */
+    border-top-left-radius: 0.25rem; /* rounded-t */
+    border-top-right-radius: 0.25rem;
+    transition: all 0.3s ease;
+    transform-origin: bottom;
+}
+
+.admin-chart-bar-container:hover .admin-chart-bar-inner {
+    background-color: #fca311; /* hover:bg-accent */
+    transform: scaleY(1.05); /* group-hover:scale-y-105 */
+}
+
+.admin-chart-bar-tooltip {
+    position: absolute;
+    top: -2rem; /* -top-8 */
+    font-size: 0.75rem; /* text-xs */
+    color: #fca311; /* text-accent */
+    font-weight: 700; /* font-bold */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.admin-chart-bar-container:hover .admin-chart-bar-tooltip {
+    opacity: 1; /* group-hover:opacity-100 */
+}
+
+.admin-chart-bar-date {
+    font-size: 0.75rem; /* text-xs */
+    color: #6b7280; /* text-text-muted */
+    margin-top: 0.5rem; /* mt-2 */
+    font-family: monospace; /* font-mono */
+}

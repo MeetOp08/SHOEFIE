@@ -5,6 +5,7 @@ import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { useGetCouponsQuery, useDeleteCouponMutation, useCreateCouponMutation } from '../../slices/couponsApiSlice';
 import { toast } from 'react-toastify';
+import '../../styles/admin/CouponListScreen.css';
 
 const CouponListScreen = () => {
     const { data: coupons, isLoading, error, refetch } = useGetCouponsQuery();
@@ -46,33 +47,33 @@ const CouponListScreen = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <Link className='btn-outline px-4 py-2 inline-flex items-center text-sm mb-8' to='/'>
+        <div className="container-custom admin-coupon-container">
+            <Link className="btn-outline admin-coupon-back" to='/'>
                 <FaArrowLeft className="mr-2" /> Go Back
             </Link>
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                <h1 className="text-3xl font-display font-bold text-text-main">Coupons</h1>
+            <div className="admin-coupon-header">
+                <h1 className="admin-coupon-title">Coupons</h1>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="admin-coupon-layout">
                 {/* Create Coupon Form */}
-                <div className="lg:col-span-1">
-                    <div className="bg-white rounded-xl shadow-sm border border-border-color p-6 sticky top-24">
-                        <h2 className="text-xl font-bold text-text-main mb-6">Create Coupon</h2>
-                        <form onSubmit={submitHandler} className="space-y-4">
+                <div className="admin-coupon-sidebar">
+                    <div className="admin-coupon-form-card">
+                        <h2 className="admin-coupon-form-title">Create Coupon</h2>
+                        <form onSubmit={submitHandler} className="admin-coupon-form">
                             <div>
-                                <label className="block mb-1 text-sm font-bold text-text-main">Code</label>
+                                <label className="admin-coupon-label">Code</label>
                                 <input
                                     type='text'
                                     placeholder='Enter coupon code'
                                     value={code}
                                     onChange={(e) => setCode(e.target.value)}
-                                    className="input-field font-mono uppercase"
+                                    className="input-field admin-coupon-input-code"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block mb-1 text-sm font-bold text-text-main">Discount Percentage (%)</label>
+                                <label className="admin-coupon-label">Discount Percentage (%)</label>
                                 <input
                                     type='number'
                                     placeholder='Ex: 20'
@@ -83,7 +84,7 @@ const CouponListScreen = () => {
                                 />
                             </div>
                             <div>
-                                <label className="block mb-1 text-sm font-bold text-text-main">Expiry Date</label>
+                                <label className="admin-coupon-label">Expiry Date</label>
                                 <input
                                     type='date'
                                     value={expiryDate}
@@ -92,7 +93,7 @@ const CouponListScreen = () => {
                                     required
                                 />
                             </div>
-                            <button type='submit' className='btn-primary w-full flex items-center justify-center' disabled={loadingCreate}>
+                            <button type='submit' className='btn-primary admin-coupon-submit' disabled={loadingCreate}>
                                 <FaPlus className="mr-2" /> Create Coupon
                             </button>
                         </form>
@@ -100,46 +101,46 @@ const CouponListScreen = () => {
                 </div>
 
                 {/* Coupons List */}
-                <div className="lg:col-span-2">
+                <div className="admin-coupon-list-area">
                     {isLoading ? (
                         <Loader />
                     ) : error ? (
                         <Message variant='danger'>{error?.data?.message || error.error}</Message>
                     ) : (
-                        <div className="bg-white rounded-xl shadow-sm border border-border-color overflow-hidden">
-                            <table className="w-full text-left">
-                                <thead className="bg-gray-50 border-b border-border-color text-text-muted uppercase text-xs font-semibold">
+                        <div className="admin-coupon-table-card">
+                            <table className="admin-coupon-table">
+                                <thead className="admin-coupon-thead">
                                     <tr>
-                                        <th className="px-6 py-4">ID</th>
-                                        <th className="px-6 py-4">Code</th>
-                                        <th className="px-6 py-4">Discount</th>
-                                        <th className="px-6 py-4">Expiry</th>
-                                        <th className="px-6 py-4">Status</th>
-                                        <th className="px-6 py-4 text-center">Actions</th>
+                                        <th className="admin-coupon-th">ID</th>
+                                        <th className="admin-coupon-th">Code</th>
+                                        <th className="admin-coupon-th">Discount</th>
+                                        <th className="admin-coupon-th">Expiry</th>
+                                        <th className="admin-coupon-th">Status</th>
+                                        <th className="admin-coupon-th center">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-100">
+                                <tbody className="admin-coupon-tbody">
                                     {coupons.map((coupon) => (
-                                        <tr key={coupon._id} className="hover:bg-gray-50 transition-colors">
-                                            <td className="px-6 py-4 font-mono text-xs text-text-muted">{coupon._id.substring(0, 10)}...</td>
-                                            <td className="px-6 py-4 font-bold text-accent font-mono uppercase tracking-wider">{coupon.code}</td>
-                                            <td className="px-6 py-4 font-medium">{coupon.discount}%</td>
-                                            <td className="px-6 py-4 text-text-muted">{new Date(coupon.expiryDate).toLocaleDateString()}</td>
-                                            <td className="px-6 py-4">
+                                        <tr key={coupon._id} className="admin-coupon-tr">
+                                            <td className="admin-coupon-td admin-coupon-td-id">{coupon._id.substring(0, 10)}...</td>
+                                            <td className="admin-coupon-td admin-coupon-td-code">{coupon.code}</td>
+                                            <td className="admin-coupon-td admin-coupon-td-discount">{coupon.discount}%</td>
+                                            <td className="admin-coupon-td admin-coupon-td-expiry">{new Date(coupon.expiryDate).toLocaleDateString()}</td>
+                                            <td className="admin-coupon-td">
                                                 {new Date(coupon.expiryDate) < new Date() ? (
-                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                    <span className="admin-coupon-badge expired">
                                                         Expired
                                                     </span>
                                                 ) : (
-                                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    <span className="admin-coupon-badge active">
                                                         Active
                                                     </span>
                                                 )}
                                             </td>
-                                            <td className="px-6 py-4 text-center">
+                                            <td className="admin-coupon-td admin-coupon-td-actions">
                                                 <button
                                                     onClick={() => deleteHandler(coupon._id)}
-                                                    className="text-red-500 hover:text-red-700 p-2 rounded hover:bg-red-50 transition-colors"
+                                                    className="admin-coupon-btn-delete"
                                                     disabled={loadingDelete}
                                                     title="Delete Coupon"
                                                 >
@@ -150,7 +151,7 @@ const CouponListScreen = () => {
                                     ))}
                                 </tbody>
                             </table>
-                            {coupons.length === 0 && <div className="p-8 text-center text-text-muted">No coupons found</div>}
+                            {coupons.length === 0 && <div className="admin-coupon-empty">No coupons found</div>}
                         </div>
                     )}
                 </div>

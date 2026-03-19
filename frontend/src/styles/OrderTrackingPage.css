@@ -1,0 +1,102 @@
+.order-track-container {
+    padding-top: 2rem; /* py-8 */
+    padding-bottom: 2rem;
+    max-width: 56rem; /* max-w-4xl */
+}
+
+.order-track-back {
+    display: flex;
+    align-items: center;
+    color: #6b7280; /* text-text-muted */
+    margin-bottom: 1.5rem; /* mb-6 */
+    transition: color 0.3s ease; /* transition-colors */
+    text-decoration: none;
+}
+
+.order-track-back:hover {
+    color: #fca311; /* hover:text-accent */
+}
+
+.order-track-back-icon {
+    margin-right: 0.5rem; /* mr-2 */
+}
+
+.order-track-title {
+    font-size: 1.875rem; /* text-3xl */
+    font-family: 'Poppins', sans-serif; /* font-display */
+    font-weight: 700;
+    color: #111827; /* text-text-main */
+    margin-bottom: 2rem; /* mb-8 */
+    text-align: center;
+}
+
+.order-track-search-wrap {
+    max-width: 36rem; /* max-w-xl */
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3rem; /* mb-12 */
+}
+
+.order-track-form {
+    display: flex;
+    gap: 0.5rem; /* gap-2 */
+}
+
+.order-track-input {
+    width: 100%;
+    /* relies on .input-field global styles */
+}
+
+.order-track-btn {
+    padding-left: 1.5rem; /* px-6 */
+    padding-right: 1.5rem;
+    white-space: nowrap;
+}
+
+.order-track-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.order-track-details-card {
+    background-color: #fff;
+    padding: 1.5rem; /* p-6 */
+    border-radius: 0.75rem; /* rounded-xl */
+    border: 1px solid #d6d3d1; /* border-border-color */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+    margin-top: 1.5rem; /* mt-6 */
+}
+
+.order-track-details-title {
+    font-weight: 700; /* font-bold */
+    font-size: 1.125rem; /* text-lg */
+    margin-bottom: 1rem; /* mb-4 */
+    color: #111827; /* text-text-main */
+}
+
+.order-track-details-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1rem; /* gap-4 */
+    font-size: 0.875rem; /* text-sm */
+}
+
+@media (min-width: 768px) {
+    .order-track-details-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* md:grid-cols-2 */
+    }
+}
+
+.order-track-detail-label {
+    color: #6b7280; /* text-text-muted */
+    margin-bottom: 0.25rem;
+}
+
+.order-track-detail-value {
+    font-weight: 600; /* font-semibold */
+    color: #111827; /* text-text-main */
+}

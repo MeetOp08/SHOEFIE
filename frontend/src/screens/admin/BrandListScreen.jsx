@@ -5,6 +5,7 @@ import { useGetBrandsQuery, useCreateBrandMutation, useDeleteBrandMutation } fro
 import Loader from '../../components/Loader';
 import Message from '../../components/Message';
 import { toast } from 'react-toastify';
+import '../../styles/admin/BrandListScreen.css';
 
 const BrandListScreen = () => {
     const { data: brands, isLoading, error, refetch } = useGetBrandsQuery();
@@ -45,12 +46,12 @@ const BrandListScreen = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-display font-bold text-text-main">Brands Management</h1>
+        <div className="container-custom admin-brand-container">
+            <div className="admin-brand-header">
+                <h1 className="admin-brand-title">Brands Management</h1>
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="bg-accent text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors flex items-center gap-2 font-medium"
+                    className="admin-brand-create-btn"
                 >
                     <FaPlus /> Add Brand
                 </button>
@@ -63,80 +64,80 @@ const BrandListScreen = () => {
             ) : error ? (
                 <Message variant='danger'>{error?.data?.message || error.error}</Message>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="admin-brand-grid">
                     {brands.map((brand) => (
-                        <div key={brand._id} className="bg-white rounded-xl shadow-sm border border-border-color p-4 hover:shadow-md transition-shadow relative group">
-                            <div className="flex items-center gap-4">
-                                <div className="w-16 h-16 bg-secondary rounded-lg flex items-center justify-center overflow-hidden">
+                        <div key={brand._id} className="admin-brand-card">
+                            <div className="admin-brand-card-inner">
+                                <div className="admin-brand-logo-wrap">
                                     {brand.logo ? (
-                                        <img src={brand.logo} alt={brand.name} className="w-full h-full object-contain" />
+                                        <img src={brand.logo} alt={brand.name} className="admin-brand-logo-img" />
                                     ) : (
-                                        <span className="text-2xl font-bold text-text-muted">{brand.name[0]}</span>
+                                        <span className="admin-brand-initial">{brand.name[0]}</span>
                                     )}
                                 </div>
-                                <div>
-                                    <h3 className="text-lg font-bold text-text-main">{brand.name}</h3>
-                                    <p className="text-sm text-text-muted line-clamp-2">{brand.description || 'No description'}</p>
+                                <div className="admin-brand-info">
+                                    <h3 className="admin-brand-name">{brand.name}</h3>
+                                    <p className="admin-brand-desc">{brand.description || 'No description'}</p>
                                 </div>
                             </div>
                             <button
                                 onClick={() => deleteHandler(brand._id)}
-                                className="absolute top-4 right-4 text-text-muted hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                                className="admin-brand-delete-btn"
                             >
                                 <FaTrash />
                             </button>
                         </div>
                     ))}
                     {brands.length === 0 && (
-                        <div className="col-span-full text-center text-text-muted py-12 bg-secondary/30 rounded-xl">No brands found. Create one to get started.</div>
+                        <div className="admin-brand-empty">No brands found. Create one to get started.</div>
                     )}
                 </div>
             )}
 
             {/* Create Brand Modal */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6 relative">
+                <div className="admin-brand-modal-overlay">
+                    <div className="admin-brand-modal">
                         <button
                             onClick={() => setIsModalOpen(false)}
-                            className="absolute top-4 right-4 text-text-muted hover:text-text-main"
+                            className="admin-brand-modal-close"
                         >
                             <FaTimes size={20} />
                         </button>
-                        <h2 className="text-2xl font-bold text-text-main mb-6">Add New Brand</h2>
-                        <form onSubmit={submitHandler} className="space-y-4">
+                        <h2 className="admin-brand-modal-title">Add New Brand</h2>
+                        <form onSubmit={submitHandler} className="admin-brand-form">
                             <div>
-                                <label className="block text-sm font-medium text-text-main mb-1">Brand Name</label>
+                                <label className="admin-brand-label">Brand Name</label>
                                 <input
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="w-full p-2 border border-border-color rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                                    className="admin-brand-input"
                                     required
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-text-main mb-1">Logo URL</label>
+                                <label className="admin-brand-label">Logo URL</label>
                                 <input
                                     type="text"
                                     value={logo}
                                     onChange={(e) => setLogo(e.target.value)}
                                     placeholder="/images/brands/brand.png"
-                                    className="w-full p-2 border border-border-color rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                                    className="admin-brand-input"
                                 />
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-text-main mb-1">Description</label>
+                                <label className="admin-brand-label">Description</label>
                                 <textarea
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    className="w-full p-2 border border-border-color rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent"
+                                    className="admin-brand-input admin-brand-textarea"
                                     rows="3"
                                 ></textarea>
                             </div>
                             <button
                                 type="submit"
-                                className="w-full bg-accent text-white py-2 rounded-lg font-bold hover:bg-orange-600 transition-colors"
+                                className="admin-brand-submit"
                             >
                                 Create Brand
                             </button>

@@ -1,0 +1,20 @@
+.rating-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+.rating-container > * + * {
+    margin-left: 0.25rem; /* space-x-1 */
+}
+
+.rating-stars {
+    display: flex;
+    color: #ea580c; /* text-accent */
+}
+
+.rating-text {
+    margin-left: 0.5rem; /* ml-2 */
+    font-size: 0.875rem; /* text-sm */
+    color: #9ca3af; /* text-gray-400 */
+    font-weight: 600;
+}

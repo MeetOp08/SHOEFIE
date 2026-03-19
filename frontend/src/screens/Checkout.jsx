@@ -7,6 +7,7 @@ import { clearCartItems } from '../slices/cartSlice';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { FaLock, FaShippingFast, FaCheckCircle, FaMoneyBillWave } from 'react-icons/fa';
+import '../styles/Checkout.css';
 
 const Checkout = () => {
     const navigate = useNavigate();
@@ -58,23 +59,23 @@ const Checkout = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-6xl">
-            <h1 className="text-3xl font-display font-bold text-text-main mb-8 text-center">Checkout</h1>
+        <div className="container-custom checkout-container">
+            <h1 className="checkout-title">Checkout</h1>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="checkout-layout">
                 {/* Left Column: Details */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="checkout-details-col">
 
                     {/* Shipping Address Review */}
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-border-color">
-                        <div className="flex items-center justify-between mb-4 border-b border-border-color pb-2">
-                            <h2 className="text-xl font-bold font-display text-text-main flex items-center">
-                                <FaShippingFast className="mr-2 text-accent" /> Shipping To
+                    <div className="checkout-card">
+                        <div className="checkout-card-header">
+                            <h2 className="checkout-card-title">
+                                <FaShippingFast className="checkout-card-icon" /> Shipping To
                             </h2>
-                            <Link to="/shipping" className="text-sm text-accent hover:underline">Edit</Link>
+                            <Link to="/shipping" className="checkout-edit-link">Edit</Link>
                         </div>
-                        <div className="text-text-muted space-y-1">
-                            <p className="font-bold text-text-main">{cart.shippingAddress.fullName}</p>
+                        <div className="checkout-address-details">
+                            <p className="checkout-address-name">{cart.shippingAddress.fullName}</p>
                             <p>{cart.shippingAddress.address}</p>
                             <p>{cart.shippingAddress.city}, {cart.shippingAddress.postalCode}</p>
                             <p>{cart.shippingAddress.country}</p>
@@ -83,26 +84,28 @@ const Checkout = () => {
                     </div>
 
                     {/* Order Items Review */}
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-border-color">
-                        <h2 className="text-xl font-bold font-display text-text-main mb-4 border-b border-border-color pb-2 flex items-center">
-                            <FaCheckCircle className="mr-2 text-accent" /> Your Items
-                        </h2>
+                    <div className="checkout-card">
+                        <div className="checkout-card-header">
+                            <h2 className="checkout-card-title">
+                                <FaCheckCircle className="checkout-card-icon" /> Your Items
+                            </h2>
+                        </div>
                         {cart.cartItems.length === 0 ? (
                             <Message>Your cart is empty</Message>
                         ) : (
-                            <div className="divide-y divide-border-color">
+                            <div className="checkout-items-list">
                                 {cart.cartItems.map((item, index) => (
-                                    <div key={index} className="flex items-center py-4">
-                                        <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 border border-gray-200">
-                                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                    <div key={index} className="checkout-item-row">
+                                        <div className="checkout-item-img-wrap">
+                                            <img src={item.image} alt={item.name} className="checkout-item-img" />
                                         </div>
-                                        <div className="ml-4 flex-grow">
-                                            <Link to={`/product/${item._id}`} className="font-semibold text-text-main hover:text-accent">
+                                        <div className="checkout-item-info">
+                                            <Link to={`/product/${item._id}`} className="checkout-item-name">
                                                 {item.name}
                                             </Link>
-                                            <p className="text-sm text-text-muted">Qty: {item.qty}</p>
+                                            <p className="checkout-item-qty">Qty: {item.qty}</p>
                                         </div>
-                                        <div className="font-bold text-text-main">
+                                        <div className="checkout-item-price">
                                             ₹{(item.price * item.qty).toLocaleString()}
                                         </div>
                                     </div>
@@ -113,34 +116,34 @@ const Checkout = () => {
                 </div>
 
                 {/* Right Column: Summary & Payment */}
-                <div className="lg:col-span-1">
-                    <div className="bg-white p-6 rounded-xl shadow-lg border border-border-color sticky top-24">
-                        <h2 className="text-2xl font-bold font-display text-text-main mb-6 border-b border-border-color pb-4">Order Summary</h2>
+                <div className="checkout-summary-col">
+                    <div className="checkout-summary-card">
+                        <h2 className="checkout-summary-title">Order Summary</h2>
 
-                        <div className="space-y-3 text-sm mb-6">
-                            <div className="flex justify-between text-text-muted">
+                        <div className="checkout-summary-details">
+                            <div className="checkout-summary-row">
                                 <span>Subtotal ({cart.cartItems.reduce((acc, item) => acc + item.qty, 0)} items)</span>
                                 <span>₹{cart.itemsPrice}</span>
                             </div>
-                            <div className="flex justify-between text-text-muted">
+                            <div className="checkout-summary-row">
                                 <span>Shipping</span>
                                 <span>₹{cart.shippingPrice}</span>
                             </div>
-                            <div className="flex justify-between text-text-muted">
+                            <div className="checkout-summary-row">
                                 <span>Tax</span>
                                 <span>₹{cart.taxPrice}</span>
                             </div>
-                            <div className="flex justify-between border-t border-border-color pt-3 mt-2">
-                                <span className="font-bold text-xl text-text-main">Total</span>
-                                <span className="font-bold text-xl text-accent">₹{cart.totalPrice}</span>
+                            <div className="checkout-summary-total">
+                                <span className="checkout-summary-total-label">Total</span>
+                                <span className="checkout-summary-total-value">₹{cart.totalPrice}</span>
                             </div>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="checkout-actions">
                             <button
                                 onClick={() => handlePlaceOrder(true)}
                                 disabled={cart.cartItems.length === 0 || loadingCreate || loadingStripe}
-                                className="w-full btn-primary py-4 flex items-center justify-center text-lg shadow-md hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="btn-primary checkout-stripe-btn"
                             >
                                 {loadingStripe ? <Loader className="w-6 h-6" /> : (
                                     <>
@@ -153,13 +156,13 @@ const Checkout = () => {
                             <button
                                 onClick={() => handlePlaceOrder(false)}
                                 disabled={cart.cartItems.length === 0 || loadingCreate || loadingStripe}
-                                className="w-full bg-gray-100 text-text-main hover:bg-gray-200 font-bold py-3 px-4 rounded-lg flex items-center justify-center transition-colors border border-gray-300"
+                                className="checkout-cod-btn"
                             >
-                                <FaMoneyBillWave className="mr-2 text-green-600" /> Pay on Delivery
+                                <FaMoneyBillWave className="checkout-cod-icon" /> Pay on Delivery
                             </button>
                         </div>
 
-                        <div className="mt-6 text-xs text-text-muted text-center flex items-center justify-center">
+                        <div className="checkout-secure-note">
                             <FaLock className="mr-1" /> Secure Encrypted Payment
                         </div>
                     </div>

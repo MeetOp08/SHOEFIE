@@ -1,0 +1,377 @@
+.admin-pedit-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 56rem; /* max-w-4xl */
+    margin: 0 auto;
+}
+
+.admin-pedit-back {
+    display: inline-flex;
+    align-items: center;
+    color: #6b7280;
+    transition: color 0.2s ease;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+}
+
+.admin-pedit-back:hover {
+    color: #fca311;
+}
+
+.admin-pedit-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #d6d3d1;
+    padding: 2rem;
+}
+
+.admin-pedit-title {
+    font-size: 1.875rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #d6d3d1;
+    padding-bottom: 1rem;
+}
+
+.admin-pedit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.admin-pedit-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .admin-pedit-grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 768px) {
+    .admin-pedit-col-span-2 {
+        grid-column: span 2 / span 2;
+    }
+}
+
+.admin-pedit-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.admin-pedit-subcard {
+    padding: 1.5rem;
+    background-color: #f9fafb;
+    border: 1px solid #d6d3d1;
+    border-radius: 0.5rem;
+}
+
+.admin-pedit-subtitle {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 1rem;
+}
+
+.admin-pedit-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .admin-pedit-grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.admin-pedit-label-muted {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #6b7280;
+}
+
+.admin-pedit-input-wrapper {
+    position: relative;
+}
+
+.admin-pedit-input-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    color: #9ca3af;
+}
+
+.admin-pedit-input-pl {
+    padding-left: 2rem;
+}
+
+.admin-pedit-image-area {
+    background-color: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px dashed #d1d5db;
+}
+
+.admin-pedit-image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.admin-pedit-image-item {
+    position: relative;
+    width: 6rem;
+    height: 6rem;
+}
+
+.admin-pedit-image-item-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    border: 2px solid #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.admin-pedit-image-item-img.main {
+    border-color: #fca311;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.admin-pedit-image-badge {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    background-color: #fca311;
+    color: #fff;
+    font-size: 0.625rem; /* 10px */
+    padding: 0 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.admin-pedit-image-delete {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    background-color: #fff;
+    color: #ef4444;
+    border-radius: 9999px;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #e5e7eb;
+    opacity: 0;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.admin-pedit-image-item:hover .admin-pedit-image-delete {
+    opacity: 1;
+}
+
+.admin-pedit-image-delete:hover {
+    background-color: #fef2f2;
+}
+
+.admin-pedit-upload-btn {
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #9ca3af;
+}
+
+.admin-pedit-upload-btn:hover {
+    border-color: #fca311;
+    background-color: #fff;
+    color: #fca311;
+}
+
+.admin-pedit-upload-hidden {
+    display: none;
+}
+
+.admin-pedit-fallback-input {
+    margin-top: 0.5rem;
+}
+
+.admin-pedit-badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.admin-pedit-badge-size {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    border: 1px solid;
+    transition: all 0.2s ease;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: #fff;
+    border-color: #e5e7eb;
+    color: #6b7280;
+}
+
+.admin-pedit-badge-size:hover {
+    border-color: #111827;
+}
+
+.admin-pedit-badge-size.active {
+    background-color: #111827;
+    color: #fff;
+    border-color: #111827;
+}
+
+.admin-pedit-badge-color {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    border: 1px solid;
+    transition: all 0.2s ease;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: #fff;
+    border-color: #e5e7eb;
+    color: #6b7280;
+}
+
+.admin-pedit-badge-color:hover {
+    border-color: #9ca3af;
+}
+
+.admin-pedit-badge-color.active {
+    background-color: rgba(252, 163, 17, 0.1); /* accent/10 */
+    border-color: #fca311;
+    color: #fca311;
+}
+
+.admin-pedit-textarea {
+    min-height: 150px;
+}
+
+.admin-pedit-status-card {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .admin-pedit-status-card {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.admin-pedit-toggle-group {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.admin-pedit-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.admin-pedit-toggle-track {
+    width: 3rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    padding: 0.25rem;
+    transition: background-color 0.2s ease;
+    background-color: #d1d5db; /* gray-300 */
+}
+
+.admin-pedit-toggle-track.active-accent {
+    background-color: #fca311;
+}
+
+.admin-pedit-toggle-track.active-green {
+    background-color: #22c55e;
+}
+
+.admin-pedit-toggle-thumb {
+    background-color: #fff;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transform: translateX(0);
+    transition: transform 0.2s ease;
+}
+
+.admin-pedit-toggle-thumb.active {
+    transform: translateX(1.5rem); /* translate-x-6 */
+}
+
+.admin-pedit-toggle-text {
+    font-weight: 500;
+    color: #111827;
+}
+
+.admin-pedit-status-select-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .admin-pedit-status-select-wrap {
+        width: auto;
+    }
+}
+
+.admin-pedit-status-label {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.admin-pedit-status-select {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.admin-pedit-footer {
+    padding-top: 1rem;
+    border-top: 1px solid #d6d3d1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.admin-pedit-submit {
+    padding: 0.75rem 2rem;
+    font-size: 1.125rem; /* text-lg */
+}

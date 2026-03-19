@@ -1,9 +1,10 @@
 import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
+import '../styles/Rating.css';
 
 const Rating = ({ value, text, color = '#D4AF37' }) => {
     return (
-        <div className='flex items-center space-x-1 mb-2'>
-            <div className="flex text-accent">
+        <div className='rating-container'>
+            <div className="rating-stars">
                 {[1, 2, 3, 4, 5].map((index) => (
                     <span key={index} style={{ color }}>
                         {value >= index ? (
@@ -16,7 +17,7 @@ const Rating = ({ value, text, color = '#D4AF37' }) => {
                     </span>
                 ))}
             </div>
-            {text && <span className='ml-2 text-sm text-gray-400 font-semibold'>{text}</span>}
+            {text && <span className='rating-text'>{text}</span>}
         </div>
     );
 };

@@ -98,7 +98,7 @@ const router = createBrowserRouter(
 
 const initialOptions = {
   "client-id": "test",
-  currency: "USD",
+  currency: "INR",
   intent: "capture",
 };
 

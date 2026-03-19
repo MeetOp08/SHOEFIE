@@ -5,6 +5,7 @@ import OrderTracking from '../components/OrderTracking';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { FaArrowLeft } from 'react-icons/fa';
+import '../styles/OrderTrackingPage.css';
 
 const OrderTrackingPage = () => {
     const { id: orderId } = useParams();
@@ -21,24 +22,24 @@ const OrderTrackingPage = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <Link to='/profile' className='flex items-center text-text-muted hover:text-accent mb-6 transition-colors'>
-                <FaArrowLeft className="mr-2" /> Back to Profile
+        <div className="container-custom order-track-container">
+            <Link to='/profile' className='order-track-back'>
+                <FaArrowLeft className="order-track-back-icon" /> Back to Profile
             </Link>
 
-            <h1 className="text-3xl font-display font-bold text-text-main mb-8 text-center">Track Your Order</h1>
+            <h1 className="order-track-title">Track Your Order</h1>
 
             {/* Search Box */}
-            <div className="max-w-xl mx-auto mb-12">
-                <form onSubmit={submitHandler} className="flex gap-2">
+            <div className="order-track-search-wrap">
+                <form onSubmit={submitHandler} className="order-track-form">
                     <input
                         type="text"
                         placeholder="Enter Order ID"
                         value={inputId}
                         onChange={(e) => setInputId(e.target.value)}
-                        className="input-field"
+                        className="input-field order-track-input"
                     />
-                    <button type="submit" className="btn-primary px-6 whitespace-nowrap">
+                    <button type="submit" className="btn-primary order-track-btn">
                         Track Order
                     </button>
                 </form>
@@ -51,7 +52,7 @@ const OrderTrackingPage = () => {
                     ) : error ? (
                         <Message variant='danger'>{error?.data?.message || error.error || 'Order not found'}</Message>
                     ) : (
-                        <div className="animate-fade-in">
+                        <div className="order-track-fade-in">
                             <OrderTracking
                                 status={order.status}
                                 trackingId={order.trackingId}
@@ -59,16 +60,16 @@ const OrderTrackingPage = () => {
                                 estimatedDelivery={order.estimatedDeliveryDate}
                             />
 
-                            <div className="bg-white p-6 rounded-xl border border-border-color shadow-sm mt-6">
-                                <h3 className="font-bold text-lg mb-4">Shipment Details</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                            <div className="order-track-details-card">
+                                <h3 className="order-track-details-title">Shipment Details</h3>
+                                <div className="order-track-details-grid">
                                     <div>
-                                        <p className="text-text-muted">Delivery Partner</p>
-                                        <p className="font-semibold text-text-main">{order.deliveryPartner || 'Pending Assignment'}</p>
+                                        <p className="order-track-detail-label">Delivery Partner</p>
+                                        <p className="order-track-detail-value">{order.deliveryPartner || 'Pending Assignment'}</p>
                                     </div>
                                     <div>
-                                        <p className="text-text-muted">Shipping Address</p>
-                                        <p className="font-semibold text-text-main">
+                                        <p className="order-track-detail-label">Shipping Address</p>
+                                        <p className="order-track-detail-value">
                                             {order.shippingAddress.address}, {order.shippingAddress.city}, {order.shippingAddress.postalCode}, {order.shippingAddress.country}
                                         </p>
                                     </div>

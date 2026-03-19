@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 import Message from '../../components/Message';
 import { FaUpload, FaArrowLeft } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import '../../styles/admin/ProductCreateScreen.css';
 
 const ProductCreateScreen = () => {
     const navigate = useNavigate();
@@ -110,36 +111,36 @@ const ProductCreateScreen = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <Link to='/admin/productlist' className='flex items-center gap-2 text-gray-600 hover:text-accent mb-6'>
+        <div className="admin-pcreate-container">
+            <Link to='/admin/productlist' className="admin-pcreate-back">
                 <FaArrowLeft /> Back to Products
             </Link>
 
-            <h1 className="text-3xl font-bold mb-8">Add New Product</h1>
+            <h1 className="admin-pcreate-title">Add New Product</h1>
 
             {uploading && <Loader />}
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
-                <form onSubmit={submitHandler} className="space-y-6">
+            <div className="admin-pcreate-card">
+                <form onSubmit={submitHandler} className="admin-pcreate-form">
 
                     {/* Basic Info */}
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="admin-pcreate-grid-2">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Product Name</label>
+                            <label className="admin-pcreate-label">Product Name</label>
                             <input
                                 type="text"
                                 placeholder="Enter product name"
-                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent outline-none transition-all"
+                                className="admin-pcreate-input"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Brand</label>
+                            <label className="admin-pcreate-label">Brand</label>
                             {loadingBrands ? <Loader small /> : (
                                 <select
-                                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent outline-none"
+                                    className="admin-pcreate-input"
                                     value={brand}
                                     onChange={(e) => setBrand(e.target.value)}
                                     required
@@ -155,12 +156,12 @@ const ProductCreateScreen = () => {
                         </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="admin-pcreate-grid-2">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+                            <label className="admin-pcreate-label">Category</label>
                             {loadingCategories ? <Loader small /> : (
                                 <select
-                                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent outline-none"
+                                    className="admin-pcreate-input"
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                     required
@@ -173,9 +174,9 @@ const ProductCreateScreen = () => {
                             )}
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                            <label className="admin-pcreate-label">Gender</label>
                             <select
-                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent outline-none"
+                                className="admin-pcreate-input"
                                 value={gender}
                                 onChange={(e) => setGender(e.target.value)}
                             >
@@ -187,31 +188,31 @@ const ProductCreateScreen = () => {
                         </div>
                     </div>
 
-                    <div className="grid md:grid-cols-3 gap-6">
+                    <div className="admin-pcreate-grid-3">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Price (₹)</label>
+                            <label className="admin-pcreate-label">Price (₹)</label>
                             <input
                                 type="number"
-                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent outline-none"
+                                className="admin-pcreate-input"
                                 value={price}
                                 onChange={(e) => setPrice(e.target.value)}
                                 required
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Discount Price (Overview)</label>
+                            <label className="admin-pcreate-label">Discount Price (Overview)</label>
                             <input
                                 type="number"
-                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent outline-none"
+                                className="admin-pcreate-input"
                                 value={discountPrice}
                                 onChange={(e) => setDiscountPrice(e.target.value)}
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Count In Stock</label>
+                            <label className="admin-pcreate-label">Count In Stock</label>
                             <input
                                 type="number"
-                                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent outline-none"
+                                className="admin-pcreate-input"
                                 value={countInStock}
                                 onChange={(e) => setCountInStock(e.target.value)}
                                 required
@@ -220,10 +221,10 @@ const ProductCreateScreen = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                        <label className="admin-pcreate-label">Description</label>
                         <textarea
                             rows="4"
-                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent outline-none"
+                            className="admin-pcreate-input"
                             placeholder="Detailed product description..."
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -231,44 +232,41 @@ const ProductCreateScreen = () => {
                         ></textarea>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="admin-pcreate-grid-2">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Material</label>
+                            <label className="admin-pcreate-label">Material</label>
                             <input
                                 type="text"
-                                className="w-full p-3 border rounded-lg outline-none"
+                                className="admin-pcreate-input"
                                 placeholder="e.g. Leather, Canvas, Mesh"
                                 value={material}
                                 onChange={(e) => setMaterial(e.target.value)}
                                 required
                             />
                         </div>
-                        <div className="flex items-center gap-4 mt-8">
-                            <label className="flex items-center gap-2 cursor-pointer">
+                        <div className="admin-pcreate-checkbox-wrap">
+                            <label className="admin-pcreate-checkbox-wrap">
                                 <input
                                     type="checkbox"
-                                    className="w-5 h-5 text-accent rounded focus:ring-accent border-gray-300"
+                                    className="admin-pcreate-checkbox"
                                     checked={isFeatured}
                                     onChange={(e) => setIsFeatured(e.target.checked)}
                                 />
-                                <span className="font-medium text-gray-700">Mark as Featured Product</span>
+                                <span className="admin-pcreate-checkbox-label">Mark as Featured Product</span>
                             </label>
                         </div>
                     </div>
 
                     {/* Sizes Multi-Select */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Available Sizes</label>
-                        <div className="flex flex-wrap gap-2">
+                        <label className="admin-pcreate-label">Available Sizes</label>
+                        <div className="admin-pcreate-badges-wrap">
                             {sizeOptions.map(size => (
                                 <button
                                     key={size}
                                     type="button"
                                     onClick={() => handleSizeChange(size)}
-                                    className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${sizesAvailable.includes(size)
-                                        ? 'bg-accent text-white border-accent'
-                                        : 'bg-white text-gray-600 border-gray-200 hover:border-accent'
-                                        }`}
+                                    className={`admin-pcreate-badge-btn ${sizesAvailable.includes(size) ? 'active' : ''}`}
                                 >
                                     {size}
                                 </button>
@@ -278,19 +276,16 @@ const ProductCreateScreen = () => {
 
                     {/* Colors Multi-Select */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Available Colors</label>
-                        <div className="flex flex-wrap gap-2">
+                        <label className="admin-pcreate-label">Available Colors</label>
+                        <div className="admin-pcreate-badges-wrap">
                             {colorOptions.map(color => (
                                 <button
                                     key={color}
                                     type="button"
                                     onClick={() => handleColorChange(color)}
-                                    className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors flex items-center gap-2 ${colorsAvailable.includes(color)
-                                        ? 'bg-gray-800 text-white border-gray-800'
-                                        : 'bg-white text-gray-600 border-gray-200 hover:border-gray-800'
-                                        }`}
+                                    className={`admin-pcreate-badge-btn ${colorsAvailable.includes(color) ? 'active-dark' : ''} flex items-center gap-2`}
                                 >
-                                    <span className="w-3 h-3 rounded-full border border-gray-100" style={{ backgroundColor: color.toLowerCase() }}></span>
+                                    <span className="admin-pcreate-color-dot" style={{ backgroundColor: color.toLowerCase() }}></span>
                                     {color}
                                 </button>
                             ))}
@@ -299,41 +294,40 @@ const ProductCreateScreen = () => {
 
                     {/* Image Upload */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-4">Product Images (Upload Multiple)</label>
-                        <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center cursor-pointer hover:border-accent transition-colors relative bg-gray-50">
+                        <label className="admin-pcreate-label mb-4">Product Images (Upload Multiple)</label>
+                        <div className="admin-pcreate-upload-area relative">
                             <input
                                 type="file"
                                 id="image-upload"
                                 multiple
                                 onChange={handleImageChange}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                className="admin-pcreate-upload-input"
                                 accept="image/*"
                             />
-                            <div className="flex flex-col items-center justify-center pointer-events-none">
-                                <FaUpload className="text-3xl text-gray-400 mb-3" />
-                                <p className="text-sm text-gray-500 font-medium">Drag & drop files or <span className="text-accent">Browse</span></p>
-                                <p className="text-xs text-gray-400 mt-1">Supported formats: JPG, PNG, WEBP</p>
+                            <div className="admin-pcreate-upload-content pointer-events-none">
+                                <FaUpload className="admin-pcreate-upload-icon mb-3" />
+                                <p className="admin-pcreate-upload-text">Drag & drop files or <span className="admin-pcreate-upload-highlight">Browse</span></p>
+                                <p className="admin-pcreate-upload-hint">Supported formats: JPG, PNG, WEBP</p>
                             </div>
                         </div>
 
                         {/* Previews */}
                         {imagePreviews.length > 0 && (
-                            <div className="flex flex-wrap gap-4 mt-6">
+                            <div className="admin-pcreate-previews mt-6">
                                 {imagePreviews.map((src, index) => (
-                                    <div key={index} className="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
-                                        <img src={src} alt="Preview" className="w-full h-full object-cover" />
+                                    <div key={index} className="admin-pcreate-preview-item">
+                                        <img src={src} alt="Preview" className="admin-pcreate-preview-img" />
                                     </div>
                                 ))}
                             </div>
                         )}
                     </div>
 
-                    <div className="pt-6 border-t border-gray-100">
+                    <div className="admin-pcreate-footer">
                         <button
                             type="submit"
                             disabled={uploading}
-                            className={`w-full py-4 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all ${uploading ? 'bg-gray-400 cursor-not-allowed' : 'bg-accent hover:opacity-90'
-                                }`}
+                            className={`admin-pcreate-submit ${uploading ? 'disabled' : 'active'}`}
                         >
                             {uploading ? 'Creating Product...' : 'Create Product'}
                         </button>

@@ -6,8 +6,9 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { useCreateOrderMutation, useGetRazorpayKeyQuery, usePayOrderMutation, useVerifyPaymentMutation } from '../slices/ordersApiSlice';
-import { clearCartItems, applyDiscount } from '../slices/cartSlice';
+import { applyDiscount, clearCartItems } from '../slices/cartSlice';
 import { useValidateCouponMutation } from '../slices/couponsApiSlice';
+import '../styles/PlaceOrderScreen.css';
 
 const PlaceOrderScreen = () => {
     const navigate = useNavigate();
@@ -111,49 +112,49 @@ const PlaceOrderScreen = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container-custom placeorder-container">
             <CheckoutSteps step1 step2 step3 step4 />
 
-            <h1 className="text-3xl font-display font-bold text-text-main mb-8 mt-8">Review Order</h1>
+            <h1 className="placeorder-title">Review Order</h1>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 space-y-6">
+            <div className="placeorder-layout">
+                <div className="placeorder-details-col">
                     {/* Shipping Info */}
-                    <div className="card p-6">
-                        <h2 className="text-xl font-bold font-display text-text-main mb-4 border-b border-border-color pb-2">Shipping Information</h2>
-                        <p className="text-text-muted">
-                            <strong className="text-text-main">Address: </strong>
+                    <div className="placeorder-card">
+                        <h2 className="placeorder-card-title">Shipping Information</h2>
+                        <p className="placeorder-card-text">
+                            <strong className="placeorder-card-label">Address: </strong>
                             {cart.shippingAddress.address}, {cart.shippingAddress.city}{' '}
                             {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}
                         </p>
                     </div>
 
                     {/* Payment Info */}
-                    <div className="card p-6">
-                        <h2 className="text-xl font-bold font-display text-text-main mb-4 border-b border-border-color pb-2">Payment Method</h2>
-                        <p className="text-text-muted">
-                            <strong className="text-text-main">Method: </strong>
+                    <div className="placeorder-card">
+                        <h2 className="placeorder-card-title">Payment Method</h2>
+                        <p className="placeorder-card-text">
+                            <strong className="placeorder-card-label">Method: </strong>
                             {cart.paymentMethod} {cart.paymentProvider && cart.paymentProvider !== cart.paymentMethod ? `(${cart.paymentProvider})` : ''}
                         </p>
                     </div>
 
                     {/* Order Items */}
-                    <div className="card p-6">
-                        <h2 className="text-xl font-bold font-display text-text-main mb-4 border-b border-border-color pb-2">Order Items</h2>
+                    <div className="placeorder-card">
+                        <h2 className="placeorder-card-title">Order Items</h2>
                         {cart.cartItems.length === 0 ? (
                             <Message>Your cart is empty</Message>
                         ) : (
-                            <div className="space-y-4">
+                            <div className="placeorder-items-list">
                                 {cart.cartItems.map((item, index) => (
-                                    <div key={index} className="flex items-center space-x-4 border-b border-border-color pb-4 last:border-0 last:pb-0">
-                                        <div className="w-16 h-16 bg-secondary rounded-lg overflow-hidden flex-shrink-0">
-                                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                                    <div key={index} className="placeorder-item-row">
+                                        <div className="placeorder-item-img-wrap">
+                                            <img src={item.image} alt={item.name} className="placeorder-item-img" />
                                         </div>
-                                        <Link to={`/product/${item._id}`} className="hover:text-accent font-semibold flex-grow text-text-main">
+                                        <Link to={`/product/${item._id}`} className="placeorder-item-name">
                                             {item.name}
                                         </Link>
-                                        <div className="text-text-muted">
-                                            {item.qty} x <span className="font-medium">₹{item.price.toLocaleString()}</span> = <span className="text-text-main font-bold">₹{(item.qty * item.price).toLocaleString()}</span>
+                                        <div className="placeorder-item-price-calc">
+                                            {item.qty} x <span className="placeorder-item-price-unit">₹{item.price.toLocaleString()}</span> = <span className="placeorder-item-price-total">₹{(item.qty * item.price).toLocaleString()}</span>
                                         </div>
                                     </div>
                                 ))}
@@ -163,48 +164,48 @@ const PlaceOrderScreen = () => {
                 </div>
 
                 {/* Order Summary */}
-                <div className="col-span-1">
-                    <div className="card p-6 sticky top-24 bg-white shadow-lg border border-border-color">
-                        <h2 className="text-2xl font-bold font-display text-text-main mb-6 border-b border-border-color pb-4">Order Summary</h2>
+                <div className="placeorder-summary-col">
+                    <div className="placeorder-summary-card">
+                        <h2 className="placeorder-summary-title">Order Summary</h2>
 
                         {/* Coupon Input */}
-                        <div className="mb-6 flex gap-2">
+                        <div className="placeorder-coupon-wrap">
                             <input
                                 type="text"
                                 placeholder="Coupon Code"
                                 value={couponCode}
                                 onChange={(e) => setCouponCode(e.target.value)}
-                                className="input-field py-2 text-sm"
+                                className="input-field placeorder-coupon-input"
                             />
                             <button
                                 onClick={applyCouponHandler}
                                 disabled={loadingCoupon || cart.discount > 0}
-                                className="btn-primary text-sm px-4 whitespace-nowrap disabled:opacity-50"
+                                className="btn-primary placeorder-coupon-btn"
                             >
                                 Apply
                             </button>
                         </div>
 
-                        <div className="space-y-3 text-text-muted text-sm">
-                            <div className="flex justify-between">
+                        <div className="placeorder-summary-details">
+                            <div className="placeorder-summary-row">
                                 <span>Items</span>
                                 <span>₹{Number(cart.itemsPrice).toLocaleString()}</span>
                             </div>
-                            <div className="flex justify-between">
+                            <div className="placeorder-summary-row">
                                 <span>Shipping</span>
                                 <span>₹{Number(cart.shippingPrice).toLocaleString()}</span>
                             </div>
-                            <div className="flex justify-between">
+                            <div className="placeorder-summary-row">
                                 <span>Tax</span>
                                 <span>₹{Number(cart.taxPrice).toLocaleString()}</span>
                             </div>
                             {cart.discount > 0 && (
-                                <div className="flex justify-between text-green-600 font-medium">
+                                <div className="placeorder-summary-discount">
                                     <span>Discount ({cart.discount}%)</span>
                                     <span>-₹{(Number(cart.itemsPrice) * cart.discount / 100).toLocaleString()}</span>
                                 </div>
                             )}
-                            <div className="flex justify-between border-t border-border-color pt-3 font-bold text-xl text-text-main">
+                            <div className="placeorder-summary-total">
                                 <span>Total</span>
                                 <span>₹{Number(cart.totalPrice).toLocaleString()}</span>
                             </div>
@@ -214,7 +215,7 @@ const PlaceOrderScreen = () => {
 
                         <button
                             type='button'
-                            className="btn-primary w-full mt-6 py-4 text-base shadow-xl disabled:opacity-50"
+                            className="btn-primary placeorder-submit-btn"
                             disabled={cart.cartItems.length === 0 || isLoading}
                             onClick={placeOrderHandler}
                         >

@@ -10,6 +10,7 @@ import Loader from '../../components/Loader';
 import Message from '../../components/Message';
 import { toast } from 'react-toastify';
 import { FaArrowLeft, FaUpload, FaTrash, FaCheck } from 'react-icons/fa';
+import '../../styles/admin/ProductEditScreen.css';
 
 const ProductEditScreen = () => {
     const { id: productId } = useParams();
@@ -135,24 +136,24 @@ const ProductEditScreen = () => {
 
     return (
         <>
-            <div className="container mx-auto px-4 py-8 max-w-4xl">
-                <Link to='/admin/productlist' className='flex items-center text-text-muted hover:text-accent mb-6 transition-colors'>
+            <div className="admin-pedit-container">
+                <Link to='/admin/productlist' className="admin-pedit-back">
                     <FaArrowLeft className="mr-2" /> Go Back
                 </Link>
 
-                <div className="bg-white rounded-xl shadow-sm border border-border-color p-8">
-                    <h1 className="text-3xl font-display font-bold text-text-main mb-6 border-b border-border-color pb-4">Edit Product</h1>
+                <div className="admin-pedit-card">
+                    <h1 className="admin-pedit-title">Edit Product</h1>
                     {loadingUpdate && <Loader />}
                     {isLoading ? (
                         <Loader />
                     ) : error ? (
                         <Message variant='danger'>{error?.data?.message || error.error}</Message>
                     ) : (
-                        <form onSubmit={submitHandler} className="space-y-8">
+                        <form onSubmit={submitHandler} className="admin-pedit-form">
                             {/* Basic Info */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="md:col-span-2">
-                                    <label className="block mb-2 font-bold text-text-main">Product Name</label>
+                            <div className="admin-pedit-grid-2">
+                                <div className="admin-pedit-col-span-2">
+                                    <label className="admin-pedit-label">Product Name</label>
                                     <input
                                         type='text'
                                         placeholder='Enter product name'
@@ -162,7 +163,7 @@ const ProductEditScreen = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-2 font-bold text-text-main">Brand</label>
+                                    <label className="admin-pedit-label">Brand</label>
                                     <input
                                         type='text'
                                         placeholder='Enter brand'
@@ -172,7 +173,7 @@ const ProductEditScreen = () => {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block mb-2 font-bold text-text-main">Category</label>
+                                    <label className="admin-pedit-label">Category</label>
                                     {loadingCategories ? <Loader /> : (
                                         <select
                                             value={category}
@@ -187,7 +188,7 @@ const ProductEditScreen = () => {
                                     )}
                                 </div>
                                 <div>
-                                    <label className="block mb-2 font-bold text-text-main">Gender</label>
+                                    <label className="admin-pedit-label">Gender</label>
                                     <select
                                         value={gender}
                                         onChange={(e) => setGender(e.target.value)}
@@ -202,37 +203,37 @@ const ProductEditScreen = () => {
                             </div>
 
                             {/* Pricing & Stock */}
-                            <div className="card p-6 bg-gray-50 border border-border-color">
-                                <h3 className="text-lg font-bold text-text-main mb-4">Pricing & Inventory</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="admin-pedit-subcard">
+                                <h3 className="admin-pedit-subtitle">Pricing & Inventory</h3>
+                                <div className="admin-pedit-grid-3">
                                     <div>
-                                        <label className="block mb-2 font-medium text-text-muted">Price</label>
-                                        <div className="relative">
-                                            <span className="absolute left-3 top-3 text-gray-400">$</span>
+                                        <label className="admin-pedit-label-muted">Price</label>
+                                        <div className="admin-pedit-input-wrapper">
+                                            <span className="admin-pedit-input-icon">$</span>
                                             <input
                                                 type='number'
                                                 placeholder='0.00'
                                                 value={price}
                                                 onChange={(e) => setPrice(e.target.value)}
-                                                className="input-field pl-8"
+                                                className="input-field admin-pedit-input-pl"
                                             />
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block mb-2 font-medium text-text-muted">Discount Price</label>
-                                        <div className="relative">
-                                            <span className="absolute left-3 top-3 text-gray-400">$</span>
+                                        <label className="admin-pedit-label-muted">Discount Price</label>
+                                        <div className="admin-pedit-input-wrapper">
+                                            <span className="admin-pedit-input-icon">$</span>
                                             <input
                                                 type='number'
                                                 placeholder='0.00'
                                                 value={discountPrice}
                                                 onChange={(e) => setDiscountPrice(e.target.value)}
-                                                className="input-field pl-8"
+                                                className="input-field admin-pedit-input-pl"
                                             />
                                         </div>
                                     </div>
                                     <div>
-                                        <label className="block mb-2 font-medium text-text-muted">Count In Stock</label>
+                                        <label className="admin-pedit-label-muted">Count In Stock</label>
                                         <input
                                             type='number'
                                             placeholder='0'
@@ -247,35 +248,35 @@ const ProductEditScreen = () => {
 
                             {/* Images */}
                             <div>
-                                <label className="block mb-2 font-bold text-text-main">Images</label>
-                                <div className="bg-gray-50 p-6 rounded-xl border border-dashed border-gray-300">
-                                    <div className="flex flex-wrap gap-4 mb-4">
+                                <label className="admin-pedit-label">Images</label>
+                                <div className="admin-pedit-image-area">
+                                    <div className="admin-pedit-image-list">
                                         {images.map((img, idx) => (
-                                            <div key={idx} className="relative group w-24 h-24">
+                                            <div key={idx} className="admin-pedit-image-item">
                                                 <img
                                                     src={img}
                                                     alt="Product"
-                                                    className={`w-full h-full object-cover rounded-lg border-2 cursor-pointer transition-all ${image === img ? 'border-accent shadow-md' : 'border-gray-200'}`}
+                                                    className={`admin-pedit-image-item-img ${image === img ? 'main' : ''}`}
                                                     onClick={() => setImage(img)}
                                                     title="Set as main image"
                                                 />
-                                                {image === img && <div className="absolute top-1 left-1 bg-accent text-white text-[10px] px-1 rounded">Main</div>}
+                                                {image === img && <div className="admin-pedit-image-badge">Main</div>}
                                                 <button
                                                     type="button"
-                                                    className="absolute -top-2 -right-2 bg-white text-red-500 rounded-full w-6 h-6 flex items-center justify-center shadow-sm border border-gray-200 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50"
+                                                    className="admin-pedit-image-delete"
                                                     onClick={() => setImages(images.filter(i => i !== img))}
                                                 >
                                                     <FaTrash size={12} />
                                                 </button>
                                             </div>
                                         ))}
-                                        <label className="w-24 h-24 flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-accent hover:bg-white transition-all text-gray-400 hover:text-accent">
+                                        <label className="admin-pedit-upload-btn">
                                             <FaUpload className="mb-1 text-xl" />
                                             <span className="text-xs">Upload</span>
                                             <input
                                                 type='file'
                                                 onChange={uploadFileHandler}
-                                                className="hidden"
+                                                className="admin-pedit-upload-hidden"
                                                 multiple
                                             />
                                         </label>
@@ -283,7 +284,7 @@ const ProductEditScreen = () => {
 
                                     {/* Fallback text input */}
                                     {images.length === 0 && (
-                                        <div className="mt-2">
+                                        <div className="admin-pedit-fallback-input">
                                             <input
                                                 type='text'
                                                 placeholder='Or enter image URL here'
@@ -298,17 +299,15 @@ const ProductEditScreen = () => {
                             </div>
 
                             {/* Options */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="admin-pedit-grid-2">
                                 <div>
-                                    <label className="block mb-3 font-bold text-text-main">Available Sizes</label>
-                                    <div className="flex flex-wrap gap-2">
+                                    <label className="admin-pedit-label">Available Sizes</label>
+                                    <div className="admin-pedit-badges-container">
                                         {availableSizes.map((s) => (
                                             <button
                                                 type="button"
                                                 key={s}
-                                                className={`w-10 h-10 rounded-full border transition-all font-medium ${sizes.includes(s)
-                                                    ? 'bg-text-main text-white border-text-main'
-                                                    : 'bg-white border-gray-200 text-text-muted hover:border-text-main'}`}
+                                                className={`admin-pedit-badge-size ${sizes.includes(s) ? 'active' : ''}`}
                                                 onClick={() => handleCheckboxChange(s, setSizes, sizes)}
                                             >
                                                 {s}
@@ -317,15 +316,13 @@ const ProductEditScreen = () => {
                                     </div>
                                 </div>
                                 <div>
-                                    <label className="block mb-3 font-bold text-text-main">Available Colors</label>
-                                    <div className="flex flex-wrap gap-2">
+                                    <label className="admin-pedit-label">Available Colors</label>
+                                    <div className="admin-pedit-badges-container">
                                         {availableColors.map((c) => (
                                             <button
                                                 type="button"
                                                 key={c}
-                                                className={`px-4 py-2 rounded-full border transition-all text-sm font-medium ${colors.includes(c)
-                                                    ? 'bg-accent/10 border-accent text-accent'
-                                                    : 'bg-white border-gray-200 text-text-muted hover:border-gray-400'}`}
+                                                className={`admin-pedit-badge-color ${colors.includes(c) ? 'active' : ''}`}
                                                 onClick={() => handleCheckboxChange(c, setColors, colors)}
                                             >
                                                 {c}
@@ -337,21 +334,21 @@ const ProductEditScreen = () => {
 
                             {/* Description */}
                             <div>
-                                <label className="block mb-2 font-bold text-text-main">Description</label>
+                                <label className="admin-pedit-label">Description</label>
                                 <textarea
                                     placeholder='Enter detailed product description'
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
-                                    className="input-field min-h-[150px]"
+                                    className="input-field admin-pedit-textarea"
                                 />
                             </div>
 
                             {/* Status & Visibility */}
-                            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-6">
-                                <div className="flex items-center gap-6">
-                                    <label className="flex items-center space-x-3 cursor-pointer select-none">
-                                        <div className={`w-12 h-6 rounded-full p-1 transition-colors ${isFeatured ? 'bg-accent' : 'bg-gray-300'}`}>
-                                            <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${isFeatured ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                            <div className="admin-pedit-status-card">
+                                <div className="admin-pedit-toggle-group">
+                                    <label className="admin-pedit-toggle-label">
+                                        <div className={`admin-pedit-toggle-track ${isFeatured ? 'active-accent' : ''}`}>
+                                            <div className={`admin-pedit-toggle-thumb ${isFeatured ? 'active' : ''}`}></div>
                                         </div>
                                         <input
                                             type="checkbox"
@@ -359,12 +356,12 @@ const ProductEditScreen = () => {
                                             onChange={(e) => setIsFeatured(e.target.checked)}
                                             className="hidden"
                                         />
-                                        <span className="font-medium text-text-main">Featured Product</span>
+                                        <span className="admin-pedit-toggle-text">Featured Product</span>
                                     </label>
 
-                                    <label className="flex items-center space-x-3 cursor-pointer select-none">
-                                        <div className={`w-12 h-6 rounded-full p-1 transition-colors ${isActive ? 'bg-green-500' : 'bg-gray-300'}`}>
-                                            <div className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform ${isActive ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                                    <label className="admin-pedit-toggle-label">
+                                        <div className={`admin-pedit-toggle-track ${isActive ? 'active-green' : ''}`}>
+                                            <div className={`admin-pedit-toggle-thumb ${isActive ? 'active' : ''}`}></div>
                                         </div>
                                         <input
                                             type="checkbox"
@@ -372,16 +369,16 @@ const ProductEditScreen = () => {
                                             onChange={(e) => setIsActive(e.target.checked)}
                                             className="hidden"
                                         />
-                                        <span className="font-medium text-text-main">Active</span>
+                                        <span className="admin-pedit-toggle-text">Active</span>
                                     </label>
                                 </div>
 
-                                <div className="flex items-center space-x-3 w-full md:w-auto">
-                                    <label className="text-text-muted font-medium">Status:</label>
+                                <div className="admin-pedit-status-select-wrap">
+                                    <label className="admin-pedit-status-label">Status:</label>
                                     <select
                                         value={status}
                                         onChange={(e) => setStatus(e.target.value)}
-                                        className="input-field py-1"
+                                        className="input-field admin-pedit-status-select"
                                     >
                                         <option value="Draft">Draft</option>
                                         <option value="Published">Published</option>
@@ -389,10 +386,10 @@ const ProductEditScreen = () => {
                                 </div>
                             </div>
 
-                            <div className="pt-4 border-t border-border-color flex justify-end">
+                            <div className="admin-pedit-footer">
                                 <button
                                     type='submit'
-                                    className="btn-primary px-8 py-3 text-lg"
+                                    className="btn-primary admin-pedit-submit"
                                 >
                                     Update Product
                                 </button>

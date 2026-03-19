@@ -1,0 +1,107 @@
+.admin-review-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.admin-review-title {
+    font-size: 1.875rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+}
+
+.admin-review-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #d6d3d1;
+    overflow: hidden;
+}
+
+.admin-review-table-wrapper {
+    overflow-x: auto;
+}
+
+.admin-review-table {
+    min-width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-review-thead {
+    background-color: rgba(252, 163, 17, 0.1); /* bg-secondary */
+    color: #6b7280;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-review-th {
+    padding: 1rem;
+    border-bottom: 1px solid #d6d3d1;
+}
+
+.admin-review-tr {
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s ease;
+}
+
+.admin-review-tr:last-child {
+    border-bottom: none;
+}
+
+.admin-review-tr:hover {
+    background-color: rgba(252, 163, 17, 0.05); /* hover:bg-secondary/50 approximate */
+}
+
+.admin-review-td {
+    padding: 1rem;
+    font-size: 0.875rem;
+}
+
+.admin-review-td-id {
+    color: #111827;
+}
+
+.admin-review-td-product {
+    font-weight: 500;
+    color: #111827;
+}
+
+.admin-review-td-user {
+    color: #6b7280;
+}
+
+.admin-review-td-rating {
+    font-weight: 700;
+    color: #fca311; /* text-accent */
+}
+
+.admin-review-td-comment {
+    color: #111827;
+    font-style: italic;
+}
+
+.admin-review-td-date {
+    color: #6b7280;
+}
+
+.admin-review-delete-btn {
+    color: #ef4444;
+    padding: 0.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.admin-review-delete-btn:hover {
+    color: #b91c1c;
+}
+
+.admin-review-empty {
+    padding: 2rem;
+    text-align: center;
+    color: #6b7280;
+}

@@ -19,7 +19,7 @@ export default {
   accent: '#ea580c',
 
   // 📝 Text
-  'text-main': '#111827',   // Headings
+  'text-main': '#000000ff',   // Headings
   'text-body': '#292524',   // Paragraphs
   'text-muted': '#6b7280',  // Secondary text
   'text-light': '#9ca3af',  // Hints/placeholders

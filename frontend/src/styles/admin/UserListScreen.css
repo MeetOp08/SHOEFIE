@@ -1,0 +1,141 @@
+.admin-user-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.admin-user-title {
+    font-size: 1.875rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 2rem;
+}
+
+.admin-user-card {
+    background-color: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    border: 1px solid #d6d3d1;
+    overflow: hidden;
+}
+
+.admin-user-table-wrapper {
+    overflow-x: auto;
+}
+
+.admin-user-table {
+    min-width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.admin-user-thead {
+    background-color: #f9fafb;
+    border-bottom: 1px solid #d6d3d1;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-user-th {
+    padding: 1rem 1.5rem;
+}
+
+.admin-user-tr {
+    border-bottom: 1px solid #e5e7eb;
+    transition: background-color 0.2s ease;
+}
+
+.admin-user-tr:last-child {
+    border-bottom: none;
+}
+
+.admin-user-tr:hover {
+    background-color: #f9fafb;
+}
+
+.admin-user-td {
+    padding: 1rem 1.5rem;
+}
+
+.admin-user-td-id {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-family: monospace;
+}
+
+.admin-user-td-name {
+    font-weight: 500;
+    color: #111827;
+}
+
+.admin-user-link {
+    color: #6b7280;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.admin-user-link:hover {
+    color: #fca311;
+    text-decoration: underline;
+}
+
+.admin-user-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.admin-user-badge-icon {
+    margin-right: 0.25rem;
+}
+
+.admin-user-badge.admin {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.admin-user-badge.customer {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.admin-user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-user-btn {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.admin-user-btn.edit {
+    background-color: #eff6ff;
+    color: #2563eb;
+}
+
+.admin-user-btn.edit:hover {
+    background-color: #dbeafe;
+}
+
+.admin-user-btn.delete {
+    background-color: #fef2f2;
+    color: #ef4444;
+}
+
+.admin-user-btn.delete:hover {
+    background-color: #fee2e2;
+}

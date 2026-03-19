@@ -3,6 +3,7 @@ import { FaStar, FaShoppingCart, FaPlus } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../slices/cartSlice';
 import { toast } from 'react-toastify';
+import '../styles/Product.css';
 
 const Product = ({ product }) => {
     const dispatch = useDispatch();
@@ -14,30 +15,30 @@ const Product = ({ product }) => {
     };
 
     return (
-        <div className="card group h-full flex flex-col relative">
+        <div className="card product-card">
             {/* Discount Badge */}
             {product.discount > 0 && (
-                <span className="absolute top-3 left-3 z-10 bg-accent text-white text-xs font-bold px-2 py-1 rounded-md shadow-sm">
+                <span className="product-badge">
                     -{product.discount}%
                 </span>
             )}
 
             {/* Image Container */}
-            <Link to={`/product/${product._id}`} className="block relative overflow-hidden bg-gray-50 rounded-t-xl aspect-[4/5]">
+            <Link to={`/product/${product._id}`} className="product-img-container">
                 <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    className="product-img"
                     loading="lazy"
                 />
 
                 {/* Overlay gradient for text readability if needed, or just subtle darken */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300 pointer-events-none" />
+                <div className="product-overlay" />
 
                 {/* Quick Add Button (Visible on Hover) */}
                 <button
                     onClick={addToCartHandler}
-                    className="absolute bottom-4 right-4 bg-white text-text-main w-10 h-10 flex items-center justify-center rounded-full shadow-lg translate-y-12 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 delay-75 hover:bg-accent hover:text-white z-20"
+                    className="product-quick-add"
                     title="Quick Add"
                 >
                     <FaPlus className="text-sm" />
@@ -45,35 +46,35 @@ const Product = ({ product }) => {
             </Link>
 
             {/* Content */}
-            <div className="p-5 flex flex-col flex-grow">
-                <div className="flex justify-between items-start mb-2">
-                    <span className="text-xs font-bold text-accent uppercase tracking-wider">
+            <div className="product-content">
+                <div className="product-meta">
+                    <span className="product-brand">
                         {typeof product.brand === 'object' ? product.brand.name : product.brand}
                     </span>
-                    <div className="flex items-center gap-1 text-yellow-500 text-xs font-medium">
+                    <div className="product-rating">
                         <FaStar />
-                        <span className="text-text-muted">({product.numReviews})</span>
+                        <span>({product.numReviews})</span>
                     </div>
                 </div>
 
-                <Link to={`/product/${product._id}`} className="mb-2">
-                    <h3 className="text-lg font-display font-semibold text-text-main leading-tight group-hover:text-accent transition-colors line-clamp-1">
+                <Link to={`/product/${product._id}`} className="product-title-link">
+                    <h3 className="product-title">
                         {product.name}
                     </h3>
                 </Link>
 
-                <p className="text-sm text-text-muted line-clamp-2 mb-4 flex-grow">
+                <p className="product-desc">
                     {product.description}
                 </p>
 
-                <div className="flex items-baseline gap-2 mt-auto">
+                <div className="product-price-container">
                     {product.discountPrice && product.discountPrice > 0 ? (
                         <>
-                            <span className="text-xl font-bold text-text-main">₹{product.discountPrice.toLocaleString()}</span>
-                            <span className="text-sm text-text-muted line-through">₹{product.price.toLocaleString()}</span>
+                            <span className="product-price">₹{product.discountPrice.toLocaleString()}</span>
+                            <span className="product-price-old">₹{product.price.toLocaleString()}</span>
                         </>
                     ) : (
-                        <span className="text-xl font-bold text-text-main">₹{product.price.toLocaleString()}</span>
+                        <span className="product-price">₹{product.price.toLocaleString()}</span>
                     )}
                 </div>
             </div>
