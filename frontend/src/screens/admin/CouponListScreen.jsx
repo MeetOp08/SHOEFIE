@@ -49,7 +49,7 @@ const CouponListScreen = () => {
     return (
         <div className="container-custom admin-coupon-container">
             <Link className="btn-outline admin-coupon-back" to='/'>
-                <FaArrowLeft className="mr-2" /> Go Back
+                <FaArrowLeft style={{ marginRight: '0.5rem' }} /> Go Back
             </Link>
             <div className="admin-coupon-header">
                 <h1 className="admin-coupon-title">Coupons</h1>
@@ -94,7 +94,7 @@ const CouponListScreen = () => {
                                 />
                             </div>
                             <button type='submit' className='btn-primary admin-coupon-submit' disabled={loadingCreate}>
-                                <FaPlus className="mr-2" /> Create Coupon
+                                <FaPlus style={{ marginRight: '0.5rem' }} /> Create Coupon
                             </button>
                         </form>
                     </div>

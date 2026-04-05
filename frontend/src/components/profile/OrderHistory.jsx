@@ -26,7 +26,7 @@ const OrderHistory = () => {
                     <FaBox className="order-history-empty-icon" />
                     <h3 className="order-history-empty-title">No Orders Yet</h3>
                     <p className="order-history-empty-text">Looks like you haven't bought anything yet.</p>
-                    <Link to="/" className="btn-primary inline-flex">Start Shopping</Link>
+                    <Link to="/" className="btn-primary" style={{ display: 'inline-flex' }}>Start Shopping</Link>
                 </div>
             ) : (
                 <div className="order-history-list">

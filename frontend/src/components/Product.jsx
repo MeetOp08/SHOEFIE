@@ -41,7 +41,7 @@ const Product = ({ product }) => {
                     className="product-quick-add"
                     title="Quick Add"
                 >
-                    <FaPlus className="text-sm" />
+                    <FaPlus className="product-add-icon" />
                 </button>
             </Link>
 

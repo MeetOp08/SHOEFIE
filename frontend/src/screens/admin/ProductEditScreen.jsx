@@ -138,7 +138,7 @@ const ProductEditScreen = () => {
         <>
             <div className="admin-pedit-container">
                 <Link to='/admin/productlist' className="admin-pedit-back">
-                    <FaArrowLeft className="mr-2" /> Go Back
+                    <FaArrowLeft style={{ marginRight: '0.5rem' }} /> Go Back
                 </Link>
 
                 <div className="admin-pedit-card">
@@ -272,7 +272,7 @@ const ProductEditScreen = () => {
                                         ))}
                                         <label className="admin-pedit-upload-btn">
                                             <FaUpload className="mb-1 text-xl" />
-                                            <span className="text-xs">Upload</span>
+                                            <span className="admin-pedit-upload-text">Upload</span>
                                             <input
                                                 type='file'
                                                 onChange={uploadFileHandler}
@@ -354,7 +354,7 @@ const ProductEditScreen = () => {
                                             type="checkbox"
                                             checked={isFeatured}
                                             onChange={(e) => setIsFeatured(e.target.checked)}
-                                            className="hidden"
+                                            style={{ display: 'none' }}
                                         />
                                         <span className="admin-pedit-toggle-text">Featured Product</span>
                                     </label>
@@ -367,7 +367,7 @@ const ProductEditScreen = () => {
                                             type="checkbox"
                                             checked={isActive}
                                             onChange={(e) => setIsActive(e.target.checked)}
-                                            className="hidden"
+                                            style={{ display: 'none' }}
                                         />
                                         <span className="admin-pedit-toggle-text">Active</span>
                                     </label>

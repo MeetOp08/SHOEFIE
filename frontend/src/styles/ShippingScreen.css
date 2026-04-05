@@ -1,0 +1,60 @@
+.shipping-container {
+    max-width: 42rem;
+    padding: 2rem 1rem;
+    margin: 0 auto;
+}
+
+.shipping-card {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+}
+
+.shipping-title {
+    font-size: 1.875rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #111827;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 1rem;
+}
+
+.shipping-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.shipping-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.shipping-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .shipping-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+.shipping-submit-wrapper {
+    padding-top: 1rem;
+}
+
+.shipping-submit-btn {
+    width: 100%;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    font-size: 1.125rem;
+}

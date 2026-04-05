@@ -8,7 +8,7 @@ const App = () => {
   return (
     <>
       <Header />
-      <main className='min-h-screen pt-20'>
+      <main style={{ minHeight: '100vh', paddingTop: '5rem' }}>
         <Outlet />
       </main>
       <Footer />

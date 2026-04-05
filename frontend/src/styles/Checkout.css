@@ -64,6 +64,19 @@
     align-items: center;
 }
 
+.checkout-summary-text {
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.checkout-summary-label {
+    font-weight: 600;
+}
+
+.checkout-lock-icon {
+    font-size: 0.875rem;
+}
+
 .checkout-card-icon {
     margin-right: 0.5rem; /* mr-2 */
     color: #fca311; /* text-accent */

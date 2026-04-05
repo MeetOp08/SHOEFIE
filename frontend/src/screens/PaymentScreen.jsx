@@ -110,7 +110,7 @@ const PaymentScreen = () => {
                                     value={app}
                                     checked={selectedProvider === app}
                                     onChange={(e) => setSelectedProvider(e.target.value)}
-                                    className="hidden"
+                                    style={{ display: 'none' }}
                                 />
                                 <span className="payment-provider-radio-outer">
                                     {selectedProvider === app && <div className="payment-provider-radio-inner" />}
@@ -163,7 +163,7 @@ const PaymentScreen = () => {
                                     value={wallet}
                                     checked={selectedProvider === wallet}
                                     onChange={(e) => setSelectedProvider(e.target.value)}
-                                    className="hidden"
+                                    style={{ display: 'none' }}
                                 />
                                 <span className="payment-provider-radio-outer">
                                     {selectedProvider === wallet && <div className="payment-provider-radio-inner" />}

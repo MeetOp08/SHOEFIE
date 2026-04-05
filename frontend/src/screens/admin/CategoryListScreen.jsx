@@ -81,7 +81,7 @@ const CategoryListScreen = () => {
     return (
         <div className="container-custom admin-cat-container">
             <Link className="btn-outline admin-cat-back" to='/'>
-                <FaArrowLeft className="mr-2" /> Go Back
+                <FaArrowLeft style={{ marginRight: '0.5rem' }} /> Go Back
             </Link>
 
             <div className="admin-cat-header">
@@ -134,7 +134,7 @@ const CategoryListScreen = () => {
                                 className={`btn-primary admin-cat-submit ${editMode ? 'edit' : ''}`}
                                 disabled={loadingCreate || loadingUpdate}
                             >
-                                {editMode ? <><FaEdit className="mr-2" /> Update Category</> : <><FaPlus className="mr-2" /> Create Category</>}
+                                {editMode ? <><FaEdit style={{ marginRight: '0.5rem' }} /> Update Category</> : <><FaPlus style={{ marginRight: '0.5rem' }} /> Create Category</>}
                             </button>
                         </form>
                     </div>

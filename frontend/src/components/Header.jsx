@@ -72,7 +72,7 @@ const Header = () => {
                                 type="submit"
                                 className="header-search-btn"
                             >
-                                <FaSearch className="text-lg" />
+                                <FaSearch className="header-icon-sm" />
                             </button>
                         </form>
                     </div>
@@ -100,7 +100,7 @@ const Header = () => {
                                         onClick={toggleProfileDropdown}
                                         className="header-profile-btn"
                                     >
-                                        <FaUser className="text-lg" />
+                                        <FaUser className="header-icon-sm" />
                                         <span>{userInfo.name.split(' ')[0]}</span>
                                         <FaCaretDown className={`header-caret ${isProfileOpen ? 'rotate-180' : ''}`} />
                                     </button>
@@ -140,7 +140,7 @@ const Header = () => {
                                 </div>
                             ) : (
                                 <Link to="/login" className="header-login-btn">
-                                    <FaUser className="text-lg" />
+                                    <FaUser className="header-icon-sm" />
                                     <span>Log In</span>
                                 </Link>
                             )}
@@ -171,7 +171,7 @@ const Header = () => {
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="header-mobile-toggle"
                         >
-                            {isMobileMenuOpen ? <FaTimes className="text-2xl" /> : <FaBars className="text-2xl" />}
+                            {isMobileMenuOpen ? <FaTimes className="header-icon-md" /> : <FaBars className="header-icon-md" />}
                         </button>
                     </div>
                 </div>

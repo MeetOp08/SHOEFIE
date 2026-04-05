@@ -79,7 +79,7 @@ const Checkout = () => {
                             <p>{cart.shippingAddress.address}</p>
                             <p>{cart.shippingAddress.city}, {cart.shippingAddress.postalCode}</p>
                             <p>{cart.shippingAddress.country}</p>
-                            <p className="text-sm mt-2"><span className="font-semibold">Phone:</span> {cart.shippingAddress.phone}</p>
+                            <p className="checkout-summary-text"><span className="checkout-summary-label">Phone:</span> {cart.shippingAddress.phone}</p>
                         </div>
                     </div>
 
@@ -147,8 +147,8 @@ const Checkout = () => {
                             >
                                 {loadingStripe ? <Loader className="w-6 h-6" /> : (
                                     <>
-                                        <span className="mr-2">Pay with Stripe</span>
-                                        <FaLock className="text-sm" />
+                                        <span style={{ marginRight: '0.5rem' }}>Pay with Stripe</span>
+                                        <FaLock className="checkout-lock-icon" />
                                     </>
                                 )}
                             </button>
@@ -163,7 +163,7 @@ const Checkout = () => {
                         </div>
 
                         <div className="checkout-secure-note">
-                            <FaLock className="mr-1" /> Secure Encrypted Payment
+                            <FaLock style={{ marginRight: '0.25rem' }} /> Secure Encrypted Payment
                         </div>
                     </div>
                 </div>

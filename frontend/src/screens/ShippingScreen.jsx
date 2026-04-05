@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { saveShippingAddress } from '../slices/cartSlice';
+import '../styles/ShippingScreen.css';
 
 const ShippingScreen = () => {
     const cart = useSelector((state) => state.cart);
@@ -25,15 +26,15 @@ const ShippingScreen = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8 max-w-2xl">
+        <div className="shipping-container">
             <CheckoutSteps step1 step2 />
 
-            <div className="card p-8 md:p-10 mt-8 bg-white shadow-lg border border-border-color">
-                <h1 className="text-3xl font-display font-bold mb-6 text-text-main border-b border-border-color pb-4">Shipping Details</h1>
+            <div className="shipping-card">
+                <h1 className="shipping-title">Shipping Details</h1>
 
-                <form onSubmit={submitHandler} className="space-y-6">
+                <form onSubmit={submitHandler} className="shipping-form">
                     <div>
-                        <label className="block mb-2 font-semibold text-text-main">Full Name</label>
+                        <label className="shipping-label">Full Name</label>
                         <input
                             type='text'
                             placeholder='Enter full name'
@@ -45,7 +46,7 @@ const ShippingScreen = () => {
                     </div>
 
                     <div>
-                        <label className="block mb-2 font-semibold text-text-main">Phone Number</label>
+                        <label className="shipping-label">Phone Number</label>
                         <input
                             type='text'
                             placeholder='Enter phone number'
@@ -57,7 +58,7 @@ const ShippingScreen = () => {
                     </div>
 
                     <div>
-                        <label className="block mb-2 font-semibold text-text-main">Address</label>
+                        <label className="shipping-label">Address</label>
                         <input
                             type='text'
                             placeholder='123 Main St, Apt 4B'
@@ -68,9 +69,9 @@ const ShippingScreen = () => {
                         ></input>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="shipping-grid">
                         <div>
-                            <label className="block mb-2 font-semibold text-text-main">City</label>
+                            <label className="shipping-label">City</label>
                             <input
                                 type='text'
                                 placeholder='New York'
@@ -82,7 +83,7 @@ const ShippingScreen = () => {
                         </div>
 
                         <div>
-                            <label className="block mb-2 font-semibold text-text-main">Postal Code</label>
+                            <label className="shipping-label">Postal Code</label>
                             <input
                                 type='text'
                                 placeholder='10001'
@@ -95,7 +96,7 @@ const ShippingScreen = () => {
                     </div>
 
                     <div>
-                        <label className="block mb-2 font-semibold text-text-main">Country</label>
+                        <label className="shipping-label">Country</label>
                         <input
                             type='text'
                             placeholder='United States'
@@ -106,10 +107,10 @@ const ShippingScreen = () => {
                         ></input>
                     </div>
 
-                    <div className="pt-4">
+                    <div className="shipping-submit-wrapper">
                         <button
                             type='submit'
-                            className="btn-primary w-full py-3 text-lg"
+                            className="btn-primary shipping-submit-btn"
                         >
                             Continue to Payment
                         </button>

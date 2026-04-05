@@ -211,7 +211,7 @@ const PlaceOrderScreen = () => {
                             </div>
                         </div>
 
-                        {error && <div className="mt-4"><Message variant='danger'>{error?.data?.message || error.error}</Message></div>}
+                        {error && <div style={{ marginTop: '1rem' }}><Message variant='danger'>{error?.data?.message || error.error}</Message></div>}
 
                         <button
                             type='button'
@@ -221,7 +221,7 @@ const PlaceOrderScreen = () => {
                         >
                             {cart.paymentMethod === 'CARD' || cart.paymentMethod === 'UPI' ? 'Pay & Place Order' : 'Place Order'}
                         </button>
-                        {isLoading && <div className="mt-4 flex justify-center"><Loader /></div>}
+                        {isLoading && <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'center' }}><Loader /></div>}
                     </div>
                 </div>
             </div>

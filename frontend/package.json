@@ -12,12 +12,9 @@
   "dependencies": {
     "@paypal/react-paypal-js": "^8.9.2",
     "@reduxjs/toolkit": "^2.11.2",
-    "@tailwindcss/postcss": "^4.1.18",
     "@vitejs/plugin-react": "^5.1.1",
-    "autoprefixer": "^10.4.23",
     "axios": "^1.13.2",
     "framer-motion": "^12.23.26",
-    "postcss": "^8.5.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",
@@ -26,7 +23,6 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.11.0",
     "react-toastify": "^11.0.5",
-    "tailwindcss": "^4.1.18",
     "vite": "^7.2.4"
   },
   "devDependencies": {

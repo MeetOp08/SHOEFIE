@@ -43,7 +43,7 @@ const UserEditScreen = () => {
     return (
         <div className="admin-uedit-container">
             <Link to='/admin/userlist' className="admin-uedit-back">
-                <FaArrowLeft className="mr-2" /> Go Back
+                <FaArrowLeft style={{ marginRight: '0.5rem' }} /> Go Back
             </Link>
 
             <div className="admin-uedit-card">
